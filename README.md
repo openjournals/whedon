@@ -14,6 +14,9 @@ GITHUB_TOKEN=your_github_token whedon show {id}
 # Prepare to accept paper into JOSS
 GITHUB_TOKEN=your_github_token whedon prepare {id}
 
+# Generate Crossreg metadata
+GITHUB_TOKEN=your_github_token whedon generate_crossref {id}
+
 # Accept a paper into JOSS
 GITHUB_TOKEN=your_github_token whedon accept {id}
 ```
