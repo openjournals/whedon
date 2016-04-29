@@ -1,5 +1,3 @@
-# Whedon
-
 ## What is Whedon?
 
 Whedon is a collection of command-line utilities to manage JOSS submissions. He may one day be a sentient being that interacts with authors and reviewers during the review process on https://github.com/openjournals/joss-reviews
