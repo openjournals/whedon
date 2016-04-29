@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+require_relative "../lib/whedon"
+require 'thor'
+
+class WhedonCli < Thor
+  desc "list", "Lists open reviews"
+  def list
+    puts "Listing"
+  end
+end
+
+WhedonCli.start
