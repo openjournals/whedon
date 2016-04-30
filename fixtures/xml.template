@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<article>
+  <articleinfo>
+    <title>$title$</title>
+$if(authors)$
+    <authors>
+$for(authors)$
+      <author>
+        <name>$authors.name$</name>
+$if(authors.orcid)$
+        <orcid>$authors.orcid$</orcid>
+$endif$
+$if(authors.affiliation)$
+        <affiliation>
+          <orgname>
+            $authors.affiliation$
+          </orgname>
+        </affiliation>
+$endif$
+      </author>
+$endfor$
+    </authors>
+$endif$
+$if(tags)$
+    <tags>
+$for(tags)$
+      <tag>$tags$</tag>
+$endfor$
+    </tags>
+$endif$
+$if(date)$
+    <date>$date$</date>
+$endif$
+  </articleinfo>
+$for(include-before)$
+$include-before$
+$endfor$
+$if(body)$
+  <body>
+    $body$
+  </body>
+$endif$
+$for(include-after)$
+$include-after$
+$endfor$
+</article>
