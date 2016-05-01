@@ -3,9 +3,20 @@ require_relative "../lib/whedon"
 require 'thor'
 
 class WhedonCli < Thor
-  desc "list", "Lists open reviews"
-  def list
-    puts "Listing"
+  desc "reviews", "Lists open reviews"
+  def reviews
+    reviews = Whedon::Reviews.new(ENV['JOSS_REVIEW_REPO'])
+    puts reviews.current
+  end
+
+  desc "open", "Open browser for review"
+  def open(issue_id)
+    `open https://github.com/#{ENV['JOSS_REVIEW_REPO']}/issues/#{issue_id}`
+  end
+
+  desc "verify", "Check that the submission looks good"
+  def verify(issue_id)
+    puts "Verifying..."
   end
 end
 
