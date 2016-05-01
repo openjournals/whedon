@@ -16,7 +16,8 @@ class WhedonCli < Thor
 
   desc "verify", "Check that the submission looks good"
   def verify(issue_id)
-    puts "Verifying..."
+    review = Whedon::Review.new(issue_id, ENV['JOSS_REVIEW_REPO'])
+    review.verify
   end
 end
 

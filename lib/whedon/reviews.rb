@@ -1,5 +1,7 @@
+# TODO: refactor this class
+
 require_relative 'github'
-require 'pry'
+
 module Whedon
   class Reviews
     include GitHub
