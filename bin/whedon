@@ -1,12 +1,12 @@
 #!/usr/bin/env ruby
 require_relative "../lib/whedon"
 require 'thor'
+require 'pry'
 
 class WhedonCli < Thor
   desc "reviews", "Lists open reviews"
   def reviews
-    reviews = Whedon::Reviews.new(ENV['JOSS_REVIEW_REPO'])
-    puts reviews.current
+    Whedon::Paper.list
   end
 
   desc "open", "Open browser for review"
@@ -14,10 +14,44 @@ class WhedonCli < Thor
     `open https://github.com/#{ENV['JOSS_REVIEW_REPO']}/issues/#{issue_id}`
   end
 
-  desc "verify", "Check that the submission looks good"
+  desc "verify", "Check the key values in the review issue"
   def verify(issue_id)
-    review = Whedon::Review.new(issue_id, ENV['JOSS_REVIEW_REPO'])
-    review.verify
+    Whedon::Paper.new(issue_id).audit
+  end
+
+  desc "download", "Download the repo"
+  def download(issue_id)
+    Whedon::Paper.new(issue_id).download
+  end
+
+  desc "compile", "Compile the paper and XML metadata"
+  def compile(issue_id)
+    review = Whedon::Review.new(issue_id)
+    processor = Whedon::Processor.new(issue_id, review.issue_body)
+
+    paper_paths = processor.find_paper_paths
+
+    if paper_paths.empty?
+      puts "Can't find any papers to compile :-("
+    elsif paper_paths.size == 1
+      puts "Setting paper_path to #{paper_paths.first}"
+      processor.paper_path = paper_paths.first
+      processor.compile
+    else
+      puts "Looks like we found more than one possible paper:"
+      paper_paths.each_with_index { |path, index| puts "#{index+1}. #{path}"}
+      selected_paper = ask("Pick which paper you want:")
+      paper_path = paper_paths[selected_paper.to_i - 1]
+      puts "Setting paper_path to #{paper_paths}"
+      processor.paper_path = paper_path
+      processor.compile
+    end
+  end
+
+  desc "crossref", "Generate Crossref metadata"
+  def crossref(issue_id)
+    crossref = Whedon::Crossref.new(issue_id, ENV['JOSS_REVIEW_REPO'])
+    xml_paths = crossref.find_xml_paths
   end
 end
 

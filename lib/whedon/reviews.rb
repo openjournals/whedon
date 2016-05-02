@@ -1,5 +1,3 @@
-# TODO: refactor this class
-
 require_relative 'github'
 
 module Whedon
@@ -8,12 +6,11 @@ module Whedon
 
     attr_accessor :review_repository_url
 
-    # Initialize the GitHub class
-    def initialize(repository_url)
-      @review_repository_url = repository_url
+    def initialize(review_repository_url)
+      @review_repository_url = review_repository_url
     end
 
-    def current
+    def list_current
       current_reviews = client.list_issues(@review_repository_url)
       return "No open reviews" if current_reviews.empty?
 
