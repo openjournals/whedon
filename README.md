@@ -2,30 +2,59 @@
 
 Whedon is a collection of command-line utilities to manage JOSS submissions. He may one day be a sentient being that interacts with authors and reviewers during the review process on https://github.com/openjournals/joss-reviews
 
+### Setup
+
+Whedon uses [`dotenv`](https://github.com/bkeepers/dotenv) to manage local configuration. Take a look at `.env-example` (which needs renaming to `.env` to be picked up).
+
 ### Usage
 
-```bash
+#### Implemented functionality
+```
 # List all open reviews
-whedon reviews
+$ whedon reviews
 
+# Ruby
+>> require 'whedon'
+>> Whedon::Paper.list
+
+```
+
+```
 # Open the browser for a review
-whedon open {id}
+$ whedon open {id}
 
+```
+
+```
 # Verify the submission is complete
-whedon verify {id}
+$ whedon verify {id}
 
+>> require 'whedon'
+>> Whedon::Paper.new(issue_id).audit
+```
+
+```
+# Download the repo linked to in the review issue
+$ whedon download {id}
+
+>> require 'whedon'
+>> Whedon::Paper.new(issue_id).download
+```
+
+```
+# Compile the paper.md and generate XML metadata
 # This does the following:
-#   1. Reads the issue in joss-reviews
-#   2. Checks that the key fields are present
+#   1. Looks for the paper.md
+#   1a. If more than one paper.md is found, asks the user to pick
+#   2. Compiles the markdown to a custom XML: pandoc -s -f markdown paper.md -o paper.xml --template xml.template
+#   3. Compiles the markdown to a custom PDF: pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md -o paper.xml --template latex.template
+#   4. Opens both files locally for inspection
 
-whedon compile {id}
-# This does the following:
+$ whedon compile {id}
+```
+#### (Soon to be) Implemented functionality
 
-#   1. Clones the repo
-#   2. Looks for the paper.md
-#   3. Compiles the markdown to a custom XML: pandoc -s -f markdown paper.md -o paper.xml --template xml.template
-#   4. Checks that the compiled XML document has certain attributes (title, authors, summary etc.)
-
+```
 # Prepare to accept paper into JOSS
 whedon prepare {id}
 
@@ -45,8 +74,3 @@ whedon generate_crossref {id}
 # Accept a paper into JOSS
 whedon accept {id}
 ```
-
-### What happens when someone submits
-
-1. We pick up the new paper with `whedon list`
-2. Then we prepare the submission `whedon prepare`
