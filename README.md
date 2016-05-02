@@ -9,68 +9,75 @@ Whedon uses [`dotenv`](https://github.com/bkeepers/dotenv) to manage local confi
 ### Usage
 
 #### Implemented functionality
+
+List all open reviews in the GitHub review repository
+
 ```
-# List all open reviews
 $ whedon reviews
 
-# Ruby
+# Ruby API equivalent
 >> require 'whedon'
 >> Whedon::Paper.list
-
 ```
 
+Open the browser at the review issue page
+
 ```
-# Open the browser for a review
 $ whedon open {id}
-
 ```
 
+Verify the review issue body has key fields present
+
 ```
-# Verify the submission is complete
 $ whedon verify {id}
 
+# Ruby API equivalent
 >> require 'whedon'
 >> Whedon::Paper.new(issue_id).audit
 ```
 
+Download locally the repository linked to in the review issue
+
 ```
-# Download the repo linked to in the review issue
 $ whedon download {id}
 
+# Ruby API equivalent
 >> require 'whedon'
 >> Whedon::Paper.new(issue_id).download
 ```
 
-```
-# Compile the paper.md and generate XML metadata
-# This does the following:
-#   1. Looks for the paper.md
-#   1a. If more than one paper.md is found, asks the user to pick
-#   2. Compiles the markdown to a custom XML: pandoc -s -f markdown paper.md -o paper.xml --template xml.template
-#   3. Compiles the markdown to a custom PDF: pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md -o paper.xml --template latex.template
-#   4. Opens both files locally for inspection
+Compile the paper.md and generate XML metadata. This does the following:
+  1. Looks for the paper.md
+  1a. If more than one paper.md is found, asks the user to pick
+  2. Compiles the markdown to a custom XML: `pandoc -s -f markdown paper.md -o paper.xml --template xml.template`
+  3. Compiles the markdown to a custom PDF: `pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md -o paper.xml --template latex.template`
+  4. Opens both files locally for inspection
 
+```
 $ whedon compile {id}
 ```
+
 #### (Soon to be) Implemented functionality
 
+Prepare to accept paper into JOSS. This does the following:
+  1. Compiles the PDF with: pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md --template latex.template
+  2. Uploads the compiled PDF somewhere and update the review issue with a link to the PDF
 ```
-# Prepare to accept paper into JOSS
 whedon prepare {id}
+```
 
-# This does the following:
-#   1. Compiles the PDF with: pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md --template latex.template
-#   2. Uploads the compiled PDF somewhere and update the review issue with a link to the PDF
+Generate Crossref metadata. This does the following:
+  1. Uses the compiled XML document to generate crossref.xml
+  2. Uses https://github.com/inukshuk/bibtex-ruby to try and parse citations (see lib/bibtex.rb)
+  3. Generates the full XML (see lib/crossref.rb)
+  4. Saves the...
 
-# Generate Crossref metadata
+```
 whedon generate_crossref {id}
+```
 
-# This does the following:
-#   1. Uses the compiled XML document to generate crossref.xml
-#   2. Uses https://github.com/inukshuk/bibtex-ruby to try and parse citations (see lib/bibtex.rb)
-#   3. Generates the full XML (see lib/crossref.rb)
-#   4. Saves the
+Accept a paper into JOSS
 
-# Accept a paper into JOSS
+```
 whedon accept {id}
 ```
