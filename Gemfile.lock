@@ -7,6 +7,7 @@ PATH
       metamatter (~> 0.2.0)
       octokit (~> 4.0)
       thor (~> 0.19)
+      tilt
 
 GEM
   remote: https://rubygems.org/
@@ -66,6 +67,7 @@ GEM
       faraday (~> 0.8, < 0.10)
     slop (3.6.0)
     thor (0.19.1)
+    tilt (2.0.2)
     unicode (0.4.4.2)
     vcr (2.9.3)
     webmock (1.24.6)

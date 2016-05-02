@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv"
   spec.add_dependency "metamatter", "~> 0.2.0"
   spec.add_dependency "octokit", "~> 4.0"
+  spec.add_dependency "tilt"
   spec.add_dependency "thor", "~> 0.19"
 
   spec.add_development_dependency "bundler", "~> 1.6"

@@ -7,7 +7,6 @@ require_relative 'whedon/processor'
 require_relative 'whedon/review'
 require_relative 'whedon/reviews'
 require_relative 'whedon/version'
-require 'pry'
 
 require 'dotenv'
 Dotenv.load
@@ -54,6 +53,10 @@ module Whedon
     def compile
       review_issue if review_issue_body.nil?
       processor = Whedon::Processor.new(review_issue_id, review_issue_body)
+    end
+
+    def generate_crossref
+
     end
   end
 end
