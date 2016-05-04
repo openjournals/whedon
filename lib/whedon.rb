@@ -14,9 +14,9 @@ Dotenv.load
 module Whedon
 
   AUTHOR_REGEX = /(?<=\*\*Submitting author:\*\*\s)(\S+)/
-  REPO_REGEX = /(?<=\*\*Repository:\*\*\s)(\S+)/
+  REPO_REGEX = /(?<=\*\*Repository:\*\*.<a\shref=)"(.*?)"/
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
-  ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*\s)(\S+)/
+  ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*.<a\shref=)"(.*?)"/
 
   class Paper
     include GitHub
