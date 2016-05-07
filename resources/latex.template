@@ -219,7 +219,7 @@ $abstract$
 $endif$
 
 \textbf{Software Repository:} \url{$repository$}\\
-\textbf{Archive DOI:} \url{$archive_doi$}
+\textbf{Software Archive:} \url{$archive_doi$}
 
 $for(include-before)$
 $include-before$
