@@ -8,6 +8,8 @@ module Whedon
 
     attr_accessor :review_issue_id
     attr_accessor :review_body
+    attr_accessor :repository_address
+    attr_accessor :archive_doi
     attr_accessor :paper_path
     attr_accessor :xml_path
     attr_accessor :doi_batch_id
@@ -15,6 +17,8 @@ module Whedon
     def initialize(review_issue_id, review_body)
       @review_issue_id = review_issue_id
       @review_body = review_body
+      @repository_address = review_body[REPO_REGEX]
+      @archive_doi = review_body[ARCHIVE_REGEX]
     end
 
     # Clone the repository... (assumes it's git)
@@ -61,7 +65,7 @@ module Whedon
       paper_directory = File.dirname(paper_path)
 
       # TODO: may eventually want to swap out the latex template
-      `cd #{paper_directory} && pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc #{File.basename(paper_path)} --template #{latex_template_path}`
+      `cd #{paper_directory} && pandoc -V repository=#{repository_address} -V archive_doi=#{archive_doi} -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc #{File.basename(paper_path)} --template #{latex_template_path}`
 
       if File.exists?("#{paper_directory}/paper.pdf")
         `open #{paper_directory}/paper.pdf`
@@ -69,7 +73,7 @@ module Whedon
         puts "Looks like we failed to compile the PDF"
       end
 
-      `cd #{paper_directory} && pandoc -s -f markdown #{File.basename(paper_path)} -o paper.xml --template #{xml_template_path}`
+      `cd #{paper_directory} && pandoc -V repository=#{repository_address} -V archive_doi=#{archive_doi} -s -f markdown #{File.basename(paper_path)} -o paper.xml --template #{xml_template_path}`
 
       if File.exists?("#{paper_directory}/paper.xml")
         `open #{paper_directory}/paper.xml`
