@@ -95,7 +95,7 @@ $endfor$
 $endif$
 $if(natbib)$
 \usepackage{natbib}
-\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
+\bibliographystyle{utphys}
 $endif$
 $if(biblatex)$
 \usepackage$if(biblio-style)$[style=$biblio-style$]$endif${biblatex}
@@ -217,6 +217,9 @@ $if(abstract)$
 $abstract$
 \end{abstract}
 $endif$
+
+\textbf{Software Repository:} \url{$repository$}\\
+\textbf{Archive DOI:} \url{$archive_doi$}
 
 $for(include-before)$
 $include-before$

@@ -31,6 +31,8 @@ $endif$
 $if(date)$
     <date>$date$</date>
 $endif$
+    <software_repository>$repository$</software_repository>
+    <archive_doi>$archive_doi$</archive_doi>
   </articleinfo>
 $for(include-before)$
 $include-before$
