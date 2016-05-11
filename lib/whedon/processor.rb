@@ -62,10 +62,16 @@ module Whedon
     def compile
       latex_template_path = "#{Dir.pwd}/resources/latex.template"
       xml_template_path = "#{Dir.pwd}/resources/xml.template"
+      html_template_path = "#{Dir.pwd}/resources/html.template"
       paper_directory = File.dirname(paper_path)
 
       # TODO: may eventually want to swap out the latex template
-      `cd #{paper_directory} && pandoc -V repository=#{repository_address} -V archive_doi=#{archive_doi} -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc #{File.basename(paper_path)} --template #{latex_template_path}`
+      `cd #{paper_directory} && pandoc \
+      -V repository=#{repository_address} \
+      -V archive_doi=#{archive_doi} \
+      -S -o paper.pdf -V geometry:margin=1in \
+      --filter pandoc-citeproc #{File.basename(paper_path)} \
+      --template #{latex_template_path}`
 
       if File.exists?("#{paper_directory}/paper.pdf")
         `open #{paper_directory}/paper.pdf`
@@ -73,12 +79,30 @@ module Whedon
         puts "Looks like we failed to compile the PDF"
       end
 
-      `cd #{paper_directory} && pandoc -V repository=#{repository_address} -V archive_doi=#{archive_doi} -s -f markdown #{File.basename(paper_path)} -o paper.xml --template #{xml_template_path}`
+      `cd #{paper_directory} && pandoc \
+      -V repository=#{repository_address} \
+      -V archive_doi=#{archive_doi} \
+      -s -f markdown #{File.basename(paper_path)} -o paper.xml \
+      --filter pandoc-citeproc \
+      --template #{xml_template_path}`
 
       if File.exists?("#{paper_directory}/paper.xml")
         `open #{paper_directory}/paper.xml`
       else
         puts "Looks like we failed to compile the XML"
+      end
+
+      `cd #{paper_directory} && pandoc \
+      -V repository=#{repository_address} \
+      -V archive_doi=#{archive_doi} \
+      -s -f markdown #{File.basename(paper_path)} -o paper.html \
+      --filter pandoc-citeproc \
+      --template #{html_template_path}`
+
+      if File.exists?("#{paper_directory}/paper.html")
+        `open #{paper_directory}/paper.html`
+      else
+        puts "Looks like we failed to compile the HTML"
       end
     end
 

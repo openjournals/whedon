@@ -1,0 +1,12 @@
+<div class="accepted-paper">
+  <h1>$title$</h1>
+  <ul class="author-list">
+  $for(authors)$
+  <li><a href="http://orcid.org/$authors.orcid$" target="_blank">$authors.name$</a></li>
+  $endfor$
+  </ul>
+
+  <div class="paper-body">
+  $body$
+  </div>
+</div>
