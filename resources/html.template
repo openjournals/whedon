@@ -19,6 +19,16 @@ body = <<-EOF
     <div class="one-third column">
       <span class="paper">Review:<br /><a href="$review_issue_url$">View review issue &raquo;</a></span>
     </div>
+
+    <div class="one-third column" style="padding-top: 20px;">
+      <span class="repo">DOI:<br /><a href="http://dx.doi.org/$formatted_doi$">http://dx.doi.org/$formatted_doi$</a></span>
+    </div>
+    <div class="one-third column" style="padding-top: 20px;">
+      <span class="paper">Status badge:<br /><img src="http://joss.theoj.org/papers/$formatted_doi$/status.svg"></span>
+    </div>
+    <div class="one-third column" style="padding-top: 20px;">
+
+    </div>
   </div>
   <div class="paper-body">
   $body$

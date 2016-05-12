@@ -31,6 +31,7 @@ $endif$
 $if(date)$
     <date>$date$</date>
 $endif$
+    <paper_doi>$formatted_doi$</paper_doi>
     <software_repository>$repository$</software_repository>
     <software_archive>$archive_doi$</software_archive>
     <paper_url>$paper_url$</paper_url>

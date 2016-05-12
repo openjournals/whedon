@@ -140,6 +140,7 @@ module Whedon
       -V repository=#{repository_address} \
       -V archive_doi=#{archive_doi} \
       -V paper_url=#{paper_url} \
+      -V formatted_doi=#{formatted_doi} \
       -V review_issue_url=#{review_issue_url} \
       -S -o #{filename_doi}.pdf -V geometry:margin=1in \
       --filter pandoc-citeproc #{File.basename(paper_path)} \
@@ -154,6 +155,7 @@ module Whedon
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
       -V archive_doi=#{archive_doi} \
+      -V formatted_doi=#{formatted_doi} \
       -V paper_url=#{paper_url} \
       -V review_issue_url=#{review_issue_url} \
       -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.xml \
@@ -169,6 +171,7 @@ module Whedon
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
       -V archive_doi=#{archive_doi} \
+      -V formatted_doi=#{formatted_doi} \
       -V paper_url=#{paper_url} \
       -V review_issue_url=#{review_issue_url} \
       -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.html \
