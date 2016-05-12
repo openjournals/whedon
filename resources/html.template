@@ -1,12 +1,27 @@
+body = <<-EOF
 <div class="accepted-paper">
   <h1>$title$</h1>
-  <ul class="author-list">
-  $for(authors)$
-  <li><a href="http://orcid.org/$authors.orcid$" target="_blank">$authors.name$</a></li>
-  $endfor$
-  </ul>
-
+  <div class="columns links">
+    <div class="column four-fifths" style="padding-bottom: 10px;">
+      <strong>Authors</strong>
+      <ul class="author-list">
+      $for(authors)$
+      <li><a href="http://orcid.org/$authors.orcid$" target="_blank">$authors.name$</a></li>
+      $endfor$
+      </ul>
+    </div>
+    <div class="one-third column">
+      <span class="repo">Repository:<br /><a href="$repository$">Repository link &raquo;</a></span>
+    </div>
+    <div class="one-third column">
+      <span class="paper">Paper:<br /><a href="$paper_url$">PDF link &raquo;</a></span>
+    </div>
+    <div class="one-third column">
+      <span class="paper">Review:<br /><a href="$review_issue_url$">View review issue &raquo;</a></span>
+    </div>
+  </div>
   <div class="paper-body">
   $body$
   </div>
 </div>
+EOF

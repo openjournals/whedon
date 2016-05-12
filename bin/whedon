@@ -67,6 +67,8 @@ class WhedonCli < Thor
       puts "Setting xml_path to #{xml_path}"
       processor.xml_path = xml_path
     end
+
+    processor.generate_crossref
   end
 end
 

@@ -1,0 +1,45 @@
+<doi_batch version="4.3.7" xmlns="http://www.crossref.org/schema/4.3.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.crossref.org/schema/4.3.7 http://www.crossref.org/schemas/crossref4.3.7.xsd">
+  <head>
+    <doi_batch_id>$doi_batch_id$</doi_batch_id>
+    <timestamp>$timestamp$</timestamp>
+    <depositor>
+      <depositor_name>JOSS Admin</depositor_name>
+      <email_address>admin@theoj.org</email_address>
+    </depositor>
+    <registrant>The Open Journal</registrant>
+  </head>
+  <body>
+    <journal>
+      <journal_metadata>
+        <full_title>The Journal of Open Source Software</full_title>
+        <abbrev_title>JOSS</abbrev_title>
+        <doi_data>
+          <doi>10.21105/joss</doi>
+          <resource>http://joss.theoj.org</resource>
+        </doi_data>
+      </journal_metadata>
+      <journal_article publication_type="full_text">
+        <titles>
+          <title>$title$</title>
+        </titles>
+        <contributors>
+          $authors$
+        </contributors>
+        <publication_date>
+          <month>$month$</month>
+          <day>$day$</day>
+          <year>$year$</year>
+        </publication_date>
+        <publisher_item>
+          <item_number>$formatted_doi$</item_number>
+        </publisher_item>
+        <doi_data>
+          <doi>$formatted_doi$</doi>
+          <timestamp>$timestamp$</timestamp>
+          <resource>$joss_resource_url$</resource>
+        </doi_data>
+        $citations$
+      </journal_article>
+    </journal>
+  </body>
+</doi_batch>

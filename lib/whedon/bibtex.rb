@@ -27,7 +27,7 @@ module Whedon
         end
       end
 
-      return "<citations>#{@citation_string}</citations>"
+      return "<citation_list>#{@citation_string}</citation_list>"
     end
 
     # Chooses what sort of citation to make based upon whether there is a DOI
@@ -42,17 +42,19 @@ module Whedon
 
     # Returns a simple <citation> XML snippet with the DOI
     def doi_citation(entry)
-      "<citation key='ref#{@ref_count}'><doi>#{entry.doi.to_s}</doi></citation>"
+      "<citation key=\"ref#{@ref_count}\"><doi>#{entry.doi.to_s}</doi></citation>"
     end
 
     # Returns a more complex <citation> XML snippet with keys for each of the
     # bibtex fields
     def general_citation(entry)
-      citation = "<citation key='ref#{@ref_count}'>"
+      citation = "<citation key=\"ref#{@ref_count}\"><unstructured_citation>"
+      values = []
       entry.each_pair do |name, value|
-        citation << "<#{name}>#{value}</#{name}>"
+        values << value
       end
-      citation << "</citation>"
+      citation << values.join(', ')
+      citation << "</unstructured_citation></citation>"
 
       return citation
     end

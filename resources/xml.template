@@ -33,6 +33,7 @@ $if(date)$
 $endif$
     <software_repository>$repository$</software_repository>
     <software_archive>$archive_doi$</software_archive>
+    <paper_url>$paper_url$</paper_url>
   </articleinfo>
 $for(include-before)$
 $include-before$
