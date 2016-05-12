@@ -51,6 +51,9 @@ module Whedon
       citation = "<citation key=\"ref#{@ref_count}\"><unstructured_citation>"
       values = []
       entry.each_pair do |name, value|
+        # FIXME
+        value.gsub!("{", "")
+        value.gsub!("}", "")
         values << value
       end
       citation << values.join(', ')

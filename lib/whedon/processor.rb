@@ -82,7 +82,7 @@ module Whedon
     end
 
     def paper_url
-      "https://github.com/openjournals/joss-papers/blob/master/#{joss_id}/#{doi_prefix}:#{joss_id}.pdf"
+      "https://github.com/openjournals/joss-papers/blob/master/#{joss_id}/#{doi_prefix}.#{joss_id}.pdf"
     end
 
     def joss_id
@@ -173,6 +173,7 @@ module Whedon
       -V review_issue_url=#{review_issue_url} \
       -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.html \
       --filter pandoc-citeproc \
+      --ascii \
       --template #{html_template_path}`
 
       if File.exists?("#{paper_directory}/#{filename_doi}.html")
