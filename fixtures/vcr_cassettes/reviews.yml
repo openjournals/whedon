@@ -1,0 +1,270 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/openjournals/joss-reviews/issues
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.drax-preview+json
+      User-Agent:
+      - Octokit Ruby Gem 4.3.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - token 705cf50820a06e981510782c9a66f230ee937135
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Fri, 13 May 2016 23:05:04 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4999'
+      X-Ratelimit-Reset:
+      - '1463184304'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"32b316b730b0361b48976a7783385e4b"
+      X-Oauth-Scopes:
+      - notifications, repo
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.drax-preview; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 318e55760cf7cdb40e61175a4d36cd32
+      X-Github-Request-Id:
+      - 46D006AD:7F92:155A58C:57365D9F
+    body:
+      encoding: ASCII-8BIT
+      string: '[{"url":"https://api.github.com/repos/openjournals/joss-reviews/issues/19","repository_url":"https://api.github.com/repos/openjournals/joss-reviews","labels_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/19/labels{/name}","comments_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/19/comments","events_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/19/events","html_url":"https://github.com/openjournals/joss-reviews/issues/19","id":154513135,"number":19,"title":"Submission:
+        riskscorer - automating risk calculation in clinical practice and research","user":{"login":"whedon","id":18508068,"avatar_url":"https://avatars.githubusercontent.com/u/18508068?v=3","gravatar_id":"","url":"https://api.github.com/users/whedon","html_url":"https://github.com/whedon","followers_url":"https://api.github.com/users/whedon/followers","following_url":"https://api.github.com/users/whedon/following{/other_user}","gists_url":"https://api.github.com/users/whedon/gists{/gist_id}","starred_url":"https://api.github.com/users/whedon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/whedon/subscriptions","organizations_url":"https://api.github.com/users/whedon/orgs","repos_url":"https://api.github.com/users/whedon/repos","events_url":"https://api.github.com/users/whedon/events{/privacy}","received_events_url":"https://api.github.com/users/whedon/received_events","type":"User","site_admin":false},"labels":[{"url":"https://api.github.com/repos/openjournals/joss-reviews/labels/review","name":"review","color":"fbca04"}],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":4,"created_at":"2016-05-12T15:33:08Z","updated_at":"2016-05-13T22:53:14Z","closed_at":null,"pull_request":{"url":null,"html_url":null,"diff_url":null,"patch_url":null},"body":"**Submitting
+        author:** @meyera (<a href=\"http://orcid.org/0000-0002-6944-2478\">Alexander
+        Meyer</a>)\r\n**Repository:** <a href=\"https://github.com/meyera/riskscorer\"
+        target =\"_blank\">https://github.com/meyera/riskscorer</a>\r\n**Version:**
+        v0.2.0\r\n**Archive:** <a href=\"http://dx.doi.org/10.5281/zenodo.51342\"
+        target =\"_blank\">http://dx.doi.org/10.5281/zenodo.51342</a>\r\n\r\n## Status\r\n\r\n[![status](http://joss.theoj.org/papers/b6fca2486948af8ebd56fc31fc7277c3/status.svg)](http://joss.theoj.org/papers/b6fca2486948af8ebd56fc31fc7277c3)\r\n\r\nStatus
+        badge code:\r\n\r\n```\r\nHTML: <a href=\"http://joss.theoj.org/papers/b6fca2486948af8ebd56fc31fc7277c3\"><img
+        src=\"http://joss.theoj.org/papers/b6fca2486948af8ebd56fc31fc7277c3/status.svg\"></a>\r\nMarkdown:
+        [![status](http://joss.theoj.org/papers/b6fca2486948af8ebd56fc31fc7277c3/status.svg)](http://joss.theoj.org/papers/b6fca2486948af8ebd56fc31fc7277c3)\r\n```\r\n\r\n##
+        Reviewer questions\r\n\r\n### General checks\r\n\r\n- [ ] **Repository:**
+        Is the source code for this software available at the <a target=\"_blank\"
+        href=\"https://github.com/meyera/riskscorer\">repository url</a>?\r\n- [ ]
+        **License:** Does the repository contain a plain-text LICENSE file with the
+        contents of an [OSI approved](https://opensource.org/licenses/alphabetical)
+        software license?\r\n- [ ] **Version:** Does the release version given match
+        the GitHub release (v0.2.0)?\r\n- [ ] **Archive:** Does the <a target=\"_blank\"
+        href=\"http://dx.doi.org/10.5281/zenodo.51342\">software archive</a> resolve?\r\n\r\n###
+        Functionality\r\n\r\n- [ ] **Installation:** Does installation proceed as
+        outlined in the documentation?\r\n- [ ] **Functionality:** Have the functional
+        claims of the software been confirmed?\r\n- [ ] **Performance:** Have the
+        performance claims of the software been confirmed?\r\n\r\n### Documentation\r\n\r\n-
+        [ ] **A statement of need:** Do the authors clearly state what problems the
+        software is designed to solve and who the target audience is?\r\n- [ ] **Installation
+        instructions:** Is there a clearly-stated list of dependencies? Ideally these
+        should be handled with an automated package management solution.\r\n- [ ]
+        **Example usage:** Do the authors include examples of how to use the software
+        (ideally to solve real-world analysis problems).\r\n- [ ] **Functionality
+        documentation:** Is the functionality of the software documented to a satisfactory
+        level (e.g. API method documentation)?\r\n- [ ] **Automated tests:** Are there
+        automated tests or manual steps described so that the function of the software
+        can be verified?\r\n- [ ] **Community guidelines:** Are there clear guidelines
+        for third parties wishing to 1) Contribute to the software 2) Report issues
+        or problems with the software 3) Seek support\r\n\r\n### Software paper\r\n\r\nCompiled
+        paper PDF: [10.21105.joss.00019.pdf](https://github.com/openjournals/joss-reviews/files/261684/10.21105.joss.00019.pdf)\r\n\r\n-
+        [ ] **Authors:** Does the `paper.md` file include a list of authors with their
+        affiliations?\r\n- [ ] **A statement of need:** Do the authors clearly state
+        what problems the software is designed to solve and who the target audience
+        is?\r\n- [ ] **References:** Do all archival references that should have a
+        DOI list one (e.g. papers, datasets, software)?\r\n"},{"url":"https://api.github.com/repos/openjournals/joss-reviews/issues/18","repository_url":"https://api.github.com/repos/openjournals/joss-reviews","labels_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/18/labels{/name}","comments_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/18/comments","events_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/18/events","html_url":"https://github.com/openjournals/joss-reviews/issues/18","id":154512370,"number":18,"title":"Submission:
+        Xenomapper - short read mapping in a mixed species context","user":{"login":"whedon","id":18508068,"avatar_url":"https://avatars.githubusercontent.com/u/18508068?v=3","gravatar_id":"","url":"https://api.github.com/users/whedon","html_url":"https://github.com/whedon","followers_url":"https://api.github.com/users/whedon/followers","following_url":"https://api.github.com/users/whedon/following{/other_user}","gists_url":"https://api.github.com/users/whedon/gists{/gist_id}","starred_url":"https://api.github.com/users/whedon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/whedon/subscriptions","organizations_url":"https://api.github.com/users/whedon/orgs","repos_url":"https://api.github.com/users/whedon/repos","events_url":"https://api.github.com/users/whedon/events{/privacy}","received_events_url":"https://api.github.com/users/whedon/received_events","type":"User","site_admin":false},"labels":[{"url":"https://api.github.com/repos/openjournals/joss-reviews/labels/review","name":"review","color":"fbca04"}],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":1,"created_at":"2016-05-12T15:30:11Z","updated_at":"2016-05-12T15:32:11Z","closed_at":null,"pull_request":{"url":null,"html_url":null,"diff_url":null,"patch_url":null},"body":"**Submitting
+        author:** @genomematt (<a href=\"http://orcid.org/0000-0001-6624-4698\">Matthew
+        J Wakefield</a>)\r\n**Repository:** <a href=\"http://github.com/genomematt/xenomapper/\"
+        target =\"_blank\">http://github.com/genomematt/xenomapper/</a>\r\n**Version:**
+        v1.0.0\r\n**Archive:** <a href=\"http://dx.doi.org/10.5281/zenodo.51337\"
+        target =\"_blank\">10.5281/zenodo.51337</a>\r\n\r\n## Status\r\n\r\n[![status](http://joss.theoj.org/papers/7065e20e97ff4e44695b5e9fef7cdcd8/status.svg)](http://joss.theoj.org/papers/7065e20e97ff4e44695b5e9fef7cdcd8)\r\n\r\nStatus
+        badge code:\r\n\r\n```\r\nHTML: <a href=\"http://joss.theoj.org/papers/7065e20e97ff4e44695b5e9fef7cdcd8\"><img
+        src=\"http://joss.theoj.org/papers/7065e20e97ff4e44695b5e9fef7cdcd8/status.svg\"></a>\r\nMarkdown:
+        [![status](http://joss.theoj.org/papers/7065e20e97ff4e44695b5e9fef7cdcd8/status.svg)](http://joss.theoj.org/papers/7065e20e97ff4e44695b5e9fef7cdcd8)\r\n```\r\n\r\n##
+        Reviewer questions\r\n\r\n### General checks\r\n\r\n- [ ] **Repository:**
+        Is the source code for this software available at the <a target=\"_blank\"
+        href=\"http://github.com/genomematt/xenomapper/\">repository url</a>?\r\n-
+        [ ] **License:** Does the repository contain a plain-text LICENSE file with
+        the contents of an [OSI approved](https://opensource.org/licenses/alphabetical)
+        software license?\r\n- [ ] **Version:** Does the release version given match
+        the GitHub release (v1.0.0)?\r\n- [ ] **Archive:** Does the <a target=\"_blank\"
+        href=\"http://dx.doi.org/10.5281/zenodo.51337\">software archive</a> resolve?\r\n\r\n###
+        Functionality\r\n\r\n- [ ] **Installation:** Does installation proceed as
+        outlined in the documentation?\r\n- [ ] **Functionality:** Have the functional
+        claims of the software been confirmed?\r\n- [ ] **Performance:** Have the
+        performance claims of the software been confirmed?\r\n\r\n### Documentation\r\n\r\n-
+        [ ] **A statement of need:** Do the authors clearly state what problems the
+        software is designed to solve and who the target audience is?\r\n- [ ] **Installation
+        instructions:** Is there a clearly-stated list of dependencies? Ideally these
+        should be handled with an automated package management solution.\r\n- [ ]
+        **Example usage:** Do the authors include examples of how to use the software
+        (ideally to solve real-world analysis problems).\r\n- [ ] **Functionality
+        documentation:** Is the functionality of the software documented to a satisfactory
+        level (e.g. API method documentation)?\r\n- [ ] **Automated tests:** Are there
+        automated tests or manual steps described so that the function of the software
+        can be verified?\r\n- [ ] **Community guidelines:** Are there clear guidelines
+        for third parties wishing to 1) Contribute to the software 2) Report issues
+        or problems with the software 3) Seek support\r\n\r\n### Software paper\r\n\r\nCompiled
+        paper PDF: [10.21105.joss.00018.pdf](https://github.com/openjournals/joss-reviews/files/261671/10.21105.joss.00018.pdf)\r\n\r\n-
+        [ ] **Authors:** Does the `paper.md` file include a list of authors with their
+        affiliations?\r\n- [ ] **A statement of need:** Do the authors clearly state
+        what problems the software is designed to solve and who the target audience
+        is?\r\n- [ ] **References:** Do all archival references that should have a
+        DOI list one (e.g. papers, datasets, software)?\r\n"},{"url":"https://api.github.com/repos/openjournals/joss-reviews/issues/16","repository_url":"https://api.github.com/repos/openjournals/joss-reviews","labels_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/16/labels{/name}","comments_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/16/comments","events_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/16/events","html_url":"https://github.com/openjournals/joss-reviews/issues/16","id":153815019,"number":16,"title":"Submission:
+        R3D2: Relativistic Reactive Riemann problem solver for Deflagrations and Detonations","user":{"login":"whedon","id":18508068,"avatar_url":"https://avatars.githubusercontent.com/u/18508068?v=3","gravatar_id":"","url":"https://api.github.com/users/whedon","html_url":"https://github.com/whedon","followers_url":"https://api.github.com/users/whedon/followers","following_url":"https://api.github.com/users/whedon/following{/other_user}","gists_url":"https://api.github.com/users/whedon/gists{/gist_id}","starred_url":"https://api.github.com/users/whedon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/whedon/subscriptions","organizations_url":"https://api.github.com/users/whedon/orgs","repos_url":"https://api.github.com/users/whedon/repos","events_url":"https://api.github.com/users/whedon/events{/privacy}","received_events_url":"https://api.github.com/users/whedon/received_events","type":"User","site_admin":false},"labels":[{"url":"https://api.github.com/repos/openjournals/joss-reviews/labels/review","name":"review","color":"fbca04"}],"state":"open","locked":false,"assignee":{"login":"kyleniemeyer","id":190432,"avatar_url":"https://avatars.githubusercontent.com/u/190432?v=3","gravatar_id":"","url":"https://api.github.com/users/kyleniemeyer","html_url":"https://github.com/kyleniemeyer","followers_url":"https://api.github.com/users/kyleniemeyer/followers","following_url":"https://api.github.com/users/kyleniemeyer/following{/other_user}","gists_url":"https://api.github.com/users/kyleniemeyer/gists{/gist_id}","starred_url":"https://api.github.com/users/kyleniemeyer/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/kyleniemeyer/subscriptions","organizations_url":"https://api.github.com/users/kyleniemeyer/orgs","repos_url":"https://api.github.com/users/kyleniemeyer/repos","events_url":"https://api.github.com/users/kyleniemeyer/events{/privacy}","received_events_url":"https://api.github.com/users/kyleniemeyer/received_events","type":"User","site_admin":false},"milestone":null,"comments":4,"created_at":"2016-05-09T16:22:44Z","updated_at":"2016-05-12T09:20:23Z","closed_at":null,"pull_request":{"url":null,"html_url":null,"diff_url":null,"patch_url":null},"body":"**Submitting
+        author:** @harpolea (<a href=\"http://orcid.org/0000-0002-1530-781X\">Alice
+        Harpole</a>)\r\n**Repository:** <a href=\"https://github.com/harpolea/r3d2\"
+        target =\"_blank\">https://github.com/harpolea/r3d2</a>\r\n**Version:** v1.0\r\n**Archive:**
+        <a href=\"http://dx.doi.org/10.5281/zenodo.51096\" target =\"_blank\">http://dx.doi.org/10.5281/zenodo.51096</a>\r\n\r\n##
+        Status\r\n\r\n[![status](http://joss.theoj.org/papers/99f57be50022ae8b2eecdd1d28b05766/status.svg)](http://joss.theoj.org/papers/99f57be50022ae8b2eecdd1d28b05766)\r\n\r\nStatus
+        badge code:\r\n\r\n```\r\nHTML: <a href=\"http://joss.theoj.org/papers/99f57be50022ae8b2eecdd1d28b05766\"><img
+        src=\"http://joss.theoj.org/papers/99f57be50022ae8b2eecdd1d28b05766/status.svg\"></a>\r\nMarkdown:
+        [![status](http://joss.theoj.org/papers/99f57be50022ae8b2eecdd1d28b05766/status.svg)]http://joss.theoj.org/papers/99f57be50022ae8b2eecdd1d28b05766\r\n```\r\n\r\n##
+        Reviewer questions\r\n\r\n### General checks\r\n\r\n- [x] **Repository:**
+        Is the source code for this software available at the <a target=\"_blank\"
+        href=\"https://github.com/harpolea/r3d2\">repository url</a>?\r\n- [ ] **License:**
+        Does the repository contain a plain-text LICENSE file with the contents of
+        an [OSI approved](https://opensource.org/licenses/alphabetical) software license?\r\n-
+        [x] **Version:** Does the release version given match the GitHub release (v1.0)?\r\n-
+        [x] **Archive:** Does the <a target=\"_blank\" href=\"http://dx.doi.org/10.5281/zenodo.51096\">software
+        archive</a> resolve?\r\n\r\n### Functionality\r\n\r\n- [ ] **Installation:**
+        Does installation proceed as outlined in the documentation?\r\n- [ ] **Functionality:**
+        Have the functional claims of the software been confirmed?\r\n- [ ] **Performance:**
+        Have the performance claims of the software been confirmed?\r\n\r\n### Documentation\r\n\r\n-
+        [ ] **A statement of need:** Do the authors clearly state what problems the
+        software is designed to solve and who the target audience is?\r\n- [ ] **Installation
+        instructions:** Is there a clearly-stated list of dependencies? Ideally these
+        should be handled with an automated package management solution.\r\n- [ ]
+        **Example usage:** Do the authors include examples of how to use the software
+        (ideally to solve real-world analysis problems).\r\n- [ ] **Functionality
+        documentation:** Is the functionality of the software documented to a satisfactory
+        level (e.g. API method documentation)?\r\n- [ ] **Automated tests:** Are there
+        automated tests or manual steps described so that the function of the software
+        can be verified?\r\n- [ ] **Community guidelines:** Are there clear guidelines
+        for third parties wishing to 1) Contribute to the software 2) Report issues
+        or problems with the software 3) Seek support\r\n\r\n### Software paper\r\n\r\nCompiled
+        paper PDF: [paper.pdf](https://github.com/openjournals/joss-reviews/files/255410/paper.pdf)\r\n\r\n\r\n-
+        [ ] **Authors:** Does the `paper.md` file include a list of authors with their
+        affiliations?\r\n- [ ] **A statement of need:** Do the authors clearly state
+        what problems the software is designed to solve and who the target audience
+        is?\r\n- [ ] **References:** Do all archival references that should have a
+        DOI list one (e.g. papers, datasets, software)?\r\n\r\n"},{"url":"https://api.github.com/repos/openjournals/joss-reviews/issues/12","repository_url":"https://api.github.com/repos/openjournals/joss-reviews","labels_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/12/labels{/name}","comments_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/12/comments","events_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/12/events","html_url":"https://github.com/openjournals/joss-reviews/issues/12","id":153160519,"number":12,"title":"Submission:
+        mst_clustering: Clustering via Minimum Spanning Trees","user":{"login":"whedon","id":18508068,"avatar_url":"https://avatars.githubusercontent.com/u/18508068?v=3","gravatar_id":"","url":"https://api.github.com/users/whedon","html_url":"https://github.com/whedon","followers_url":"https://api.github.com/users/whedon/followers","following_url":"https://api.github.com/users/whedon/following{/other_user}","gists_url":"https://api.github.com/users/whedon/gists{/gist_id}","starred_url":"https://api.github.com/users/whedon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/whedon/subscriptions","organizations_url":"https://api.github.com/users/whedon/orgs","repos_url":"https://api.github.com/users/whedon/repos","events_url":"https://api.github.com/users/whedon/events{/privacy}","received_events_url":"https://api.github.com/users/whedon/received_events","type":"User","site_admin":false},"labels":[{"url":"https://api.github.com/repos/openjournals/joss-reviews/labels/review","name":"review","color":"fbca04"}],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":15,"created_at":"2016-05-05T03:16:01Z","updated_at":"2016-05-13T21:01:42Z","closed_at":null,"pull_request":{"url":null,"html_url":null,"diff_url":null,"patch_url":null},"body":"**Submitting
+        author:** @jakevdp (<a href=\"http://orcid.org/0000-0002-9623-3401\">Jacob
+        VanderPlas</a>)\r\n**Repository:** <a href=\"http://github.com/jakevdp/mst_clustering\"
+        target=\"_blank\">http://github.com/jakevdp/mst_clustering</a>\r\n**Version:**
+        v1.0.0\r\n**Archive:** <a href=\"http://dx.doi.org/10.5281/zenodo.50995\"
+        target =\"_blank\">http://dx.doi.org/10.5281/zenodo.50995</a>\r\n\r\n## Status\r\n\r\n[![status](http://joss.theoj.org/papers/0b73d249cd34985b6fa1a5ad4f4f8014/status.svg)](http://joss.theoj.org/papers/0b73d249cd34985b6fa1a5ad4f4f8014)\r\n\r\nStatus
+        badge code:\r\n\r\n```\r\nHTML: <a href=\"http://joss.theoj.org/papers/0b73d249cd34985b6fa1a5ad4f4f8014\"><img
+        src=\"http://joss.theoj.org/papers/0b73d249cd34985b6fa1a5ad4f4f8014/status.svg\"></a>\r\nMarkdown:
+        [![status](http://joss.theoj.org/papers/0b73d249cd34985b6fa1a5ad4f4f8014/status.svg)]http://joss.theoj.org/papers/0b73d249cd34985b6fa1a5ad4f4f8014\r\n```\r\n\r\n##
+        Reviewer questions\r\n\r\n### General checks\r\n\r\n- [x] **Repository:**
+        Is the source code for this software available at the <a target=\"_blank\"
+        href=\"http://github.com/jakevdp/mst_clustering\">repository url</a>?\r\n-
+        [x] **License:** Does the repository contain a plain-text LICENSE file with
+        the contents of an [OSI approved](https://opensource.org/licenses/alphabetical)
+        software license?\r\n- [ ] **Version:** Does the release version given match
+        the GitHub release (v1.0.0)?\r\n- [x] **Archive:** Does the <a target=\"_blank\"
+        href=\"http://dx.doi.org/10.5281/zenodo.50995\">software archive</a> resolve?\r\n\r\n###
+        Functionality\r\n\r\n- [x] **Installation:** Does installation proceed as
+        outlined in the documentation?\r\n- [x] **Functionality:** Have the functional
+        claims of the software been confirmed?\r\n- [x] **Performance:** Have the
+        performance claims of the software been confirmed?\r\n\r\n### Documentation\r\n\r\n-
+        [x] **A statement of need:** Do the authors clearly state what problems the
+        software is designed to solve and who the target audience is?\r\n- [x] **Installation
+        instructions:** Is there a clearly-stated list of dependencies? Ideally these
+        should be handled with an automated package management solution.\r\n- [x]
+        **Example usage:** Do the authors include examples of how to use the software
+        (ideally to solve real-world analysis problems).\r\n- [x] **Functionality
+        documentation:** Is the functionality of the software documented to a satisfactory
+        level (e.g. API method documentation)?\r\n- [x] **Automated tests:** Are there
+        automated tests or manual steps described so that the function of the software
+        can be verified?\r\n- [ ] **Community guidelines:** Are there clear guidelines
+        for third parties wishing to 1) Contribute to the software 2) Report issues
+        or problems with the software 3) Seek support\r\n\r\n### Software paper\r\n\r\n-
+        [x] **Authors:** Does the `paper.md` file include a list of authors with their
+        affiliations?\r\n- [x] **A statement of need:** Do the authors clearly state
+        what problems the software is designed to solve and who the target audience
+        is?\r\n- [ ] **References:** Do all archival references that should have a
+        DOI list one (e.g. papers, datasets, software)?\r\n"},{"url":"https://api.github.com/repos/openjournals/joss-reviews/issues/10","repository_url":"https://api.github.com/repos/openjournals/joss-reviews","labels_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/10/labels{/name}","comments_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/10/comments","events_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/10/events","html_url":"https://github.com/openjournals/joss-reviews/issues/10","id":153024367,"number":10,"title":"Submission:
+        metricsgraphics: An R htmlwidget interface to the MetricsGraphics.js D3-based
+        visualization library","user":{"login":"whedon","id":18508068,"avatar_url":"https://avatars.githubusercontent.com/u/18508068?v=3","gravatar_id":"","url":"https://api.github.com/users/whedon","html_url":"https://github.com/whedon","followers_url":"https://api.github.com/users/whedon/followers","following_url":"https://api.github.com/users/whedon/following{/other_user}","gists_url":"https://api.github.com/users/whedon/gists{/gist_id}","starred_url":"https://api.github.com/users/whedon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/whedon/subscriptions","organizations_url":"https://api.github.com/users/whedon/orgs","repos_url":"https://api.github.com/users/whedon/repos","events_url":"https://api.github.com/users/whedon/events{/privacy}","received_events_url":"https://api.github.com/users/whedon/received_events","type":"User","site_admin":false},"labels":[{"url":"https://api.github.com/repos/openjournals/joss-reviews/labels/review","name":"review","color":"fbca04"}],"state":"open","locked":false,"assignee":null,"milestone":null,"comments":11,"created_at":"2016-05-04T14:22:32Z","updated_at":"2016-05-07T22:47:02Z","closed_at":null,"pull_request":{"url":null,"html_url":null,"diff_url":null,"patch_url":null},"body":"**Submitting
+        author:** @hrbrmstr (<a href=\"http://orcid.org/0000-0001-5670-2640\">Bob
+        Rudis</a>)\r\n**Repository:** <a href=\"https://github.com/hrbrmstr/metricsgraphics\"
+        target=\"_blank\">https://github.com/hrbrmstr/metricsgraphics</a>\r\n**Version:**
+        v0.9.1\r\n**Archive:** <a href=\"http://dx.doi.org/10.5281/zenodo.50373\"
+        target=\"_blank\">10.5281/zenodo.50373</a>\r\n\r\n## Status\r\n\r\n[![status](http://joss.theoj.org/papers/1677676c38bd118db5fe363a6eb3f88f/status.svg)](http://joss.theoj.org/papers/1677676c38bd118db5fe363a6eb3f88f)\r\n\r\nStatus
+        badge code:\r\n\r\n```\r\nHTML: <a href=\"http://joss.theoj.org/papers/1677676c38bd118db5fe363a6eb3f88f\"><img
+        src=\"http://joss.theoj.org/papers/1677676c38bd118db5fe363a6eb3f88f/status.svg\"></a>\r\nMarkdown:
+        [![status](http://joss.theoj.org/papers/1677676c38bd118db5fe363a6eb3f88f/status.svg)]http://joss.theoj.org/papers/1677676c38bd118db5fe363a6eb3f88f\r\n```\r\n\r\n##
+        Reviewer questions\r\n\r\n### General checks\r\n\r\n- [x] **Repository:**
+        Is the source code for this software available at the <a target=\"_blank\"
+        href=\"https://github.com/hrbrmstr/metricsgraphics\">repository url</a>?\r\n-
+        [ ] **License:** Does the repository contain a plain-text LICENSE file with
+        the contents of an [OSI approved](https://opensource.org/licenses/alphabetical)
+        software license?\r\n- [ ] **Version:** Does the release version given match
+        the GitHub release (v0.9.1)?\r\n- [x] **Archive:** Does the <a target=\"_blank\"
+        href=\"10.5281/zenodo.50373\">software archive</a> resolve?\r\n\r\n### Functionality\r\n\r\n-
+        [x] **Installation:** Does installation proceed as outlined in the documentation?\r\n-
+        [x] **Functionality:** Have the functional claims of the software been confirmed?\r\n-
+        [x] **Performance:** Have the performance claims of the software been confirmed?\r\n\r\n###
+        Documentation\r\n\r\n- [x] **A statement of need:** Do the authors clearly
+        state what problems the software is designed to solve and who the target audience
+        is?\r\n- [x] **Installation instructions:** Is there a clearly-stated list
+        of dependencies? Ideally these should be handled with an automated package
+        management solution.\r\n- [x] **Example usage:** Do the authors include examples
+        of how to use the software (ideally to solve real-world analysis problems).\r\n-
+        [x] **Functionality documentation:** Is the functionality of the software
+        documented to a satisfactory level (e.g. API method documentation)?\r\n- [x]
+        **Automated tests:** Are there automated tests or manual steps described so
+        that the function of the software can be verified?\r\n- [ ] **Community guidelines:**
+        Are there clear guidelines for third parties wishing to 1) Contribute to the
+        software 2) Report issues or problems with the software 3) Seek support\r\n\r\n###
+        Software paper\r\n\r\n- [x] **Authors:** Does the `paper.md` file include
+        a list of authors with their affiliations?\r\n- [x] **A statement of need:**
+        Do the authors clearly state what problems the software is designed to solve
+        and who the target audience is?\r\n- [x] **References:** Do all archival references
+        that should have a DOI list one (e.g. papers, datasets, software)?\r\n"}]'
+    http_version: 
+  recorded_at: Fri, 13 May 2016 23:05:05 GMT
+recorded_with: VCR 2.9.3

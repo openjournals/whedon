@@ -11,15 +11,19 @@ module Whedon
     end
 
     def list_current
+      reviews = Hash.new()
+
       current_reviews = client.list_issues(@review_repository_url)
-      return "No open reviews" if current_reviews.empty?
+      return nil if current_reviews.empty?
 
       current_reviews.each do |issue|
-        puts issue.html_url
-        puts "Opened: #{issue.created_at}"
-        puts ""
+        reviews[issue.number] = {
+                              :opened_at => issue.created_at,
+                              :url => issue.html_url
+                            }
       end
-      nil
+
+      return reviews
     end
   end
 end

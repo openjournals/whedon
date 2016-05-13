@@ -26,8 +26,13 @@ module Whedon
     attr_accessor :review_issue_body
 
     def self.list
-      Whedon::Reviews.new(ENV['JOSS_REVIEW_REPO']).list_current
-    end
+      reviews = Whedon::Reviews.new(ENV['JOSS_REVIEW_REPO']).list_current
+      return "No open reviews" if reviews.nil?
+
+      reviews.each do |issue_id, vals|
+        puts "#{issue_id}: #{vals[:url]} (#{vals[:opened_at]})"
+      end
+     end
 
     def initialize(review_issue_id)
       @review_issue_id = review_issue_id
