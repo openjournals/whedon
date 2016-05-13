@@ -14,7 +14,7 @@ http_interactions:
       Content-Type:
       - application/json
       Authorization:
-      - token 705cf50820a06e981510782c9a66f230ee937135
+      - token <GITHUB_TOKEN>
       Accept-Encoding:
       - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
   response:
@@ -25,7 +25,7 @@ http_interactions:
       Server:
       - GitHub.com
       Date:
-      - Fri, 13 May 2016 23:05:04 GMT
+      - Fri, 13 May 2016 23:47:37 GMT
       Content-Type:
       - application/json; charset=utf-8
       Transfer-Encoding:
@@ -35,7 +35,7 @@ http_interactions:
       X-Ratelimit-Limit:
       - '5000'
       X-Ratelimit-Remaining:
-      - '4999'
+      - '4991'
       X-Ratelimit-Reset:
       - '1463184304'
       Cache-Control:
@@ -44,7 +44,7 @@ http_interactions:
       - Accept, Authorization, Cookie, X-GitHub-OTP
       - Accept-Encoding
       Etag:
-      - W/"32b316b730b0361b48976a7783385e4b"
+      - W/"79a7e069c386ef28d985c99982628e2c"
       X-Oauth-Scopes:
       - notifications, repo
       X-Accepted-Oauth-Scopes:
@@ -67,9 +67,9 @@ http_interactions:
       X-Xss-Protection:
       - 1; mode=block
       X-Served-By:
-      - 318e55760cf7cdb40e61175a4d36cd32
+      - 173530fed4bbeb1e264b2ed22e8b5c20
       X-Github-Request-Id:
-      - 46D006AD:7F92:155A58C:57365D9F
+      - 46D006AD:B213:160A668:57366799
     body:
       encoding: ASCII-8BIT
       string: '[{"url":"https://api.github.com/repos/openjournals/joss-reviews/issues/19","repository_url":"https://api.github.com/repos/openjournals/joss-reviews","labels_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/19/labels{/name}","comments_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/19/comments","events_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/19/events","html_url":"https://github.com/openjournals/joss-reviews/issues/19","id":154513135,"number":19,"title":"Submission:
@@ -266,5 +266,5 @@ http_interactions:
         and who the target audience is?\r\n- [x] **References:** Do all archival references
         that should have a DOI list one (e.g. papers, datasets, software)?\r\n"}]'
     http_version: 
-  recorded_at: Fri, 13 May 2016 23:05:05 GMT
+  recorded_at: Fri, 13 May 2016 23:47:37 GMT
 recorded_with: VCR 2.9.3
