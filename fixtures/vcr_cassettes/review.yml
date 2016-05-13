@@ -1,0 +1,120 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: https://api.github.com/repos/openjournals/joss-reviews/issues/17
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - application/vnd.github.drax-preview+json
+      User-Agent:
+      - Octokit Ruby Gem 4.3.0
+      Content-Type:
+      - application/json
+      Authorization:
+      - token <GITHUB_TOKEN>
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - GitHub.com
+      Date:
+      - Fri, 13 May 2016 23:49:11 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Status:
+      - 200 OK
+      X-Ratelimit-Limit:
+      - '5000'
+      X-Ratelimit-Remaining:
+      - '4990'
+      X-Ratelimit-Reset:
+      - '1463184304'
+      Cache-Control:
+      - private, max-age=60, s-maxage=60
+      Vary:
+      - Accept, Authorization, Cookie, X-GitHub-OTP
+      - Accept-Encoding
+      Etag:
+      - W/"cf7856bd3095fcc0eab4ec74d7968540"
+      Last-Modified:
+      - Thu, 12 May 2016 12:36:22 GMT
+      X-Oauth-Scopes:
+      - notifications, repo
+      X-Accepted-Oauth-Scopes:
+      - repo
+      X-Github-Media-Type:
+      - github.drax-preview; format=json
+      Access-Control-Expose-Headers:
+      - ETag, Link, X-GitHub-OTP, X-RateLimit-Limit, X-RateLimit-Remaining, X-RateLimit-Reset,
+        X-OAuth-Scopes, X-Accepted-OAuth-Scopes, X-Poll-Interval
+      Access-Control-Allow-Origin:
+      - "*"
+      Content-Security-Policy:
+      - default-src 'none'
+      Strict-Transport-Security:
+      - max-age=31536000; includeSubdomains; preload
+      X-Content-Type-Options:
+      - nosniff
+      X-Frame-Options:
+      - deny
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Served-By:
+      - 13d09b732ebe76f892093130dc088652
+      X-Github-Request-Id:
+      - 46D006AD:1C0C6:1C67DEF:573667F7
+    body:
+      encoding: ASCII-8BIT
+      string: '{"url":"https://api.github.com/repos/openjournals/joss-reviews/issues/17","repository_url":"https://api.github.com/repos/openjournals/joss-reviews","labels_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/17/labels{/name}","comments_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/17/comments","events_url":"https://api.github.com/repos/openjournals/joss-reviews/issues/17/events","html_url":"https://github.com/openjournals/joss-reviews/issues/17","id":154275840,"number":17,"title":"Submission:
+        Application Skeleton: Generating Synthetic Applications for Infrastructure
+        Research","user":{"login":"whedon","id":18508068,"avatar_url":"https://avatars.githubusercontent.com/u/18508068?v=3","gravatar_id":"","url":"https://api.github.com/users/whedon","html_url":"https://github.com/whedon","followers_url":"https://api.github.com/users/whedon/followers","following_url":"https://api.github.com/users/whedon/following{/other_user}","gists_url":"https://api.github.com/users/whedon/gists{/gist_id}","starred_url":"https://api.github.com/users/whedon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/whedon/subscriptions","organizations_url":"https://api.github.com/users/whedon/orgs","repos_url":"https://api.github.com/users/whedon/repos","events_url":"https://api.github.com/users/whedon/events{/privacy}","received_events_url":"https://api.github.com/users/whedon/received_events","type":"User","site_admin":false},"labels":[{"url":"https://api.github.com/repos/openjournals/joss-reviews/labels/accepted","name":"accepted","color":"159818"},{"url":"https://api.github.com/repos/openjournals/joss-reviews/labels/review","name":"review","color":"fbca04"}],"state":"closed","locked":false,"assignee":null,"milestone":null,"comments":24,"created_at":"2016-05-11T15:42:11Z","updated_at":"2016-05-12T12:36:22Z","closed_at":"2016-05-12T03:15:55Z","pull_request":{"url":null,"html_url":null,"diff_url":null,"patch_url":null},"body":"**Submitting
+        author:** @zhaozhang (<a href=\"http://orcid.org/0000-0001-5921-0035\">Zhao
+        Zhang</a>)\r\n**Repository:** <a href=\"https://github.com/applicationskeleton/Skeleton\"
+        target =\"_blank\">https://github.com/applicationskeleton/Skeleton</a>\r\n**Version:**
+        v1.2\r\n**Archive:** <a href=\"http://dx.doi.org/10.5281/zenodo.13750\" target
+        =\"_blank\">http://dx.doi.org/10.5281/zenodo.13750</a>\r\n\r\n## Status\r\n\r\n[![status](http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6/status.svg)](http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6)\r\n\r\nStatus
+        badge code:\r\n\r\n```\r\nHTML: <a href=\"http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6\"><img
+        src=\"http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6/status.svg\"></a>\r\nMarkdown:
+        [![status](http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6/status.svg)]http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6\r\n```\r\n\r\n##
+        Reviewer questions\r\n\r\n### General checks\r\n\r\n- [x] **Repository:**
+        Is the source code for this software available at the <a target=\"_blank\"
+        href=\"https://github.com/applicationskeleton/Skeleton\">repository url</a>?\r\n-
+        [x] **License:** Does the repository contain a plain-text LICENSE file with
+        the contents of an [OSI approved](https://opensource.org/licenses/alphabetical)
+        software license?\r\n- [x] **Version:** Does the release version given match
+        the GitHub release (v1.2)?\r\n- [x] **Archive:** Does the <a target=\"_blank\"
+        href=\"http://dx.doi.org/10.5281/zenodo.13750\">software archive</a> resolve?\r\n\r\n###
+        Functionality\r\n\r\n- [x] **Installation:** Does installation proceed as
+        outlined in the documentation?\r\n- [x] **Functionality:** Have the functional
+        claims of the software been confirmed?\r\n- [x] **Performance:** Have the
+        performance claims of the software been confirmed?\r\n\r\n### Documentation\r\n\r\n-
+        [x] **A statement of need:** Do the authors clearly state what problems the
+        software is designed to solve and who the target audience is?\r\n- [x] **Installation
+        instructions:** Is there a clearly-stated list of dependencies? Ideally these
+        should be handled with an automated package management solution.\r\n- [x]
+        **Example usage:** Do the authors include examples of how to use the software
+        (ideally to solve real-world analysis problems).\r\n- [x] **Functionality
+        documentation:** Is the functionality of the software documented to a satisfactory
+        level (e.g. API method documentation)?\r\n- [x] **Automated tests:** Are there
+        automated tests or manual steps described so that the function of the software
+        can be verified?\r\n- [x] **Community guidelines:** Are there clear guidelines
+        for third parties wishing to 1) Contribute to the software 2) Report issues
+        or problems with the software 3) Seek support\r\n\r\n### Software paper\r\n\r\nCompiled
+        paper PDF: [paper.pdf](https://github.com/openjournals/joss-reviews/files/259667/paper.pdf)\r\n\r\n\r\n-
+        [x] **Authors:** Does the `paper.md` file include a list of authors with their
+        affiliations?\r\n- [x] **A statement of need:** Do the authors clearly state
+        what problems the software is designed to solve and who the target audience
+        is?\r\n- [x] **References:** Do all archival references that should have a
+        DOI list one (e.g. papers, datasets, software)?\r\n","closed_by":{"login":"arfon","id":4483,"avatar_url":"https://avatars.githubusercontent.com/u/4483?v=3","gravatar_id":"","url":"https://api.github.com/users/arfon","html_url":"https://github.com/arfon","followers_url":"https://api.github.com/users/arfon/followers","following_url":"https://api.github.com/users/arfon/following{/other_user}","gists_url":"https://api.github.com/users/arfon/gists{/gist_id}","starred_url":"https://api.github.com/users/arfon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/arfon/subscriptions","organizations_url":"https://api.github.com/users/arfon/orgs","repos_url":"https://api.github.com/users/arfon/repos","events_url":"https://api.github.com/users/arfon/events{/privacy}","received_events_url":"https://api.github.com/users/arfon/received_events","type":"User","site_admin":true}}'
+    http_version: 
+  recorded_at: Fri, 13 May 2016 23:49:11 GMT
+recorded_with: VCR 2.9.3
