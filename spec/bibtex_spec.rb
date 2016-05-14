@@ -3,7 +3,7 @@ require 'nokogiri'
 require 'pry'
 describe Whedon::Bibtex do
 
-  subject { Whedon::Bibtex.new('fixtures/paper.bib') }
+  subject { Whedon::Bibtex.new('fixtures/paper/paper.bib') }
 
   it "should know how to generate DOI citations" do
     citations_xml = Nokogiri::XML(subject.generate_citations)
