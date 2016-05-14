@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 
-describe Whedon do
+describe Whedon::Reviews do
 
   subject { Whedon::Reviews.new(ENV['JOSS_REVIEW_REPO']) }
 

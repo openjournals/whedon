@@ -1,0 +1,48 @@
+**Submitting author:** @zhaozhang (<a href="http://orcid.org/0000-0001-5921-0035">Zhao Zhang</a>)
+**Repository:** <a href="https://github.com/applicationskeleton/Skeleton" target ="_blank">https://github.com/applicationskeleton/Skeleton</a>
+**Version:** v1.2
+**Archive:** <a href="http://dx.doi.org/10.5281/zenodo.13750" target ="_blank">http://dx.doi.org/10.5281/zenodo.13750</a>
+
+## Status
+
+[![status](http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6/status.svg)](http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6)
+
+Status badge code:
+
+```
+HTML: <a href="http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6"><img src="http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6/status.svg"></a>
+Markdown: [![status](http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6/status.svg)]http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6
+```
+
+## Reviewer questions
+
+### General checks
+
+- [x] **Repository:** Is the source code for this software available at the <a target="_blank" href="https://github.com/applicationskeleton/Skeleton">repository url</a>?
+- [x] **License:** Does the repository contain a plain-text LICENSE file with the contents of an [OSI approved](https://opensource.org/licenses/alphabetical) software license?
+- [x] **Version:** Does the release version given match the GitHub release (v1.2)?
+- [x] **Archive:** Does the <a target="_blank" href="http://dx.doi.org/10.5281/zenodo.13750">software archive</a> resolve?
+
+### Functionality
+
+- [x] **Installation:** Does installation proceed as outlined in the documentation?
+- [x] **Functionality:** Have the functional claims of the software been confirmed?
+- [x] **Performance:** Have the performance claims of the software been confirmed?
+
+### Documentation
+
+- [x] **A statement of need:** Do the authors clearly state what problems the software is designed to solve and who the target audience is?
+- [x] **Installation instructions:** Is there a clearly-stated list of dependencies? Ideally these should be handled with an automated package management solution.
+- [x] **Example usage:** Do the authors include examples of how to use the software (ideally to solve real-world analysis problems).
+- [x] **Functionality documentation:** Is the functionality of the software documented to a satisfactory level (e.g. API method documentation)?
+- [x] **Automated tests:** Are there automated tests or manual steps described so that the function of the software can be verified?
+- [x] **Community guidelines:** Are there clear guidelines for third parties wishing to 1) Contribute to the software 2) Report issues or problems with the software 3) Seek support
+
+### Software paper
+
+Compiled paper PDF: [paper.pdf](https://github.com/openjournals/joss-reviews/files/259667/paper.pdf)
+
+
+- [x] **Authors:** Does the `paper.md` file include a list of authors with their affiliations?
+- [x] **A statement of need:** Do the authors clearly state what problems the software is designed to solve and who the target audience is?
+- [x] **References:** Do all archival references that should have a DOI list one (e.g. papers, datasets, software)?
