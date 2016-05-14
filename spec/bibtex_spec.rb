@@ -1,6 +1,6 @@
 require_relative 'spec_helper'
 require 'nokogiri'
-require 'pry'
+
 describe Whedon::Bibtex do
 
   subject { Whedon::Bibtex.new('fixtures/paper/paper.bib') }
