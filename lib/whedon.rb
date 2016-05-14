@@ -59,9 +59,5 @@ module Whedon
       review_issue if review_issue_body.nil?
       processor = Whedon::Processor.new(review_issue_id, review_issue_body)
     end
-
-    def generate_crossref
-
-    end
   end
 end
