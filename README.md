@@ -6,6 +6,12 @@ Whedon is a collection of command-line utilities to manage JOSS submissions. He 
 
 Whedon uses [`dotenv`](https://github.com/bkeepers/dotenv) to manage local configuration. Take a look at `.env-example` (which needs renaming to `.env` to be picked up).
 
+### Is it green?
+
+Hopefully...
+
+[![Build Status](https://travis-ci.org/openjournals/whedon.svg?branch=master)](https://travis-ci.org/openjournals/whedon)
+
 ### Usage
 
 #### Implemented functionality
