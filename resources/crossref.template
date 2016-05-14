@@ -22,9 +22,7 @@
         <titles>
           <title>$title$</title>
         </titles>
-        <contributors>
-          $authors$
-        </contributors>
+        $authors$
         <publication_date>
           <month>$month$</month>
           <day>$day$</day>

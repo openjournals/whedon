@@ -102,7 +102,7 @@ module Whedon
     # HACK HACK HACK
     def generate_authors(paper_path)
       parsed = Psych.load(File.open(paper_path, 'r').read)
-      authors_string = ""
+      authors_string = "<contributors>"
 
       parsed['authors'].each_with_index do |author, index|
         given_name = author['name'].split(' ').first.strip
@@ -119,6 +119,7 @@ module Whedon
         authors_string << "</person_name>"
       end
 
+      authors_string << "</contributors>"
       return authors_string
     end
 
