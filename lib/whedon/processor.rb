@@ -77,12 +77,8 @@ module Whedon
       "https://github.com/openjournals/joss-reviews/issues/#{review_issue_id}"
     end
 
-    def doi_prefix
-      "10.21105"
-    end
-
     def paper_url
-      "https://github.com/openjournals/joss-papers/blob/master/#{joss_id}/#{doi_prefix}.#{joss_id}.pdf"
+      "https://github.com/openjournals/joss-papers/blob/master/#{joss_id}/#{DOI_PREFIX}.#{joss_id}.pdf"
     end
 
     def joss_id
@@ -91,7 +87,7 @@ module Whedon
     end
 
     def formatted_doi
-      "#{doi_prefix}/#{joss_id}"
+      "#{DOI_PREFIX}/#{joss_id}"
     end
 
     def filename_doi
@@ -126,14 +122,20 @@ module Whedon
       return authors_string
     end
 
+    def paper_directory
+      File.dirname(paper_path)
+    end
+
     # Try and compile the paper target
     def compile
-      latex_template_path = "#{Dir.pwd}/resources/latex.template"
-      xml_template_path = "#{Dir.pwd}/resources/xml.template"
-      html_template_path = "#{Dir.pwd}/resources/html.template"
-      cross_ref_template_path = "#{Dir.pwd}/resources/crossref.template"
+      generate_pdf
+      generate_xml
+      generate_html
+      generate_crossref
+    end
 
-      paper_directory = File.dirname(paper_path)
+    def generate_pdf
+      latex_template_path = "#{Dir.pwd}/resources/latex.template"
 
       # TODO: may eventually want to swap out the latex template
       `cd #{paper_directory} && pandoc \
@@ -151,6 +153,10 @@ module Whedon
       else
         puts "Looks like we failed to compile the PDF"
       end
+    end
+
+    def generate_xml
+      xml_template_path = "#{Dir.pwd}/resources/xml.template"
 
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
@@ -167,6 +173,10 @@ module Whedon
       else
         puts "Looks like we failed to compile the XML"
       end
+    end
+
+    def generate_html
+      html_template_path = "#{Dir.pwd}/resources/html.template"
 
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
@@ -184,10 +194,14 @@ module Whedon
       else
         puts "Looks like we failed to compile the HTML"
       end
+    end
 
+    def generate_crossref
+      cross_ref_template_path = "#{Dir.pwd}/resources/crossref.template"
       bibtex = Bibtex.new(find_bib_path.first)
       citations = bibtex.generate_citations
       authors = generate_authors(paper_path)
+      paper_directory = File.dirname(paper_path)
 
       `cd #{paper_directory} && pandoc \
       -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
@@ -208,29 +222,6 @@ module Whedon
         puts "Looks like we failed to compile the Crossref XML"
       end
     end
-
-    # def generate_crossref
-    #   paper_directory = File.dirname(paper_path)
-    #
-    #   bibtex = Bibtex.new("#{paper_directory}/paper.bib")
-    #   binding.pry
-    #   cross_ref_template_path = "#{Dir.pwd}/resources/crossref.template"
-    #   paper_directory = File.dirname(paper_path)
-    #
-    #   `cd #{paper_directory} && pandoc \
-    #   -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
-    #   -V doi_batch_id=#{generate_doi_batch_id} \
-    #   -V doi=#{paper_url} \
-    #   -V review_issue_url=#{review_issue_url} \
-    #   -s -f markdown #{File.basename(paper_path)} -o paper.html \
-    #   --template #{cross_ref_template_path}`
-    #
-    #   if File.exists?("#{paper_directory}/paper.html")
-    #     `open #{paper_directory}/paper.html`
-    #   else
-    #     puts "Looks like we failed to compile the Crossref XML"
-    #   end
-    # end
 
     # http://www.crossref.org/help/schema_doc/4.3.7/4.3.7.html
     # Publisher generated ID that uniquely identifies the DOI submission

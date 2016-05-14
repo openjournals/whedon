@@ -17,6 +17,7 @@ module Whedon
   REPO_REGEX = /(?<=\*\*Repository:\*\*.<a\shref=)"(.*?)"/
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
   ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*.<a\shref=)"(.*?)"/
+  DOI_PREFIX = "10.21105"
 
   class Paper
     include GitHub
