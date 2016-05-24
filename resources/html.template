@@ -1,6 +1,6 @@
 body = <<-EOF
 <meta name="citation_title" content="$title$">
-$authors$
+$google_authors$
 <meta name="citation_publication_date" content="$timestamp$">
 <meta name="citation_journal_title" content="The Journal of Open Source Software">
 <meta name="citation_pdf_url" content="$paper_url$">

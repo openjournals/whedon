@@ -192,13 +192,13 @@ module Whedon
 
     def generate_html
       html_template_path = "#{Dir.pwd}/resources/html.template"
-      authors = generate_google_scholar_authors(paper_path)
+      google_authors = generate_google_scholar_authors(paper_path)
 
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
       -V archive_doi=#{archive_doi} \
       -V formatted_doi=#{formatted_doi} \
-      -V authors='#{authors}' \
+      -V google_authors='#{google_authors}' \
       -V timestamp=#{Time.now.strftime('%Y/%m/%d')} \
       -V paper_url=#{paper_url} \
       -V review_issue_url=#{review_issue_url} \
