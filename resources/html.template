@@ -1,4 +1,9 @@
 body = <<-EOF
+<meta name="citation_title" content="$title$">
+$authors$
+<meta name="citation_publication_date" content="$timestamp$">
+<meta name="citation_journal_title" content="The Journal of Open Source Software">
+<meta name="citation_pdf_url" content="$paper_url$">
 <div class="accepted-paper">
   <h1>$title$</h1>
   <div class="columns links">

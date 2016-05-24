@@ -100,7 +100,7 @@ module Whedon
 
     # Need to split authors into firstname and surname for Crossref :-\
     # HACK HACK HACK
-    def generate_authors(paper_path)
+    def generate_crossref_authors(paper_path)
       parsed = Psych.load(File.open(paper_path, 'r').read)
       authors_string = "<contributors>"
 
@@ -120,6 +120,20 @@ module Whedon
       end
 
       authors_string << "</contributors>"
+      return authors_string
+    end
+
+    def generate_google_scholar_authors(paper_path)
+      parsed = Psych.load(File.open(paper_path, 'r').read)
+      authors_string = ""
+
+      parsed['authors'].each_with_index do |author, index|
+        given_name = author['name'].split(' ').first.strip
+        surname = author['name'].gsub(given_name, '').strip
+
+        authors_string << "<meta name=\"citation_author\" content=\"#{surname}, #{given_name}\">"
+      end
+
       return authors_string
     end
 
@@ -178,11 +192,14 @@ module Whedon
 
     def generate_html
       html_template_path = "#{Dir.pwd}/resources/html.template"
+      authors = generate_google_scholar_authors(paper_path)
 
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
       -V archive_doi=#{archive_doi} \
       -V formatted_doi=#{formatted_doi} \
+      -V authors='#{authors}' \
+      -V timestamp=#{Time.now.strftime('%Y/%m/%d')} \
       -V paper_url=#{paper_url} \
       -V review_issue_url=#{review_issue_url} \
       -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.html \
@@ -201,7 +218,7 @@ module Whedon
       cross_ref_template_path = "#{Dir.pwd}/resources/crossref.template"
       bibtex = Bibtex.new(find_bib_path.first)
       citations = bibtex.generate_citations
-      authors = generate_authors(paper_path)
+      authors = generate_crossref_authors(paper_path)
       paper_directory = File.dirname(paper_path)
 
       `cd #{paper_directory} && pandoc \
