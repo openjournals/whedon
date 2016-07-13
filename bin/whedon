@@ -23,6 +23,30 @@ class WhedonCli < Thor
     Whedon::Paper.new(issue_id).download
   end
 
+  desc "prepare", "Just prepare the PDF"
+  def prepare(issue_id)
+    review = Whedon::Review.new(issue_id)
+    processor = Whedon::Processor.new(issue_id, review.issue_body)
+
+    paper_paths = processor.find_paper_paths
+
+    if paper_paths.empty?
+      puts "Can't find any papers to compile :-("
+    elsif paper_paths.size == 1
+      puts "Setting paper_path to #{paper_paths.first}"
+      processor.paper_path = paper_paths.first
+      processor.generate_pdf
+    else
+      puts "Looks like we found more than one possible paper:"
+      paper_paths.each_with_index { |path, index| puts "#{index+1}. #{path}"}
+      selected_paper = ask("Pick which paper you want:")
+      paper_path = paper_paths[selected_paper.to_i - 1]
+      puts "Setting paper_path to #{paper_paths}"
+      processor.paper_path = paper_path
+      processor.generate_pdf
+    end
+  end
+
   desc "compile", "Compile the paper and XML metadata"
   def compile(issue_id)
     review = Whedon::Review.new(issue_id)
