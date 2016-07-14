@@ -26,7 +26,7 @@ describe Whedon::Processor do
   end
 
   it "should know how generate_authors" do
-    authors_xml = Nokogiri::XML(subject.generate_authors('fixtures/paper/paper.md'))
+    authors_xml = Nokogiri::XML(subject.generate_crossref_authors('fixtures/paper/paper.md'))
     expect(authors_xml.search('person_name').size).to eql(2)
     expect(authors_xml.search('person_name[sequence="first"]').size).to eql(1)
     expect(authors_xml.search('person_name[sequence="additional"]').size).to eql(1)
