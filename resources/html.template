@@ -32,7 +32,7 @@ $google_authors$
       <span class="paper">Status badge:<br /><img src="http://joss.theoj.org/papers/$formatted_doi$/status.svg"></span>
     </div>
     <div class="one-third column" style="padding-top: 20px;">
-
+      <span class="paper">Cite this paper:<br /><a href="http://www.doi2bib.org/#/doi/$formatted_doi$" target="_blank">doi2bib</a>
     </div>
   </div>
   <div class="paper-body">

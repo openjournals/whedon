@@ -231,6 +231,8 @@ module Whedon
       -V month=#{Time.now.strftime('%m')} \
       -V day=#{Time.now.strftime('%d')} \
       -V year=#{Time.now.strftime('%Y')} \
+      -V issue=#{CURRENT_ISSUE} \
+      -V volume=#{CURRENT_VOLUME} \
       -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.crossref.xml \
       --template #{cross_ref_template_path}`
 
