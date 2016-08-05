@@ -7,10 +7,15 @@ tags:
 authors:
  - name: Arfon M Smith
    orcid: 0000-0002-3957-2474
-   affiliation: GitHub Inc.
+   affiliation: 1
  - name: Mickey Mouse
    orcid: 0000-0000-0000-1234
-   affiliation: Disney Inc.
+   affiliation: 2
+affiliations:
+ - name: GitHub Inc.
+   index: 1
+ - name: Disney Inc.
+   index: 2
 date: 14 February 2016
 bibliography: paper.bib
 ---
