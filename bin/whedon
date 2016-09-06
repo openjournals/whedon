@@ -27,6 +27,7 @@ class WhedonCli < Thor
   def prepare(issue_id)
     review = Whedon::Review.new(issue_id)
     processor = Whedon::Processor.new(issue_id, review.issue_body)
+    processor.archive_doi = 'ARCHIVE PENDING'
 
     paper_paths = processor.find_paper_paths
 
