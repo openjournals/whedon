@@ -163,7 +163,7 @@ module Whedon
       --filter pandoc-citeproc #{File.basename(paper_path)} \
       --template #{latex_template_path}`
 
-      if File.exists?("#{paper_directory}/#{filename_doi}.pdf")
+       File.exists?("#{paper_directory}/#{filename_doi}.pdf")
         `open #{paper_directory}/#{filename_doi}.pdf`
       else
         puts "Looks like we failed to compile the PDF"
