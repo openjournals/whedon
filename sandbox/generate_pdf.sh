@@ -9,7 +9,8 @@ bibfile=$7
 filename_doi="output.pdf" #use static name for sake of testing
 latex_template_path="../resources/joss.template"
 #mytext_citation="Attali, D. (2016, September 20). ezknitr: Avoid the Typical Working Directory Pain When Using knitr The Journal of Open Source Software. The Open Journal. https://doi.org/10.21105/joss.00075"
-mytext_citation=$(curl "http://citation.crosscite.org/format?doi=10.21105/joss.00075&style=apa&lang=en-US")
+crosscite_query="http://citation.crosscite.org/format?doi="$formatted_doi"&style=apa&lang=en-US"
+mytext_citation=$(curl "$crosscite_query")
 
       # TODO: may eventually want to swap out the latex template
       cd $paper_directory && pandoc \
