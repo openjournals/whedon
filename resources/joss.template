@@ -273,7 +273,7 @@ $endif$
 \vfill
 \framebox[\textwidth]{\parbox{0.98\textwidth}{\footnotesize\textbf{Cite this paper as: }{$text_citation$}\\
 
-\includegraphics[width=1cm]{../resources/cc-by-80x15} Copyright of JOSS papers is retained by submitting authors and accepted papers are subject to a \href{http://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International License}.
+\includegraphics[width=13mm]{../resources/cc-by} Copyright of JOSS papers is retained by submitting authors and accepted papers are subject to a \href{http://creativecommons.org/licenses/by/4.0/}{Creative Commons Attribution 4.0 International License}.
 Any code snippets included in JOSS papers are subject to the \href{https://opensource.org/licenses/MIT}{MIT license} regardless of the license of the submitted software package under review.\\
 
 The Journal of Open Source Software (JOSS) is a peer-reviewed open access journal for research software packages.}}
