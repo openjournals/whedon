@@ -151,6 +151,7 @@ module Whedon
 
     def generate_pdf
       latex_template_path = "#{Dir.pwd}/resources/joss.template"
+      cc_by_path = "#{Dir.pwd}/resources/cc-by"
       citation_style = "the-auk" # quite arbitrarily chosen, this one seems to provide nice formatting
       crossref_citation_url = "http://citation.crosscite.org/format?doi=#{formatted_doi}&style=#{citation_style}&lang=en-US"
 
@@ -163,6 +164,7 @@ module Whedon
       -V review_issue_url=#{review_issue_url} \
       -V text_citation=#{mytext_citation} \
       -V graphics="true" \
+      -V cc_by_path=#{cc_by_path} \
       -S -o #{filename_doi}.pdf -V geometry:margin=1in \
       --filter pandoc-citeproc #{File.basename(paper_path)} \
       --template #{latex_template_path}`
