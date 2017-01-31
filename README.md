@@ -56,7 +56,7 @@ Compile the paper.md and generate XML metadata. This does the following:
   1. Looks for the paper.md
   1a. If more than one paper.md is found, asks the user to pick
   2. Compiles the markdown to a custom XML: `pandoc -s -f markdown paper.md -o paper.xml --template xml.template`
-  3. Compiles the markdown to a custom PDF: `pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md -o paper.xml --template latex.template`
+  3. Compiles the markdown to a custom PDF: `pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md --template latex.template`
   4. Opens both files locally for inspection
 
 ```
@@ -66,7 +66,7 @@ $ whedon compile {id}
 #### (Soon to be) Implemented functionality
 
 Prepare to accept paper into JOSS. This does the following:
-  1. Compiles the PDF with: pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md --template latex.template
+  1. Compiles the PDF with: `pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md --template latex.template`
   2. Uploads the compiled PDF somewhere and update the review issue with a link to the PDF
 ```
 whedon prepare {id}
