@@ -19,6 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "bibtex-ruby"
   spec.add_dependency "dotenv"
+  spec.add_dependency "latex-decode"
   spec.add_dependency "metamatter", "~> 0.2.0"
   spec.add_dependency "octokit", "~> 4.0"
   spec.add_dependency "tilt"

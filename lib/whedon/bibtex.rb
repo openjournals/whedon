@@ -16,7 +16,7 @@ module Whedon
     # without citations within
     # TODO: should probably use Ruby builder templates here
     def generate_citations
-      entries = BibTeX.open(@bib_file)
+      entries = BibTeX.open(@bib_file, :filter => :latex)
 
       if entries.empty?
         @citation_string = ""
