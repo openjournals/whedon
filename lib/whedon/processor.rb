@@ -78,7 +78,7 @@ module Whedon
     end
 
     def paper_url
-      "https://github.com/openjournals/joss-papers/raw/master/#{joss_id}/#{DOI_PREFIX}.#{joss_id}.pdf"
+      "http://www.theoj.org/joss-papers/#{joss_id}/#{DOI_PREFIX}.#{joss_id}.pdf"
     end
 
     def joss_id
