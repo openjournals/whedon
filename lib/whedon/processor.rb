@@ -1,6 +1,7 @@
 require_relative 'github'
 require 'yaml'
 require 'securerandom'
+require 'httparty'
 
 module Whedon
   class Processor
@@ -150,7 +151,12 @@ module Whedon
     end
 
     def generate_pdf
-      latex_template_path = "#{Dir.pwd}/resources/latex.template"
+      latex_template_path = "#{Dir.pwd}/resources/joss.template"
+      cc_by_path = "#{Dir.pwd}/resources/cc-by"
+      citation_style = "the-auk" # quite arbitrarily chosen, this one seems to provide nice formatting
+      crossref_citation_url = "http://citation.crosscite.org/format?doi=#{formatted_doi}&style=#{citation_style}&lang=en-US"
+      text_citation = HTTParty.get(crossref_citation_url)
+
 
       # TODO: may eventually want to swap out the latex template
       `cd #{paper_directory} && pandoc \
@@ -159,6 +165,9 @@ module Whedon
       -V paper_url=#{paper_url} \
       -V formatted_doi=#{formatted_doi} \
       -V review_issue_url=#{review_issue_url} \
+      -V text_citation=#{text_citation} \
+      -V graphics="true" \
+      -V cc_by_path=#{cc_by_path} \
       -S -o #{filename_doi}.pdf -V geometry:margin=1in \
       --filter pandoc-citeproc #{File.basename(paper_path)} \
       --template #{latex_template_path}`
