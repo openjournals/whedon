@@ -98,6 +98,21 @@ module Whedon
       "http://joss.theoj.org/papers/#{formatted_doi}"
     end
 
+    def generate_citation_string(paper_path)
+      citation_string = ""
+      parsed = Psych.load(File.open(paper_path, 'r').read)
+
+      parsed['authors'].each_with_index do |author, index|
+        next unless index == 0 # Only grab the first author
+        given_name = author['name'].split(' ').first.strip
+        surname = author['name'].gsub(given_name, '').strip
+
+        citation_string << surname
+      end
+
+      return citation_string
+    end
+
     # Need to split authors into firstname and surname for Crossref :-\
     # HACK HACK HACK
     def generate_crossref_authors(paper_path)
@@ -151,7 +166,8 @@ module Whedon
 
     def generate_pdf
       latex_template_path = "#{Dir.pwd}/resources/latex.template"
-
+      citation_author = generate_citation_string(paper_path)
+      
       # TODO: may eventually want to swap out the latex template
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
@@ -159,7 +175,15 @@ module Whedon
       -V paper_url=#{paper_url} \
       -V formatted_doi=#{formatted_doi} \
       -V review_issue_url=#{review_issue_url} \
+      -V graphics="true" \
+      -V issue=#{CURRENT_ISSUE} \
+      -V volume=#{CURRENT_VOLUME} \
+      -V joss_logo_path="#{Dir.pwd}/resources/joss-logo.pdf" \
+      -V year=#{Time.now.strftime('%Y')} \
+      -V formatted_doi=#{formatted_doi} \
+      -V citation_author=#{citation_author} \
       -S -o #{filename_doi}.pdf -V geometry:margin=1in \
+      --latex-engine=xelatex \
       --filter pandoc-citeproc #{File.basename(paper_path)} \
       --template #{latex_template_path}`
 
