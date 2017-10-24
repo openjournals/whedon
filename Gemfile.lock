@@ -31,7 +31,7 @@ GEM
     httparty (0.13.7)
       json (~> 1.8)
       multi_xml (>= 0.5.2)
-    json (1.8.3)
+    json (1.8.6)
     latex-decode (0.2.2)
       unicode (~> 0.4)
     metamatter (0.2.0)
@@ -93,4 +93,4 @@ DEPENDENCIES
   whedon!
 
 BUNDLED WITH
-   1.13.6
+   1.14.6
