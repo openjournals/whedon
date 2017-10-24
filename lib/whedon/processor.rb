@@ -105,7 +105,6 @@ module Whedon
       parsed['authors'].each_with_index do |author, index|
         next unless index == 0 # Only grab the first author
         given_name = author['name'].split(' ').first.strip
-        surname = author['name'].gsub(given_name, '').strip
         surname = author['name'].split(' ').last.strip
 
         citation_string << surname
@@ -165,11 +164,9 @@ module Whedon
       generate_crossref
     end
 
-    def generate_pdf
     def generate_pdf(paper_issue=nil, paper_volume=nil, paper_year=nil)
       latex_template_path = "#{Dir.pwd}/resources/latex.template"
       citation_author = generate_citation_string(paper_path)
-      
 
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= CURRENT_ISSUE
@@ -222,7 +219,6 @@ module Whedon
       end
     end
 
-    def generate_html
     def generate_html(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
       html_template_path = "#{Dir.pwd}/resources/html.template"
       google_authors = generate_google_scholar_authors(paper_path)
@@ -237,7 +233,6 @@ module Whedon
       -V archive_doi=#{archive_doi} \
       -V formatted_doi=#{formatted_doi} \
       -V google_authors='#{google_authors}' \
-      -V timestamp=#{Time.now.strftime('%Y/%m/%d')} \
       -V timestamp='#{paper_year}/#{paper_month}/#{paper_day}' \
       -V paper_url=#{paper_url} \
       -V year=#{paper_year} \
@@ -258,7 +253,6 @@ module Whedon
       end
     end
 
-    def generate_crossref
     def generate_crossref(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
       cross_ref_template_path = "#{Dir.pwd}/resources/crossref.template"
       bibtex = Bibtex.new(find_bib_path.first)
