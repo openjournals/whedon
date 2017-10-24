@@ -35,7 +35,7 @@ $google_authors$
     </div>
     <div class="one-third column" style="padding-top: 20px;">
       <span class="paper">Citation:<br />
-      <small>$citation_author$ <em>et al.</em>, ($year$), <em>Journal of Open Source Software</em>, $volume$($issue$), $page$, doi:$formatted_doi$</small>
+      <small>$citation_author$, ($year$), <em>Journal of Open Source Software</em>, $volume$($issue$), $page$, doi:$formatted_doi$</small>
     </div>
   </div>
   <div class="paper-body">

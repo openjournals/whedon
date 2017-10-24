@@ -58,7 +58,7 @@
 \fancyhead[R]{}
 \renewcommand{\footrulewidth}{0.25pt}
 
-\fancyfoot[L]{\sffamily $citation_author$ \textit{et al}, ($year$),
+\fancyfoot[L]{\sffamily $citation_author$, ($year$),
               \textit{Journal of Open Source Software}, $volume$($issue$), $page$, \href{https://doi.org/$formatted_doi$}{doi:$formatted_doi$}}
 
 

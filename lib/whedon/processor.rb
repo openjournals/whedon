@@ -99,18 +99,19 @@ module Whedon
     end
 
     def generate_citation_string(paper_path)
-      citation_string = ""
       parsed = Psych.load(File.open(paper_path, 'r').read)
 
-      parsed['authors'].each_with_index do |author, index|
-        next unless index == 0 # Only grab the first author
-        given_name = author['name'].split(' ').first.strip
-        surname = author['name'].split(' ').last.strip
+      author_count = parsed['authors'].size
+      author = parsed['authors'].first
 
-        citation_string << surname
+      given_name = author['name'].split(' ').first.strip
+      surname = author['name'].split(' ').last.strip
+
+      if author_count > 1
+        return "#{surname} et al."
+      else
+        return "#{surname}"
       end
-
-      return citation_string
     end
 
     # Need to split authors into firstname and surname for Crossref :-\
