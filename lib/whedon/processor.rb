@@ -290,8 +290,7 @@ module Whedon
       --template #{cross_ref_template_path}`
 
       if File.exists?("#{paper_directory}/#{filename_doi}.crossref.xml")
-        `cp #{paper_directory}/#{filename_doi}.crossref.xml /Users/arfon/Sites/joss-papers/#{joss_id}/#{filename_doi}.crossref.xml`
-        # `open #{paper_directory}/#{filename_doi}.crossref.xml`
+        `open #{paper_directory}/#{filename_doi}.crossref.xml`
       else
         puts "Looks like we failed to compile the Crossref XML"
       end
