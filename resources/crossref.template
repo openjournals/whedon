@@ -1,4 +1,5 @@
-<doi_batch version="4.3.7" xmlns="http://www.crossref.org/schema/4.3.7" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.crossref.org/schema/4.3.7 http://www.crossref.org/schemas/crossref4.3.7.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<doi_batch xmlns="http://www.crossref.org/schema/4.4.0" xmlns:ai="http://www.crossref.org/AccessIndicators.xsd" xmlns:rel="http://www.crossref.org/relations.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="4.4.0" xsi:schemaLocation="http://www.crossref.org/schema/4.4.0 http://www.crossref.org/schemas/crossref4.4.0.xsd">
   <head>
     <doi_batch_id>$doi_batch_id$</doi_batch_id>
     <timestamp>$timestamp$</timestamp>
@@ -39,13 +40,35 @@
           <day>$day$</day>
           <year>$year$</year>
         </publication_date>
+        <pages>
+          <first_page>$page$</first_page>
+        </pages>
         <publisher_item>
-          <item_number>$formatted_doi$</item_number>
+          <identifier id_type="doi">$formatted_doi$</identifier>
         </publisher_item>
+        <ai:program name="AccessIndicators">
+          <ai:license_ref applies_to="vor">http://creativecommons.org/licenses/by/4.0/</ai:license_ref>
+          <ai:license_ref applies_to="am">http://creativecommons.org/licenses/by/4.0/</ai:license_ref>
+          <ai:license_ref applies_to="tdm">http://creativecommons.org/licenses/by/4.0/</ai:license_ref>
+        </ai:program>
+        <rel:program>
+          <rel:related_item>
+            <rel:description>Software archive</rel:description>
+            <rel:inter_work_relation relationship-type="references" identifier-type="doi">$archive_doi$</rel:inter_work_relation>
+          </rel:related_item>
+          <rel:related_item>
+            <rel:description>GitHub review issue</rel:description>
+            <rel:inter_work_relation relationship-type="hasReview" identifier-type="uri">$review_issue_url$</rel:inter_work_relation>
+          </rel:related_item>
+        </rel:program>
         <doi_data>
           <doi>$formatted_doi$</doi>
-          <timestamp>$timestamp$</timestamp>
           <resource>$joss_resource_url$</resource>
+          <collection property="text-mining">
+            <item>
+              <resource mime_type="application/pdf">$paper_url$</resource>
+            </item>
+          </collection>
         </doi_data>
         $citations$
       </journal_article>

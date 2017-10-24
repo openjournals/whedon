@@ -27,6 +27,9 @@ module Whedon
         end
       end
 
+      # Escape & in XML
+      @citation_string.gsub!('&', '&amp;')
+
       return "<citation_list>#{@citation_string}</citation_list>"
     end
 

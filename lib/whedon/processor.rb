@@ -106,6 +106,7 @@ module Whedon
         next unless index == 0 # Only grab the first author
         given_name = author['name'].split(' ').first.strip
         surname = author['name'].gsub(given_name, '').strip
+        surname = author['name'].split(' ').last.strip
 
         citation_string << surname
       end
@@ -165,9 +166,15 @@ module Whedon
     end
 
     def generate_pdf
+    def generate_pdf(paper_issue=nil, paper_volume=nil, paper_year=nil)
       latex_template_path = "#{Dir.pwd}/resources/latex.template"
       citation_author = generate_citation_string(paper_path)
       
+
+      paper_year ||= Time.now.strftime('%Y')
+      paper_issue ||= CURRENT_ISSUE
+      paper_volume ||= CURRENT_VOLUME
+
       # TODO: may eventually want to swap out the latex template
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
@@ -176,10 +183,11 @@ module Whedon
       -V formatted_doi=#{formatted_doi} \
       -V review_issue_url=#{review_issue_url} \
       -V graphics="true" \
-      -V issue=#{CURRENT_ISSUE} \
-      -V volume=#{CURRENT_VOLUME} \
-      -V joss_logo_path="#{Dir.pwd}/resources/joss-logo.pdf" \
-      -V year=#{Time.now.strftime('%Y')} \
+      -V issue=#{paper_issue} \
+      -V volume=#{paper_volume} \
+      -V page=#{review_issue_id} \
+      -V joss_logo_path="#{Dir.pwd}/resources/joss-logo.png" \
+      -V year=#{paper_year} \
       -V formatted_doi=#{formatted_doi} \
       -V citation_author=#{citation_author} \
       -S -o #{filename_doi}.pdf -V geometry:margin=1in \
@@ -215,8 +223,14 @@ module Whedon
     end
 
     def generate_html
+    def generate_html(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
       html_template_path = "#{Dir.pwd}/resources/html.template"
       google_authors = generate_google_scholar_authors(paper_path)
+      citation_author = generate_citation_string(paper_path)
+
+      paper_year ||= Time.now.strftime('%Y')
+      paper_issue ||= CURRENT_ISSUE
+      paper_volume ||= CURRENT_VOLUME
 
       `cd #{paper_directory} && pandoc \
       -V repository=#{repository_address} \
@@ -224,8 +238,14 @@ module Whedon
       -V formatted_doi=#{formatted_doi} \
       -V google_authors='#{google_authors}' \
       -V timestamp=#{Time.now.strftime('%Y/%m/%d')} \
+      -V timestamp='#{paper_year}/#{paper_month}/#{paper_day}' \
       -V paper_url=#{paper_url} \
+      -V year=#{paper_year} \
+      -V issue=#{paper_issue} \
+      -V volume=#{paper_volume} \
       -V review_issue_url=#{review_issue_url} \
+      -V citation_author=#{citation_author} \
+      -V page=#{review_issue_id} \
       -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.html \
       --filter pandoc-citeproc \
       --ascii \
@@ -239,29 +259,45 @@ module Whedon
     end
 
     def generate_crossref
+    def generate_crossref(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
       cross_ref_template_path = "#{Dir.pwd}/resources/crossref.template"
       bibtex = Bibtex.new(find_bib_path.first)
       citations = bibtex.generate_citations
       authors = generate_crossref_authors(paper_path)
       paper_directory = File.dirname(paper_path)
+      # TODO fix this when we update the DOI URLs
+      crossref_doi = archive_doi.gsub("http://dx.doi.org/", '')
+
+      paper_day ||= Time.now.strftime('%d')
+      paper_month ||= Time.now.strftime('%m')
+      paper_year ||= Time.now.strftime('%Y')
+      paper_issue ||= CURRENT_ISSUE
+      paper_volume ||= CURRENT_VOLUME
+
 
       `cd #{paper_directory} && pandoc \
       -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
       -V doi_batch_id=#{generate_doi_batch_id} \
       -V formatted_doi=#{formatted_doi} \
+      -V crossref_doi=#{crossref_doi} \
+      -V archive_doi=#{archive_doi} \
+      -V review_issue_url=#{review_issue_url} \
+      -V paper_url=#{paper_url} \
       -V joss_resource_url=#{joss_resource_url} \
       -V citations='#{citations}' \
       -V authors='#{authors}' \
-      -V month=#{Time.now.strftime('%m')} \
-      -V day=#{Time.now.strftime('%d')} \
-      -V year=#{Time.now.strftime('%Y')} \
-      -V issue=#{CURRENT_ISSUE} \
-      -V volume=#{CURRENT_VOLUME} \
+      -V month=#{paper_month} \
+      -V day=#{paper_day} \
+      -V year=#{paper_year} \
+      -V issue=#{paper_issue} \
+      -V volume=#{paper_volume} \
+      -V page=#{review_issue_id} \
       -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.crossref.xml \
       --template #{cross_ref_template_path}`
 
       if File.exists?("#{paper_directory}/#{filename_doi}.crossref.xml")
-        `open #{paper_directory}/#{filename_doi}.crossref.xml`
+        `cp #{paper_directory}/#{filename_doi}.crossref.xml /Users/arfon/Sites/joss-papers/#{joss_id}/#{filename_doi}.crossref.xml`
+        # `open #{paper_directory}/#{filename_doi}.crossref.xml`
       else
         puts "Looks like we failed to compile the Crossref XML"
       end
