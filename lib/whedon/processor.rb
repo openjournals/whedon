@@ -98,19 +98,25 @@ module Whedon
       "http://joss.theoj.org/papers/#{formatted_doi}"
     end
 
+    def paper_title(paper_path)
+      parsed = Psych.load(File.open(paper_path, 'r').read)
+      return parsed['title']
+    end
+
     def generate_citation_string(paper_path)
-      citation_string = ""
       parsed = Psych.load(File.open(paper_path, 'r').read)
 
-      parsed['authors'].each_with_index do |author, index|
-        next unless index == 0 # Only grab the first author
-        given_name = author['name'].split(' ').first.strip
-        surname = author['name'].split(' ').last.strip
+      author_count = parsed['authors'].size
+      author = parsed['authors'].first
 
-        citation_string << surname
+      given_name = author['name'].split(' ').first.strip
+      surname = author['name'].split(' ').last.strip
+
+      if author_count > 1
+        return "#{surname} et al."
+      else
+        return "#{surname}"
       end
-
-      return citation_string
     end
 
     # Need to split authors into firstname and surname for Crossref :-\
@@ -167,26 +173,29 @@ module Whedon
     def generate_pdf(paper_issue=nil, paper_volume=nil, paper_year=nil)
       latex_template_path = "#{Dir.pwd}/resources/latex.template"
       citation_author = generate_citation_string(paper_path)
-
+      paper_title = paper_title(paper_path)
+      # TODO: Sanitize all the things!
+      paper_title.gsub!('_', '\_')
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
 
       # TODO: may eventually want to swap out the latex template
       `cd #{paper_directory} && pandoc \
-      -V repository=#{repository_address} \
-      -V archive_doi=#{archive_doi} \
-      -V paper_url=#{paper_url} \
-      -V formatted_doi=#{formatted_doi} \
-      -V review_issue_url=#{review_issue_url} \
+      -V repository="#{repository_address}" \
+      -V archive_doi="#{archive_doi}" \
+      -V paper_url="#{paper_url}" \
+      -V formatted_doi="#{formatted_doi}" \
+      -V review_issue_url="#{review_issue_url}" \
       -V graphics="true" \
-      -V issue=#{paper_issue} \
-      -V volume=#{paper_volume} \
-      -V page=#{review_issue_id} \
+      -V issue="#{paper_issue}" \
+      -V volume="#{paper_volume}" \
+      -V page="#{review_issue_id}" \
       -V joss_logo_path="#{Dir.pwd}/resources/joss-logo.png" \
-      -V year=#{paper_year} \
-      -V formatted_doi=#{formatted_doi} \
-      -V citation_author=#{citation_author} \
+      -V year="#{paper_year}" \
+      -V formatted_doi="#{formatted_doi}" \
+      -V citation_author="#{citation_author}" \
+      -V paper_title="#{paper_title}" \
       -S -o #{filename_doi}.pdf -V geometry:margin=1in \
       --latex-engine=xelatex \
       --filter pandoc-citeproc #{File.basename(paper_path)} \
@@ -239,7 +248,8 @@ module Whedon
       -V issue=#{paper_issue} \
       -V volume=#{paper_volume} \
       -V review_issue_url=#{review_issue_url} \
-      -V citation_author=#{citation_author} \
+      -V citation_author="#{citation_author}" \
+      -V paper_title="#{paper_title(paper_path)}" \
       -V page=#{review_issue_id} \
       -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.html \
       --filter pandoc-citeproc \
