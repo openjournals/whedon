@@ -31,7 +31,7 @@ $google_authors$
       <span class="repo">DOI:<br /><a href="https://doi.org/$formatted_doi$">https://doi.org/$formatted_doi$</a></span>
     </div>
     <div class="one-third column" style="padding-top: 20px;">
-      <span class="paper">Status badge:<br /><img src="http://joss.theoj.org/papers/$formatted_doi$/status.svg"></span>
+      <span class="paper">Status badge:<br /><img src="$journal_url$/papers/$formatted_doi$/status.svg"></span>
     </div>
     <div class="one-third column" style="padding-top: 20px;">
       <span class="paper">Citation:<br />

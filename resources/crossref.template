@@ -17,7 +17,7 @@
         <issn media_type="electronic">2475-9066</issn>
         <doi_data>
           <doi>10.21105/joss</doi>
-          <resource>http://joss.theoj.org</resource>
+          <resource>$journal_url$</resource>
         </doi_data>
       </journal_metadata>
       <journal_issue>

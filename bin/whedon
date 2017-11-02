@@ -35,7 +35,7 @@ class WhedonCli < Thor
       puts "Can't find any papers to compile :-("
     elsif paper_paths.size == 1
       puts "Setting paper_path to #{paper_paths.first}"
-      processor.paper_path = paper_paths.first
+      processor.set_paper(paper_paths.first)
       processor.generate_pdf
     else
       puts "Looks like we found more than one possible paper:"
@@ -43,7 +43,7 @@ class WhedonCli < Thor
       selected_paper = ask("Pick which paper you want:")
       paper_path = paper_paths[selected_paper.to_i - 1]
       puts "Setting paper_path to #{paper_paths}"
-      processor.paper_path = paper_path
+      processor.set_paper(paper_path)
       processor.generate_pdf
     end
   end
@@ -59,7 +59,7 @@ class WhedonCli < Thor
       puts "Can't find any papers to compile :-("
     elsif paper_paths.size == 1
       puts "Setting paper_path to #{paper_paths.first}"
-      processor.paper_path = paper_paths.first
+      processor.set_paper(paper_paths.first)
       processor.compile
     else
       puts "Looks like we found more than one possible paper:"
@@ -67,33 +67,9 @@ class WhedonCli < Thor
       selected_paper = ask("Pick which paper you want:")
       paper_path = paper_paths[selected_paper.to_i - 1]
       puts "Setting paper_path to #{paper_paths}"
-      processor.paper_path = paper_path
+      processor.set_paper(paper_path)
       processor.compile
     end
-  end
-
-  desc "crossref", "Generate Crossref metadata"
-  def crossref(issue_id)
-    paper = Whedon::Paper.new(issue_id)
-    review = Whedon::Review.new(issue_id)
-    processor = Whedon::Processor.new(issue_id, review.issue_body)
-
-    xml_paths = processor.find_xml_paths
-    if xml_paths.empty?
-      puts "Can't find any XML document to compile with :-("
-    elsif xml_paths.size == 1
-      puts "Setting xml_path to #{xml_paths.first}"
-      processor.xml_path = xml_paths.first
-    else
-      puts "Looks like we found more than one possible XML document:"
-      xml_paths.each_with_index { |path, index| puts "#{index+1}. #{path}"}
-      selected_xml = ask("Pick which paper you want:")
-      xml_path = xml_paths[selected_xml.to_i - 1]
-      puts "Setting xml_path to #{xml_path}"
-      processor.xml_path = xml_path
-    end
-
-    processor.generate_crossref
   end
 end
 

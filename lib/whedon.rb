@@ -2,6 +2,7 @@ require 'octokit'
 require 'time'
 
 require_relative 'whedon/auditor'
+require_relative 'whedon/author'
 require_relative 'whedon/bibtex'
 require_relative 'whedon/github'
 require_relative 'whedon/processor'
@@ -19,6 +20,9 @@ module Whedon
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
   ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*.<a\shref=)"(.*?)"/
   DOI_PREFIX = "10.21105"
+  PAPER_REPOSITORY = "joss-papers"
+  REVIEW_REPOSITORY = "openjournals/joss-reviews"
+  JOURNAL_URL = "http://joss.theoj.org"
 
   # Probably a much nicer way to do this...
   # 1 volume per year since 2016
@@ -33,6 +37,16 @@ module Whedon
     attr_accessor :review_issue_id
     attr_accessor :review_repository
     attr_accessor :review_issue_body
+    attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path
+
+    EXPECTED_FIELDS = %w{
+      title
+      tags
+      authors
+      affiliations
+      date
+      bibliography
+    }
 
     def self.list
       reviews = Whedon::Reviews.new(ENV['JOSS_REVIEW_REPO']).list_current
@@ -41,13 +55,139 @@ module Whedon
       reviews.each do |issue_id, vals|
         puts "#{issue_id}: #{vals[:url]} (#{vals[:opened_at]})"
       end
-     end
+    end
 
-    def initialize(review_issue_id)
+    # Initialized with JOSS paper including YAML header
+    # e.g. http://joss.theoj.org/about#paper_structure
+    def initialize(review_issue_id, paper_path)
+      parsed = YAML.load_file(paper_path)
+      check_fields(parsed)
+      @paper_path = paper_path
+      @authors = parse_authors(parsed)
+      @title = parsed['title']
+      @tags = parsed['tags']
+      @date = parsed['date']
+      @bibliography_path = parsed['bibliography']
       @review_issue_id = review_issue_id
       @review_repository = ENV['JOSS_REVIEW_REPO']
     end
 
+    # Check that the paper has the expected YAML header. Raise if missing fields
+    def check_fields(parsed)
+      fields = EXPECTED_FIELDS - parsed.keys
+      raise "Paper YAML header is missing expected fields: #{fields.join(', ')}" if !fields.empty?
+    end
+
+    def parse_authors(yaml)
+      returned = []
+      authors_yaml = yaml['authors']
+      affiliations = parse_affiliations(yaml['affiliations'])
+
+      # Loop through the authors block and build up the affiliation
+      authors_yaml.each do |author|
+        affiliation_index = author['affiliation']
+        returned << Author.new(author['name'], author['orcid'], affiliation_index, affiliations)
+      end
+
+      returned
+    end
+
+    def parse_affiliations(affliations_yaml)
+      returned = {}
+      affliations_yaml.each do |affiliation|
+        returned[affiliation['index']] = affiliation['name']
+      end
+
+      returned
+    end
+
+    # A 5-figure integer used to produce the JOSS DOI
+    def joss_id
+      id = "%05d" % review_issue_id
+      "joss.#{id}"
+    end
+
+    def pdf_url
+      "http://www.theoj.org/#{PAPER_REPOSITORY}/#{joss_id}/#{DOI_PREFIX}.#{joss_id}.pdf"
+    end
+
+    def review_issue_url
+      "https://github.com/openjournals/#{REVIEW_REPOSITORY}/issues/#{review_issue_id}"
+    end
+
+    def directory
+      File.dirname(paper_path)
+    end
+
+    # The full DOI e.g. 10.21105/00001
+    def formatted_doi
+      "#{DOI_PREFIX}/#{joss_id}"
+    end
+
+    # User when generating the citation snipped, returns either:
+    # 'Smith et al' for multiple authors or
+    # 'Smith' for a single author
+    def citation_author
+      author = authors.first
+      surname = author.name.split(' ').last.strip
+
+      if authors.size > 1
+        return "#{surname} et al."
+      else
+        return "#{surname}"
+      end
+    end
+
+    # Returns an XML snippet to be included in the Crossref XML
+    def crossref_authors
+      authors_string = "<contributors>"
+
+      authors.each_with_index do |author, index|
+        given_name = author.name.split(' ').first.strip
+        surname = author.name.gsub(given_name, '').strip
+
+        if index == 0
+          authors_string << '<person_name sequence="first" contributor_role="author">'
+        else
+          authors_string << '<person_name sequence="additional" contributor_role="author">'
+        end
+
+        authors_string << "<given_name>#{given_name}</given_name>"
+        authors_string << "<surname>#{surname}</surname>"
+        authors_string << "<ORCID>http://orcid.org/#{author.orcid}</ORCID>" if !author.orcid.empty?
+        authors_string << "</person_name>"
+      end
+
+      authors_string << "</contributors>"
+      return authors_string
+    end
+
+    def google_scholar_authors
+      authors_string = ""
+
+      authors.each_with_index do |author, index|
+        given_name = author.name.split(' ').first.strip
+        surname = author.name.gsub(given_name, '').strip
+
+        authors_string << "<meta name=\"citation_author\" content=\"#{surname}, #{given_name}\">"
+      end
+
+      return authors_string
+    end
+
+    # A slightly modified DOI string for writing out files
+    # 10.21105/00001 -> 10.21105.00001
+    def filename_doi
+      formatted_doi.gsub('/', '.')
+    end
+
+    # The JOSS site url for a paper
+    # e.g. http://joss.theoj.org/papers/10.21105/00001
+    def joss_resource_url
+      "#{JOURNAL_URL}/papers/#{formatted_doi}"
+    end
+
+    # Return the Review object associated with the Paper
     def review_issue
       review = Whedon::Review.new(review_issue_id, review_repository)
       @review_issue_body = review.issue_body

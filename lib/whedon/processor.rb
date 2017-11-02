@@ -13,12 +13,17 @@ module Whedon
     attr_accessor :paper_path
     attr_accessor :xml_path
     attr_accessor :doi_batch_id
+    attr_accessor :paper
 
     def initialize(review_issue_id, review_body)
       @review_issue_id = review_issue_id
       @review_body = review_body
       @repository_address = review_body[REPO_REGEX]
       @archive_doi = review_body[ARCHIVE_REGEX]
+    end
+
+    def set_paper(path)
+      @paper = Whedon::Paper.new(review_issue_id, path)
     end
 
     # Clone the repository... (assumes it's git)
@@ -73,95 +78,6 @@ module Whedon
 
     end
 
-    def review_issue_url
-      "https://github.com/openjournals/joss-reviews/issues/#{review_issue_id}"
-    end
-
-    def paper_url
-      "http://www.theoj.org/joss-papers/#{joss_id}/#{DOI_PREFIX}.#{joss_id}.pdf"
-    end
-
-    def joss_id
-      id = "%05d" % review_issue_id
-      "joss.#{id}"
-    end
-
-    def formatted_doi
-      "#{DOI_PREFIX}/#{joss_id}"
-    end
-
-    def filename_doi
-      formatted_doi.gsub('/', '.')
-    end
-
-    def joss_resource_url
-      "http://joss.theoj.org/papers/#{formatted_doi}"
-    end
-
-    def paper_title(paper_path)
-      parsed = Psych.load(File.open(paper_path, 'r').read)
-      return parsed['title']
-    end
-
-    def generate_citation_string(paper_path)
-      parsed = Psych.load(File.open(paper_path, 'r').read)
-
-      author_count = parsed['authors'].size
-      author = parsed['authors'].first
-
-      given_name = author['name'].split(' ').first.strip
-      surname = author['name'].split(' ').last.strip
-
-      if author_count > 1
-        return "#{surname} et al."
-      else
-        return "#{surname}"
-      end
-    end
-
-    # Need to split authors into firstname and surname for Crossref :-\
-    # HACK HACK HACK
-    def generate_crossref_authors(paper_path)
-      parsed = Psych.load(File.open(paper_path, 'r').read)
-      authors_string = "<contributors>"
-
-      parsed['authors'].each_with_index do |author, index|
-        given_name = author['name'].split(' ').first.strip
-        surname = author['name'].gsub(given_name, '').strip
-        if index == 0
-          authors_string << '<person_name sequence="first" contributor_role="author">'
-        else
-          authors_string << '<person_name sequence="additional" contributor_role="author">'
-        end
-
-        authors_string << "<given_name>#{given_name}</given_name>"
-        authors_string << "<surname>#{surname}</surname>"
-        authors_string << "<ORCID>http://orcid.org/#{author['orcid']}</ORCID>" if author.has_key?('orcid')
-        authors_string << "</person_name>"
-      end
-
-      authors_string << "</contributors>"
-      return authors_string
-    end
-
-    def generate_google_scholar_authors(paper_path)
-      parsed = Psych.load(File.open(paper_path, 'r').read)
-      authors_string = ""
-
-      parsed['authors'].each_with_index do |author, index|
-        given_name = author['name'].split(' ').first.strip
-        surname = author['name'].gsub(given_name, '').strip
-
-        authors_string << "<meta name=\"citation_author\" content=\"#{surname}, #{given_name}\">"
-      end
-
-      return authors_string
-    end
-
-    def paper_directory
-      File.dirname(paper_path)
-    end
-
     # Try and compile the paper target
     def compile
       generate_pdf
@@ -172,37 +88,36 @@ module Whedon
 
     def generate_pdf(paper_issue=nil, paper_volume=nil, paper_year=nil)
       latex_template_path = "#{Dir.pwd}/resources/latex.template"
-      citation_author = generate_citation_string(paper_path)
-      paper_title = paper_title(paper_path)
+
       # TODO: Sanitize all the things!
-      paper_title.gsub!('_', '\_')
+      paper_title = paper.title.gsub!('_', '\_')
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
 
       # TODO: may eventually want to swap out the latex template
-      `cd #{paper_directory} && pandoc \
+      `cd #{paper.directory} && pandoc \
       -V repository="#{repository_address}" \
       -V archive_doi="#{archive_doi}" \
-      -V paper_url="#{paper_url}" \
-      -V formatted_doi="#{formatted_doi}" \
-      -V review_issue_url="#{review_issue_url}" \
+      -V paper_url="#{paper.pdf_url}" \
+      -V formatted_doi="#{paper.formatted_doi}" \
+      -V review_issue_url="#{paper.review_issue_url}" \
       -V graphics="true" \
       -V issue="#{paper_issue}" \
       -V volume="#{paper_volume}" \
-      -V page="#{review_issue_id}" \
+      -V page="#{paper.review_issue_id}" \
       -V joss_logo_path="#{Dir.pwd}/resources/joss-logo.png" \
       -V year="#{paper_year}" \
-      -V formatted_doi="#{formatted_doi}" \
-      -V citation_author="#{citation_author}" \
-      -V paper_title="#{paper_title}" \
-      -S -o #{filename_doi}.pdf -V geometry:margin=1in \
+      -V formatted_doi="#{paper.formatted_doi}" \
+      -V citation_author="#{paper.citation_author}" \
+      -V paper_title="#{paper.title}" \
+      -S -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
       --latex-engine=xelatex \
-      --filter pandoc-citeproc #{File.basename(paper_path)} \
+      --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
       --template #{latex_template_path}`
 
-      if File.exists?("#{paper_directory}/#{filename_doi}.pdf")
-        `open #{paper_directory}/#{filename_doi}.pdf`
+      if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
+        `open #{paper.directory}/#{paper.filename_doi}.pdf`
       else
         puts "Looks like we failed to compile the PDF"
       end
@@ -211,18 +126,18 @@ module Whedon
     def generate_xml
       xml_template_path = "#{Dir.pwd}/resources/xml.template"
 
-      `cd #{paper_directory} && pandoc \
+      `cd #{paper.directory} && pandoc \
       -V repository=#{repository_address} \
       -V archive_doi=#{archive_doi} \
-      -V formatted_doi=#{formatted_doi} \
-      -V paper_url=#{paper_url} \
-      -V review_issue_url=#{review_issue_url} \
-      -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.xml \
+      -V formatted_doi=#{paper.formatted_doi} \
+      -V paper_url=#{paper.pdf_url} \
+      -V review_issue_url=#{paper.review_issue_url} \
+      -s -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.xml \
       --filter pandoc-citeproc \
       --template #{xml_template_path}`
 
-      if File.exists?("#{paper_directory}/#{filename_doi}.xml")
-        `open #{paper_directory}/#{filename_doi}.xml`
+      if File.exists?("#{paper.directory}/#{paper.filename_doi}.xml")
+        `open #{paper.directory}/#{paper.filename_doi}.xml`
       else
         puts "Looks like we failed to compile the XML"
       end
@@ -230,34 +145,34 @@ module Whedon
 
     def generate_html(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
       html_template_path = "#{Dir.pwd}/resources/html.template"
-      google_authors = generate_google_scholar_authors(paper_path)
-      citation_author = generate_citation_string(paper_path)
+      google_authors = paper.google_scholar_authors
 
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
 
-      `cd #{paper_directory} && pandoc \
+      `cd #{paper.directory} && pandoc \
       -V repository=#{repository_address} \
       -V archive_doi=#{archive_doi} \
-      -V formatted_doi=#{formatted_doi} \
+      -V formatted_doi=#{paper.formatted_doi} \
       -V google_authors='#{google_authors}' \
+      -V journal_url='#{JOURNAL_URL}' \
       -V timestamp='#{paper_year}/#{paper_month}/#{paper_day}' \
-      -V paper_url=#{paper_url} \
+      -V paper_url=#{paper.pdf_url} \
       -V year=#{paper_year} \
       -V issue=#{paper_issue} \
       -V volume=#{paper_volume} \
-      -V review_issue_url=#{review_issue_url} \
-      -V citation_author="#{citation_author}" \
-      -V paper_title="#{paper_title(paper_path)}" \
-      -V page=#{review_issue_id} \
-      -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.html \
+      -V review_issue_url=#{paper.review_issue_url} \
+      -V citation_author="#{paper.citation_author}" \
+      -V paper_title="#{paper.title}" \
+      -V page=#{paper.review_issue_id} \
+      -s -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.html \
       --filter pandoc-citeproc \
       --ascii \
       --template #{html_template_path}`
 
-      if File.exists?("#{paper_directory}/#{filename_doi}.html")
-        `open #{paper_directory}/#{filename_doi}.html`
+      if File.exists?("#{paper.directory}/#{paper.filename_doi}.html")
+        `open #{paper.directory}/#{paper.filename_doi}.html`
       else
         puts "Looks like we failed to compile the HTML"
       end
@@ -267,10 +182,9 @@ module Whedon
       cross_ref_template_path = "#{Dir.pwd}/resources/crossref.template"
       bibtex = Bibtex.new(find_bib_path.first)
       citations = bibtex.generate_citations
-      authors = generate_crossref_authors(paper_path)
-      paper_directory = File.dirname(paper_path)
+      authors = paper.crossref_authors
       # TODO fix this when we update the DOI URLs
-      crossref_doi = archive_doi.gsub("http://dx.doi.org/", '')
+      # crossref_doi = archive_doi.gsub("http://dx.doi.org/", '')
 
       paper_day ||= Time.now.strftime('%d')
       paper_month ||= Time.now.strftime('%m')
@@ -278,16 +192,15 @@ module Whedon
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
 
-
-      `cd #{paper_directory} && pandoc \
+      `cd #{paper.directory} && pandoc \
       -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
       -V doi_batch_id=#{generate_doi_batch_id} \
-      -V formatted_doi=#{formatted_doi} \
-      -V crossref_doi=#{crossref_doi} \
+      -V formatted_doi=#{paper.formatted_doi} \
       -V archive_doi=#{archive_doi} \
-      -V review_issue_url=#{review_issue_url} \
-      -V paper_url=#{paper_url} \
-      -V joss_resource_url=#{joss_resource_url} \
+      -V review_issue_url=#{paper.review_issue_url} \
+      -V paper_url=#{paper.pdf_url} \
+      -V joss_resource_url=#{paper.joss_resource_url} \
+      -V journal_url=#{JOURNAL_URL} \
       -V citations='#{citations}' \
       -V authors='#{authors}' \
       -V month=#{paper_month} \
@@ -295,12 +208,12 @@ module Whedon
       -V year=#{paper_year} \
       -V issue=#{paper_issue} \
       -V volume=#{paper_volume} \
-      -V page=#{review_issue_id} \
-      -s -f markdown #{File.basename(paper_path)} -o #{filename_doi}.crossref.xml \
+      -V page=#{paper.review_issue_id} \
+      -s -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.crossref.xml \
       --template #{cross_ref_template_path}`
 
-      if File.exists?("#{paper_directory}/#{filename_doi}.crossref.xml")
-        `open #{paper_directory}/#{filename_doi}.crossref.xml`
+      if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
+        `open #{paper.directory}/#{paper.filename_doi}.crossref.xml`
       else
         puts "Looks like we failed to compile the Crossref XML"
       end
