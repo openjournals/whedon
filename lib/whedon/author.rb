@@ -17,6 +17,8 @@ module Whedon
       # Some people have two affiliations, if this is the case then we need
       # to parse each one and build the affiliation string.
       author_affiliations = []
+    
+      return nil if index.nil? # Some authors don't have an affiliation
 
       affiliations = if index.to_s.include?(',')
         index.split(',').map { |a| a.to_i }

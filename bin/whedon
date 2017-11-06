@@ -10,7 +10,7 @@ class WhedonCli < Thor
 
   desc "open", "Open browser for review"
   def open(issue_id)
-    `open https://github.com/#{ENV['JOSS_REVIEW_REPO']}/issues/#{issue_id}`
+    `open https://github.com/#{ENV['REVIEW_REPOSITORY']}/issues/#{issue_id}`
   end
 
   desc "verify", "Check the key values in the review issue"

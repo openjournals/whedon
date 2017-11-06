@@ -15,7 +15,7 @@ describe Whedon do
   end
 
   it "should know what the review_issue_url is" do
-    expect(subject.review_issue_url).to eql("https://github.com/openjournals/#{Whedon::REVIEW_REPOSITORY}/issues/17")
+    expect(subject.review_issue_url).to eql("https://github.com/#{ENV['REVIEW_REPOSITORY']}/issues/17")
   end
 
   it "should know how to generate joss_id" do

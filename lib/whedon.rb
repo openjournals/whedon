@@ -19,9 +19,6 @@ module Whedon
   REPO_REGEX = /(?<=\*\*Repository:\*\*.<a\shref=)"(.*?)"/
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
   ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*.<a\shref=)"(.*?)"/
-  DOI_PREFIX = "10.21105"
-  PAPER_REPOSITORY = "joss-papers"
-  REVIEW_REPOSITORY = "openjournals/joss-reviews"
   JOURNAL_URL = "http://joss.theoj.org"
 
   # Probably a much nicer way to do this...
@@ -49,7 +46,7 @@ module Whedon
     }
 
     def self.list
-      reviews = Whedon::Reviews.new(ENV['JOSS_REVIEW_REPO']).list_current
+      reviews = Whedon::Reviews.new(ENV['REVIEW_REPOSITORY']).list_current
       return "No open reviews" if reviews.nil?
 
       reviews.each do |issue_id, vals|
@@ -69,7 +66,7 @@ module Whedon
       @date = parsed['date']
       @bibliography_path = parsed['bibliography']
       @review_issue_id = review_issue_id
-      @review_repository = ENV['JOSS_REVIEW_REPO']
+      @review_repository = ENV['REVIEW_REPOSITORY']
     end
 
     # Check that the paper has the expected YAML header. Raise if missing fields
@@ -108,11 +105,11 @@ module Whedon
     end
 
     def pdf_url
-      "http://www.theoj.org/#{PAPER_REPOSITORY}/#{joss_id}/#{DOI_PREFIX}.#{joss_id}.pdf"
+      "http://www.theoj.org/#{ENV['PAPER_REPOSITORY']}/#{joss_id}/#{ENV['DOI_PREFIX']}.#{joss_id}.pdf"
     end
 
     def review_issue_url
-      "https://github.com/openjournals/#{REVIEW_REPOSITORY}/issues/#{review_issue_id}"
+      "https://github.com/#{ENV['REVIEW_REPOSITORY']}/issues/#{review_issue_id}"
     end
 
     def directory
@@ -121,7 +118,7 @@ module Whedon
 
     # The full DOI e.g. 10.21105/00001
     def formatted_doi
-      "#{DOI_PREFIX}/#{joss_id}"
+      "#{ENV['DOI_PREFIX']}/#{joss_id}"
     end
 
     # User when generating the citation snipped, returns either:

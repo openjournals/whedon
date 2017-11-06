@@ -11,7 +11,7 @@ module Whedon
 
     def initialize(review_issue_id, repository = nil)
       @review_issue_id = review_issue_id
-      @review_repository = repository.nil? ? ENV['JOSS_REVIEW_REPO'] : repository
+      @review_repository = repository.nil? ? ENV['REVIEW_REPOSITORY'] : repository
     end
 
     def issue_body

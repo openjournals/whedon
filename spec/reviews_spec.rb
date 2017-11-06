@@ -2,7 +2,7 @@ require_relative 'spec_helper'
 
 describe Whedon::Reviews do
 
-  subject { Whedon::Reviews.new(ENV['JOSS_REVIEW_REPO']) }
+  subject { Whedon::Reviews.new(ENV['REVIEW_REPOSITORY']) }
 
   it "can return #review issues" do
     VCR.use_cassette('reviews') do
