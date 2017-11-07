@@ -56,7 +56,12 @@ module Whedon
 
     # Initialized with JOSS paper including YAML header
     # e.g. http://joss.theoj.org/about#paper_structure
-    def initialize(review_issue_id, paper_path)
+    # Optionally return early if no paper_path is set 
+    def initialize(review_issue_id, paper_path=nil)
+      @review_issue_id = review_issue_id
+      @review_repository = ENV['REVIEW_REPOSITORY']
+      return if paper_path.nil?
+
       parsed = YAML.load_file(paper_path)
       check_fields(parsed)
       @paper_path = paper_path
@@ -65,8 +70,6 @@ module Whedon
       @tags = parsed['tags']
       @date = parsed['date']
       @bibliography_path = parsed['bibliography']
-      @review_issue_id = review_issue_id
-      @review_repository = ENV['REVIEW_REPOSITORY']
     end
 
     # Check that the paper has the expected YAML header. Raise if missing fields
