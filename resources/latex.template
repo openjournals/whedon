@@ -6,7 +6,7 @@
 \usepackage{titlesec}
 \usepackage{calc}
 \usepackage{tikz}
-\usepackage{hyperref}
+\usepackage[breaklinks]{hyperref}
 \usepackage{caption}
 \usepackage{tcolorbox}
 \usepackage{amssymb,amsmath}
