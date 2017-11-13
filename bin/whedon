@@ -34,7 +34,6 @@ class WhedonCli < Thor
     if paper_paths.empty?
       puts "Can't find any papers to compile :-("
     elsif paper_paths.size == 1
-      puts "Setting paper_path to #{paper_paths.first}"
       processor.set_paper(paper_paths.first)
       processor.generate_pdf
     else
