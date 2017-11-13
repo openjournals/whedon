@@ -15,6 +15,14 @@ Dotenv.load
 
 module Whedon
 
+  def self.root
+    File.dirname __dir__
+  end
+
+  def self.resources
+    File.join root, 'resources'
+  end
+
   AUTHOR_REGEX = /(?<=\*\*Submitting author:\*\*\s)(\S+)/
   REPO_REGEX = /(?<=\*\*Repository:\*\*.<a\shref=)"(.*?)"/
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
@@ -56,7 +64,7 @@ module Whedon
 
     # Initialized with JOSS paper including YAML header
     # e.g. http://joss.theoj.org/about#paper_structure
-    # Optionally return early if no paper_path is set 
+    # Optionally return early if no paper_path is set
     def initialize(review_issue_id, paper_path=nil)
       @review_issue_id = review_issue_id
       @review_repository = ENV['REVIEW_REPOSITORY']

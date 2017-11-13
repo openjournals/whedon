@@ -87,7 +87,7 @@ module Whedon
     end
 
     def generate_pdf(paper_issue=nil, paper_volume=nil, paper_year=nil)
-      latex_template_path = "#{Dir.pwd}/resources/latex.template"
+      latex_template_path = "#{Whedon.resources}/latex.template"
 
       # TODO: Sanitize all the things!
       paper_title = paper.title.gsub!('_', '\_')
@@ -106,7 +106,7 @@ module Whedon
       -V issue="#{paper_issue}" \
       -V volume="#{paper_volume}" \
       -V page="#{paper.review_issue_id}" \
-      -V joss_logo_path="#{Dir.pwd}/resources/joss-logo.png" \
+      -V joss_logo_path="#{Whedon.resources}/joss-logo.png" \
       -V year="#{paper_year}" \
       -V formatted_doi="#{paper.formatted_doi}" \
       -V citation_author="#{paper.citation_author}" \
@@ -124,7 +124,7 @@ module Whedon
     end
 
     def generate_xml
-      xml_template_path = "#{Dir.pwd}/resources/xml.template"
+      xml_template_path = "#{Whedon.resources}/xml.template"
 
       `cd #{paper.directory} && pandoc \
       -V repository=#{repository_address} \
@@ -144,7 +144,7 @@ module Whedon
     end
 
     def generate_html(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
-      html_template_path = "#{Dir.pwd}/resources/html.template"
+      html_template_path = "#{Whedon.resources}/html.template"
       google_authors = paper.google_scholar_authors
 
       paper_year ||= Time.now.strftime('%Y')
@@ -179,7 +179,7 @@ module Whedon
     end
 
     def generate_crossref(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
-      cross_ref_template_path = "#{Dir.pwd}/resources/crossref.template"
+      cross_ref_template_path = "#{Whedon.resources}/crossref.template"
       bibtex = Bibtex.new(find_bib_path.first)
       citations = bibtex.generate_citations
       authors = paper.crossref_authors
