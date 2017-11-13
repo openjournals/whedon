@@ -117,7 +117,7 @@ module Whedon
       --template #{latex_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
-        `open #{paper.directory}/#{paper.filename_doi}.pdf`
+        puts "Paper compilation successful!"
       else
         puts "Looks like we failed to compile the PDF"
       end
