@@ -153,6 +153,7 @@ module Whedon
       authors.each_with_index do |author, index|
         given_name = author.name.split(' ').first.strip
         surname = author.name.gsub(given_name, '').strip
+        orcid = author.orcid
 
         if index == 0
           authors_string << '<person_name sequence="first" contributor_role="author">'
@@ -162,7 +163,7 @@ module Whedon
 
         authors_string << "<given_name>#{given_name}</given_name>"
         authors_string << "<surname>#{surname}</surname>"
-        authors_string << "<ORCID>http://orcid.org/#{author.orcid}</ORCID>" if !author.orcid.empty?
+        authors_string << "<ORCID>http://orcid.org/#{author.orcid}</ORCID>" if !orcid.nil?
         authors_string << "</person_name>"
       end
 
