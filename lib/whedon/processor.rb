@@ -119,7 +119,7 @@ module Whedon
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
         `open #{paper.directory}/#{paper.filename_doi}.pdf`
       else
-        puts "Looks like we failed to compile the PDF"
+        abort("Looks like we failed to compile the PDF")
       end
     end
 
@@ -139,7 +139,7 @@ module Whedon
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.xml")
         `open #{paper.directory}/#{paper.filename_doi}.xml`
       else
-        puts "Looks like we failed to compile the XML"
+        abort("Looks like we failed to compile the XML")
       end
     end
 
@@ -174,7 +174,7 @@ module Whedon
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.html")
         `open #{paper.directory}/#{paper.filename_doi}.html`
       else
-        puts "Looks like we failed to compile the HTML"
+        abort("Looks like we failed to compile the HTML")
       end
     end
 
@@ -215,7 +215,7 @@ module Whedon
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
         `open #{paper.directory}/#{paper.filename_doi}.crossref.xml`
       else
-        puts "Looks like we failed to compile the Crossref XML"
+        abort("Looks like we failed to compile the Crossref XML")
       end
     end
 
