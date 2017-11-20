@@ -6,7 +6,7 @@
 \usepackage{titlesec}
 \usepackage{calc}
 \usepackage{tikz}
-\usepackage{hyperref}
+\usepackage[breaklinks]{hyperref}
 \usepackage{caption}
 \usepackage{tcolorbox}
 \usepackage{amssymb,amsmath}
@@ -58,7 +58,7 @@
 \fancyhead[R]{}
 \renewcommand{\footrulewidth}{0.25pt}
 
-\fancyfoot[L]{\footnotesize{\sffamily $citation_author$, ($year$). $paper_title$. \textit{Journal of Open Source Software}, $volume$($issue$), $page$, \href{https://doi.org/$formatted_doi$}{doi:$formatted_doi$}}}
+\fancyfoot[L]{\footnotesize{\mbox{}\\ \sffamily $citation_author$, ($year$). $paper_title$. \textit{Journal of Open Source Software}, $volume$($issue$), $page$, \href{https://doi.org/$formatted_doi$}{doi:$formatted_doi$}}}
 
 
 \fancyfoot[R]{\sffamily \thepage}
