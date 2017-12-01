@@ -7,6 +7,9 @@
 \usepackage{calc}
 \usepackage{tikz}
 \usepackage{hyperref}
+\hypersetup{colorlinks,breaklinks,
+            urlcolor=[rgb]{0.0, 0.5, 1.0},
+            linkcolor=[rgb]{0.0, 0.5, 1.0}}
 \usepackage{caption}
 \usepackage{tcolorbox}
 \usepackage{amssymb,amsmath}
