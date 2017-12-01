@@ -162,7 +162,7 @@ module Whedon
 
         authors_string << "<given_name>#{given_name}</given_name>"
         authors_string << "<surname>#{surname}</surname>"
-        authors_string << "<ORCID>http://orcid.org/#{author.orcid}</ORCID>" if !author.orcid.empty?
+        authors_string << "<ORCID>http://orcid.org/#{author.orcid}</ORCID>" if author.orcid && !author.orcid.empty?
         authors_string << "</person_name>"
       end
 
