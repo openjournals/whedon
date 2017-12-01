@@ -329,6 +329,11 @@ $endif$
   \end{itemize}
 
   \vspace{2mm}
+
+  {\bfseries Submitted:} $submitted$\\
+  {\bfseries Published:} $published$
+
+  \vspace{2mm}
   {\bfseries Licence}\\
   Authors of JOSS papers retain copyright and release the work under a Creative Commons Attribution 4.0 International License (\href{http://creativecommons.org/licenses/by/4.0/}{\color{linky}{CC-BY}}).
 }

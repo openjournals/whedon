@@ -94,6 +94,9 @@ module Whedon
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
+      # FIX ME - this needs extracting
+      submitted = `curl https://joss.theoj.org/papers/lookup/#{@review_issue_id}`
+      published = Time.now.strftime('%d %B %Y')
 
       # TODO: may eventually want to swap out the latex template
       `cd #{paper.directory} && pandoc \
@@ -108,6 +111,8 @@ module Whedon
       -V page="#{paper.review_issue_id}" \
       -V joss_logo_path="#{Whedon.resources}/joss-logo.png" \
       -V year="#{paper_year}" \
+      -V submitted="#{submitted}" \
+      -V published="#{published}" \
       -V formatted_doi="#{paper.formatted_doi}" \
       -V citation_author="#{paper.citation_author}" \
       -V paper_title="#{paper.title}" \
