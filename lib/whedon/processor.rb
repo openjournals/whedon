@@ -155,6 +155,8 @@ module Whedon
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
+      submitted = `curl https://joss.theoj.org/papers/lookup/#{@review_issue_id}`
+      published = Time.now.strftime('%d %B %Y')
 
       `cd #{paper.directory} && pandoc \
       -V repository=#{repository_address} \
@@ -167,6 +169,8 @@ module Whedon
       -V year=#{paper_year} \
       -V issue=#{paper_issue} \
       -V volume=#{paper_volume} \
+      -V submitted="#{submitted}" \
+      -V published="#{published}" \
       -V review_issue_url=#{paper.review_issue_url} \
       -V citation_author="#{paper.citation_author}" \
       -V paper_title="#{paper.title}" \

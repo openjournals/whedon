@@ -34,6 +34,13 @@ $google_authors$
       <span class="paper">Status badge:<br /><img src="$journal_url$/papers/$formatted_doi$/status.svg"></span>
     </div>
     <div class="one-third column" style="padding-top: 20px;">
+      <span class="paper">
+        Submitted: $submitted$ <br />
+        Published: $published$
+      </span>
+
+    </div>
+    <div class="two-thirds column" style="padding-top: 20px;">
       <span class="paper">Citation:<br />
       <small>$citation_author$, ($year$). $paper_title$. <em>Journal of Open Source Software</em>, $volume$($issue$), $page$, doi:$formatted_doi$</small>
     </div>
