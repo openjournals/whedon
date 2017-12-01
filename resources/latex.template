@@ -21,7 +21,13 @@
 %  style=alphabetic,
 %  citestyle=numeric
 ]{biblatex}
-\bibliography{$bibliography$}
+
+\DeclareFieldFormat{doi}{%
+  \newline
+  \mkbibacro{DOI}\addcolon\space
+    \ifhyperref
+      {\href{https://doi.org/#1}{\nolinkurl{#1}}}
+      {\nolinkurl{#1}}}
 
 
 % --- Page layout -------------------------------------------------------------
@@ -180,17 +186,7 @@ $for(polyglossia-otherlangs)$
 $endfor$
 \fi
 $endif$
-$if(natbib)$
-\usepackage{natbib}
-\bibliographystyle{$if(biblio-style)$$biblio-style$$else$plainnat$endif$}
-$endif$
-$if(biblatex)$
-\usepackage$if(biblio-style)$[style=$biblio-style$]$endif${biblatex}
-$if(biblatexoptions)$\ExecuteBibliographyOptions{$for(biblatexoptions)$$biblatexoptions$$sep$,$endfor$}$endif$
-$for(bibliography)$
-\addbibresource{$bibliography$}
-$endfor$
-$endif$
+
 $if(listings)$
 \usepackage{listings}
 $endif$
@@ -354,23 +350,6 @@ $if(lof)$
 $endif$
 $body$
 
-$if(natbib)$
-$if(bibliography)$
-$if(biblio-title)$
-$if(book-class)$
-\renewcommand\bibname{$biblio-title$}
-$else$
-\renewcommand\refname{$biblio-title$}
-$endif$
-$endif$
-\bibliography{$for(bibliography)$$bibliography$$sep$,$endfor$}
-
-$endif$
-$endif$
-$if(biblatex)$
-\printbibliography$if(biblio-title)$[title=$biblio-title$]$endif$
-
-$endif$
 $for(include-after)$
 $include-after$
 
