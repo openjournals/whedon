@@ -137,6 +137,8 @@ module Whedon
       citation_string = "#{paper.citation_author}, (#{paper_year}). #{paper.title}. Journal of Open Source Software, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
 
       puts ""
+      puts "DOI: #{paper.formatted_doi}"
+      puts "Archive: #{archive_doi}"
       puts "The JOSS application needs updating with these values:"
       puts "- Accepted at: #{Time.now}"
       puts "- Citation string: #{citation_string}"
