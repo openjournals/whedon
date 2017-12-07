@@ -146,6 +146,16 @@ module Whedon
       end
     end
 
+    def authors_string
+      authors_array = []
+
+      authors.each_with_index do |author, index|
+        authors_array << "#{author.name}"
+      end
+
+      return authors_array.join(', ')
+    end
+
     # Returns an XML snippet to be included in the Crossref XML
     def crossref_authors
       authors_string = "<contributors>"

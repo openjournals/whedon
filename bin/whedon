@@ -70,6 +70,30 @@ class WhedonCli < Thor
       processor.compile
     end
   end
+
+  desc "deposit", "Deposit the metadata with the JOSS application and Crossref"
+  def deposit(issue_id)
+    review = Whedon::Review.new(issue_id)
+    processor = Whedon::Processor.new(issue_id, review.issue_body)
+
+    paper_paths = processor.find_paper_paths
+
+    if paper_paths.empty?
+      abort("Can't find any papers to process :-(")
+    elsif paper_paths.size == 1
+      puts "Setting paper_path to #{paper_paths.first}"
+      processor.set_paper(paper_paths.first)
+      processor.deposit
+    else
+      puts "Looks like we found more than one possible paper:"
+      paper_paths.each_with_index { |path, index| puts "#{index+1}. #{path}"}
+      selected_paper = ask("Pick which paper you want:")
+      paper_path = paper_paths[selected_paper.to_i - 1]
+      puts "Setting paper_path to #{paper_paths}"
+      processor.set_paper(paper_path)
+      processor.deposit
+    end
+  end
 end
 
 WhedonCli.start

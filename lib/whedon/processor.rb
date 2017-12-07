@@ -122,10 +122,26 @@ module Whedon
       --template #{latex_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
-        puts "#{paper.directory}/#{paper.filename_doi}.pdf"
+        puts "PDF: #{paper.directory}/#{paper.filename_doi}.pdf"
       else
         abort("Looks like we failed to compile the PDF")
       end
+    end
+
+    # Eventually this will write data to the JOSS API and deposit XML with Crossref
+    def deposit
+      paper_year ||= Time.now.strftime('%Y')
+      paper_issue ||= CURRENT_ISSUE
+      paper_volume ||= CURRENT_VOLUME
+
+      citation_string = "#{paper.citation_author}, (#{paper_year}). #{paper.title}. Journal of Open Source Software, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
+
+      puts ""
+      puts "The JOSS application needs updating with these values:"
+      puts "- Accepted at: #{Time.now}"
+      puts "- Citation string: #{citation_string}"
+      puts "- Authors: #{paper.authors_string}"
+      puts "- Title: #{paper.title}"
     end
 
     def generate_xml
