@@ -116,8 +116,8 @@ module Whedon
       -V formatted_doi="#{paper.formatted_doi}" \
       -V citation_author="#{paper.citation_author}" \
       -V paper_title="#{paper.title}" \
-      -S -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
-      --latex-engine=xelatex \
+      -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
+      --pdf-engine=xelatex \
       --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
       --template #{latex_template_path}`
 
@@ -155,7 +155,7 @@ module Whedon
       -V formatted_doi=#{paper.formatted_doi} \
       -V paper_url=#{paper.pdf_url} \
       -V review_issue_url=#{paper.review_issue_url} \
-      -s -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.xml \
+      -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.xml \
       --filter pandoc-citeproc \
       --template #{xml_template_path}`
 
@@ -193,7 +193,7 @@ module Whedon
       -V citation_author="#{paper.citation_author}" \
       -V paper_title="#{paper.title}" \
       -V page=#{paper.review_issue_id} \
-      -s -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.html \
+      -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.html \
       --filter pandoc-citeproc \
       --ascii \
       --template #{html_template_path}`
@@ -236,7 +236,7 @@ module Whedon
       -V issue=#{paper_issue} \
       -V volume=#{paper_volume} \
       -V page=#{paper.review_issue_id} \
-      -s -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.crossref.xml \
+      -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.crossref.xml \
       --template #{cross_ref_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
