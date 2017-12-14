@@ -6,6 +6,9 @@ Whedon is a collection of command-line utilities to manage JOSS submissions. He 
 
 Whedon uses [`dotenv`](https://github.com/bkeepers/dotenv) to manage local configuration. Take a look at `.env-example` (which needs renaming to `.env` to be picked up).
 
+Whedon requires a local installation of Pandoc 2 and Pandoc-Citeproc as well as
+LaTeX. See [Pandoc's install instruction](http://pandoc.org/installing.html) for details.
+
 ### Is it green?
 
 Hopefully...
