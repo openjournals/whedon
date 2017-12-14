@@ -122,7 +122,7 @@ module Whedon
       --template #{latex_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
-        puts "PDF: #{paper.directory}/#{paper.filename_doi}.pdf"
+        puts "#{paper.directory}/#{paper.filename_doi}.pdf"
       else
         abort("Looks like we failed to compile the PDF")
       end
