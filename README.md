@@ -12,9 +12,47 @@ Hopefully...
 
 [![Build Status](https://travis-ci.org/openjournals/whedon.svg?branch=master)](https://travis-ci.org/openjournals/whedon)
 
+### Installation
+
+Depending on how Ruby is installed on your system there might slightly different steps be necessary. [Bundler](http://bundler.io/) is used to install dependencies.
+
+On macOS and with a Homebrew installed Ruby Bundler should be installable with
+
+   gem install bundler
+
+On other Linux distros this might be a separate package or already installed.
+
+After cloning the `whedon` repository with
+
+    git clone https://github.com/openjournals/whedon.git
+
+run (in the 'whedon' directory)
+
+    bundle install
+
+or
+
+    bundle install --path vendor/bundle
+
+Next, it's necessary to create a `.env` file based on the example
+[`.env.text`](https://github.com/openjournals/whedon/blob/master/.env.test).
+
+The `GH_TOKEN` can be created following the instructions from GitHub's
+[help pages](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
+
+Once you have edited the `.env` file you can run the commands described below.
+It might be necessary to prefix the `whedon` command with `bundle exec` or
+give the full path to the executable, e.g. `./bin/whedon`.
+
+
 ### Usage
 
 #### Implemented functionality
+
+List available commands
+```
+$ whedon
+```
 
 List all open reviews in the GitHub review repository
 
@@ -50,6 +88,12 @@ $ whedon download {id}
 # Ruby API equivalent
 >> require 'whedon'
 >> Whedon::Paper.new(issue_id).download
+```
+
+Compile a downloaded paper locally to a PDF
+
+```
+$ whedon prepare {id}
 ```
 
 Compile the paper.md and generate XML metadata. This does the following:
