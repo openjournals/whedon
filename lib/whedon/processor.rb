@@ -116,8 +116,8 @@ module Whedon
       -V formatted_doi="#{paper.formatted_doi}" \
       -V citation_author="#{paper.citation_author}" \
       -V paper_title="#{paper.title}" \
-      -S -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
-      --latex-engine=xelatex \
+      -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
+      --pdf-engine=xelatex \
       --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
       --template #{latex_template_path}`
 
