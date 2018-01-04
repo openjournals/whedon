@@ -157,7 +157,7 @@ module Whedon
       --template #{xml_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.xml")
-        `open #{paper.directory}/#{paper.filename_doi}.xml`
+        puts "#{paper.directory}/#{paper.filename_doi}.xml"
       else
         abort("Looks like we failed to compile the XML")
       end
@@ -196,7 +196,7 @@ module Whedon
       --template #{html_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.html")
-        `open #{paper.directory}/#{paper.filename_doi}.html`
+        puts "#{paper.directory}/#{paper.filename_doi}.html"
       else
         abort("Looks like we failed to compile the HTML")
       end
@@ -237,7 +237,7 @@ module Whedon
       --template #{cross_ref_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
-        `open #{paper.directory}/#{paper.filename_doi}.crossref.xml`
+        puts "#{paper.directory}/#{paper.filename_doi}.crossref.xml"
       else
         abort("Looks like we failed to compile the Crossref XML")
       end
