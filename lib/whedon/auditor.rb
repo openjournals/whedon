@@ -1,3 +1,6 @@
+# The Whedon::Auditor simply uses the regexes defined for a GitHub review issue
+# body and prints them out.
+
 module Whedon
   class Auditor
     attr_accessor :review_body

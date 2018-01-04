@@ -1,3 +1,6 @@
+# Whedon::Review is a helper class that makes it easier to work with GitHub
+# review issues.
+
 require_relative 'github'
 require 'fileutils'
 require 'find'

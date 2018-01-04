@@ -53,7 +53,7 @@ module Whedon
       return paper_paths
     end
 
-    # Find possible papers to be compiled
+    # Find possible bibtex to be compiled
     def find_bib_path
       bib_paths = []
       Find.find("tmp/#{review_issue_id}") do |path|
@@ -73,11 +73,6 @@ module Whedon
       return xml_paths
     end
 
-    # Upload docs to joss-papers repo
-    def upload_pdfs
-
-    end
-
     # Try and compile the paper target
     def compile
       generate_pdf
@@ -86,6 +81,7 @@ module Whedon
       generate_crossref
     end
 
+    # Generate the paper PDF
     def generate_pdf(paper_issue=nil, paper_volume=nil, paper_year=nil)
       latex_template_path = "#{Whedon.resources}/latex.template"
 

@@ -1,3 +1,6 @@
+# Whedon::Bibtex is used to generate the citation string used in the Crossref
+# metadata. It uses the bibtex RubyGem.
+
 require 'bibtex'
 
 # => bib = Whedon::Bibtex.new('paper.bib').generate_citations

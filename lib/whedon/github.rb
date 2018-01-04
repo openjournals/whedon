@@ -1,3 +1,5 @@
+# How we connect to GitHub.
+
 module GitHub
   # Authenticated Octokit
   # TODO remove license preview media type when this ships
