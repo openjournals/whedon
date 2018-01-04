@@ -115,6 +115,7 @@ module Whedon
       -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
       --pdf-engine=xelatex \
       --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
+      --from markdown+autolink_bare_uris \
       --template #{latex_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
