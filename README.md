@@ -58,7 +58,7 @@ give the full path to the executable, e.g. `./bin/whedon`.
 
 There are two main ways to use `Whedon`, 1) via the command-line utility or 2) using the Ruby API. If you want to see how the command line is implemented, take a look at the [executable](https://github.com/openjournals/whedon/blob/master/bin/whedon).
 
-#### Currently implemented functionality
+### Currently implemented functionality
 
 List available commands:
 
@@ -169,8 +169,7 @@ Under the hood, the `compile` method does the following:
   - The [Crossref deposit metadata](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L208-L247)
 - Returns the filesystem location of the compiled PDF for inspection
 
-
-#### Functionality under development
+### Functionality under development
 
 Accept a paper into JOSS. This method currently returns the necessary metadata for the JOSS application (i.e. fields that need updating in the [JOSS database](https://github.com/openjournals/joss/blob/ce7722c2ec6d1ff306b13f465887e9747c76b3b1/db/schema.rb#L35-L55)) once a paper is accepted.
 
