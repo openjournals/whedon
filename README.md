@@ -166,7 +166,7 @@ Under the hood, the `compile` method does the following:
   - [The JOSS PDF](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L101-L122))
   - A (currently un-used) [custom XML output](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L149-L167)
   - An [HTML representation](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L169-L206) of the paper (deprecated)
-  - The Crossref deposit metadata https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L208-L247
+  - The [Crossref deposit metadata](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L208-L247)
 - Returns the filesystem location of the compiled PDF for inspection
 
 
