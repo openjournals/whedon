@@ -1,20 +1,20 @@
-## What is Whedon?
+# What is Whedon?
 
 Whedon is a collection of command-line utilities to manage JOSS submissions. Whedon is used by the [Whedon-API bot](https://github.com/openjournals/whedon-api) to interact with authors and reviewers during the review process on https://github.com/openjournals/joss-reviews
 
-### Setup
+## Setup
 
 Whedon uses [`dotenv`](https://github.com/bkeepers/dotenv) to manage local configuration. Take a look at `.env-example` (which needs renaming to `.env` to be picked up).
 
 Whedon requires a local installation of Pandoc 2 and Pandoc-Citeproc as well as a LaTeX (ideally [TeXLive](https://www.tug.org/texlive/)) installation. See [Pandoc's install instruction](http://pandoc.org/installing.html) for details.
 
-### Is it green?
+## Is it green?
 
 Hopefully...
 
 [![Build Status](https://travis-ci.org/openjournals/whedon.svg?branch=master)](https://travis-ci.org/openjournals/whedon)
 
-### Installation
+## Installation
 
 Depending on how Ruby is installed on your system there might slightly different steps be necessary. Note that Whedon is only tested for reasonably modern versions of Ruby (i.e. > 2.1) [Bundler](http://bundler.io/) is used to install dependencies.
 
@@ -54,7 +54,7 @@ Once you have edited the `.env` file you can run the commands described below.
 It might be necessary to prefix the `whedon` command with `bundle exec` or
 give the full path to the executable, e.g. `./bin/whedon`.
 
-### Usage
+## Usage
 
 There are two main ways to use `Whedon`, 1) via the command-line utility or 2) using the Ruby API. If you want to see how the command line is implemented, take a look at the [executable](https://github.com/openjournals/whedon/blob/master/bin/whedon).
 
