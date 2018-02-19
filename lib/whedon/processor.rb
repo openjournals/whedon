@@ -133,14 +133,7 @@ module Whedon
 
       citation_string = "#{paper.citation_author}, (#{paper_year}). #{paper.title}. Journal of Open Source Software, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
 
-      puts ""
-      puts "DOI: #{paper.formatted_doi}"
-      puts "Archive: #{archive_doi}"
-      puts "The JOSS application needs updating with these values:"
-      puts "- Accepted at: #{Time.now}"
-      puts "- Citation string: #{citation_string}"
-      puts "- Authors: #{paper.authors_string}"
-      puts "- Title: #{paper.title}"
+      puts "p=dat #{@review_issue_id};p.doi='#{paper.formatted_doi}';p.archive_doi=#{archive_doi};p.accepted_at=Time.now;p.citation_string='#{citation_string}';p.authors='#{paper.authors_string}';p.title='#{paper.title}';"
     end
 
     def generate_xml
