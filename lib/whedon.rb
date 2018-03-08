@@ -1,6 +1,9 @@
 require 'octokit'
 require 'time'
 
+require 'dotenv'
+Dotenv.load
+
 require_relative 'whedon/auditor'
 require_relative 'whedon/author'
 require_relative 'whedon/bibtex'
@@ -9,9 +12,6 @@ require_relative 'whedon/processor'
 require_relative 'whedon/review'
 require_relative 'whedon/reviews'
 require_relative 'whedon/version'
-
-require 'dotenv'
-Dotenv.load
 
 module Whedon
 
@@ -27,17 +27,6 @@ module Whedon
   REPO_REGEX = /(?<=\*\*Repository:\*\*.<a\shref=)"(.*?)"/
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
   ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*.<a\shref=)"(.*?)"/
-
-  # Probably a much nicer way to do this...
-  # 1 volume per year since 2016
-  puts ENV['JOURNAL_URL']
-  puts ENV['JOURNAL_LAUNCH_DATE']
-
-  launch_year = Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year
-  CURRENT_VOLUME = Time.new.year - (launch_year - 1)
-
-  # 1 issue per month since May 2016
-  CURRENT_ISSUE = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month))
 
   class Paper
     include GitHub
