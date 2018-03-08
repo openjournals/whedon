@@ -31,11 +31,13 @@ module Whedon
 
   # Probably a much nicer way to do this...
   # 1 volume per year since 2016
+  puts ENV['JOURNAL_URL']
+  puts ENV['JOURNAL_LAUNCH_DATE']
   launch_year = Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year
   CURRENT_VOLUME = Time.new.year - (launch_year - 1)
 
   # 1 issue per month since May 2016
-  CURRENT_ISSUE = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(JOURNAL_LAUNCH_DATE).year * 12 + Time.parse(JOURNAL_LAUNCH_DATE).month))
+  CURRENT_ISSUE = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month))
 
   class Paper
     include GitHub
