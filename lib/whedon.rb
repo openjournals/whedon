@@ -1,6 +1,5 @@
 require 'octokit'
 require 'time'
-
 require_relative 'whedon/auditor'
 require_relative 'whedon/author'
 require_relative 'whedon/bibtex'
