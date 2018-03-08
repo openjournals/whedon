@@ -172,7 +172,7 @@ module Whedon
       -V archive_doi=#{archive_doi} \
       -V formatted_doi=#{paper.formatted_doi} \
       -V google_authors='#{google_authors}' \
-      -V journal_url='#{JOURNAL_URL}' \
+      -V journal_url='#{ENV['JOURNAL_URL']}' \
       -V journal_name='#{ENV['JOURNAL_NAME']}' \
       -V timestamp='#{paper_year}/#{paper_month}/#{paper_day}' \
       -V paper_url=#{paper.pdf_url} \
@@ -222,7 +222,7 @@ module Whedon
       -V joss_resource_url=#{paper.joss_resource_url} \
       -V journal_alias=#{ENV['JOURNAL_ALIAS']} \
       -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS'].upcase} \
-      -V journal_url=#{JOURNAL_URL} \
+      -V journal_url=#{ENV['JOURNAL_URL']} \
       -V journal_name='#{ENV['JOURNAL_NAME']}' \
       -V citations='#{citations}' \
       -V authors='#{authors}' \

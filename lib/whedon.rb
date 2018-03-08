@@ -1,5 +1,6 @@
 require 'octokit'
 require 'time'
+
 require_relative 'whedon/auditor'
 require_relative 'whedon/author'
 require_relative 'whedon/bibtex'
@@ -26,12 +27,12 @@ module Whedon
   REPO_REGEX = /(?<=\*\*Repository:\*\*.<a\shref=)"(.*?)"/
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
   ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*.<a\shref=)"(.*?)"/
-  JOURNAL_URL = ENV['JOURNAL_URL']
 
   # Probably a much nicer way to do this...
   # 1 volume per year since 2016
   puts ENV['JOURNAL_URL']
   puts ENV['JOURNAL_LAUNCH_DATE']
+
   launch_year = Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year
   CURRENT_VOLUME = Time.new.year - (launch_year - 1)
 
@@ -205,7 +206,7 @@ module Whedon
     # The JOSS site url for a paper
     # e.g. http://joss.theoj.org/papers/10.21105/00001
     def joss_resource_url
-      "#{JOURNAL_URL}/papers/#{formatted_doi}"
+      "#{ENV['JOURNAL_URL']}/papers/#{formatted_doi}"
     end
 
     # Return the Review object associated with the Paper

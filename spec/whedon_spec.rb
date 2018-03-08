@@ -31,7 +31,7 @@ describe Whedon do
   end
 
   it "should know how to generate the joss_resource_url" do
-    expect(subject.joss_resource_url).to eql("#{Whedon::JOURNAL_URL}/papers/10.21105/joss.00017")
+    expect(subject.joss_resource_url).to eql("#{ENV['JOURNAL_URL']}/papers/10.21105/joss.00017")
   end
 
   it "should know how generate_authors" do
