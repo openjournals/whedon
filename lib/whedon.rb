@@ -32,7 +32,8 @@ module Whedon
 
   # Probably a much nicer way to do this...
   # 1 volume per year since 2016
-  CURRENT_VOLUME = Time.new.year - (Time.parse(JOURNAL_LAUNCH_DATE).year - 1)
+  launch_year = Time.parse(JOURNAL_LAUNCH_DATE).year
+  CURRENT_VOLUME = Time.new.year - (launch_year - 1)
 
   # 1 issue per month since May 2016
   CURRENT_ISSUE = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(JOURNAL_LAUNCH_DATE).year * 12 + Time.parse(JOURNAL_LAUNCH_DATE).month))
