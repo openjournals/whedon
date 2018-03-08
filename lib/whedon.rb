@@ -27,7 +27,7 @@ module Whedon
   REPO_REGEX = /(?<=\*\*Repository:\*\*.<a\shref=)"(.*?)"/
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
   ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*.<a\shref=)"(.*?)"/
-  JOURNAL_URL = "http://joss.theoj.org"
+  JOURNAL_URL = ENV['JOURNAL_URL']
 
   # Probably a much nicer way to do this...
   # 1 volume per year since 2016
@@ -112,7 +112,7 @@ module Whedon
     # A 5-figure integer used to produce the JOSS DOI
     def joss_id
       id = "%05d" % review_issue_id
-      "joss.#{id}"
+      "#{ENV['JOURNAL_ALIAS']}.#{id}"
     end
 
     def pdf_url
