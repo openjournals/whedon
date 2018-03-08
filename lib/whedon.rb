@@ -28,13 +28,14 @@ module Whedon
   VERSION_REGEX = /(?<=\*\*Version:\*\*\s)(\S+)/
   ARCHIVE_REGEX = /(?<=\*\*Archive:\*\*.<a\shref=)"(.*?)"/
   JOURNAL_URL = ENV['JOURNAL_URL']
+  JOURNAL_LAUNCH_DATE = ENV['JOURNAL_LAUNCH_DATE']
 
   # Probably a much nicer way to do this...
   # 1 volume per year since 2016
-  CURRENT_VOLUME = Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1)
+  CURRENT_VOLUME = Time.new.year - (Time.parse(JOURNAL_LAUNCH_DATE).year - 1)
 
   # 1 issue per month since May 2016
-  CURRENT_ISSUE = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month))
+  CURRENT_ISSUE = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(JOURNAL_LAUNCH_DATE).year * 12 + Time.parse(JOURNAL_LAUNCH_DATE).month))
 
   class Paper
     include GitHub
