@@ -3,14 +3,6 @@ require 'yaml'
 require 'securerandom'
 
 module Whedon
-
-  # Probably a much nicer way to do this...
-  # 1 volume per year since 2016
-  CURRENT_VOLUME = Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1)
-
-  # 1 issue per month since May 2016
-  CURRENT_ISSUE = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month))
-
   class Processor
     include GitHub
 
@@ -28,6 +20,9 @@ module Whedon
       @review_body = review_body
       @repository_address = review_body[REPO_REGEX]
       @archive_doi = review_body[ARCHIVE_REGEX]
+      # Probably a much nicer way to do this...
+      @current_volume = Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1)
+      @current_issue = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month))
     end
 
     def set_paper(path)
@@ -96,8 +91,8 @@ module Whedon
       # TODO: Sanitize all the things!
       paper_title = paper.title.gsub!('_', '\_')
       paper_year ||= Time.now.strftime('%Y')
-      paper_issue ||= CURRENT_ISSUE
-      paper_volume ||= CURRENT_VOLUME
+      paper_issue ||= @current_issue
+      paper_volume ||= @current_volume
       # FIX ME - this needs extracting
       submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
       published = Time.now.strftime('%d %B %Y')
@@ -137,8 +132,8 @@ module Whedon
     # Eventually this will write data to the JOSS API and deposit XML with Crossref
     def deposit
       paper_year ||= Time.now.strftime('%Y')
-      paper_issue ||= CURRENT_ISSUE
-      paper_volume ||= CURRENT_VOLUME
+      paper_issue ||= @current_issue
+      paper_volume ||= @current_volume
 
       citation_string = "#{paper.citation_author}, (#{paper_year}). #{paper.title}. Journal of Open Source Software, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
 
@@ -170,8 +165,8 @@ module Whedon
       google_authors = paper.google_scholar_authors
 
       paper_year ||= Time.now.strftime('%Y')
-      paper_issue ||= CURRENT_ISSUE
-      paper_volume ||= CURRENT_VOLUME
+      paper_issue ||= @current_issue
+      paper_volume ||= @current_volume
       submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
       published = Time.now.strftime('%d %B %Y')
 
@@ -216,8 +211,8 @@ module Whedon
       paper_day ||= Time.now.strftime('%d')
       paper_month ||= Time.now.strftime('%m')
       paper_year ||= Time.now.strftime('%Y')
-      paper_issue ||= CURRENT_ISSUE
-      paper_volume ||= CURRENT_VOLUME
+      paper_issue ||= @current_issue
+      paper_volume ||= @current_volume
 
       # TODO - extract the ISSN here
       `cd #{paper.directory} && pandoc \
