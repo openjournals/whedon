@@ -91,7 +91,7 @@ module Whedon
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
       # FIX ME - this needs extracting
-      submitted = `curl https://joss.theoj.org/papers/lookup/#{@review_issue_id}`
+      submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
       published = Time.now.strftime('%d %B %Y')
 
       # TODO: may eventually want to swap out the latex template
@@ -99,13 +99,14 @@ module Whedon
       -V repository="#{repository_address}" \
       -V archive_doi="#{archive_doi}" \
       -V paper_url="#{paper.pdf_url}" \
+      -V journal_name='#{ENV['JOURNAL_NAME']}' \
       -V formatted_doi="#{paper.formatted_doi}" \
       -V review_issue_url="#{paper.review_issue_url}" \
       -V graphics="true" \
       -V issue="#{paper_issue}" \
       -V volume="#{paper_volume}" \
       -V page="#{paper.review_issue_id}" \
-      -V joss_logo_path="#{Whedon.resources}/joss-logo.png" \
+      -V logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}-logo.png" \
       -V year="#{paper_year}" \
       -V submitted="#{submitted}" \
       -V published="#{published}" \
@@ -163,7 +164,7 @@ module Whedon
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
-      submitted = `curl https://joss.theoj.org/papers/lookup/#{@review_issue_id}`
+      submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
       published = Time.now.strftime('%d %B %Y')
 
       `cd #{paper.directory} && pandoc \
@@ -172,6 +173,7 @@ module Whedon
       -V formatted_doi=#{paper.formatted_doi} \
       -V google_authors='#{google_authors}' \
       -V journal_url='#{JOURNAL_URL}' \
+      -V journal_name='#{ENV['JOURNAL_NAME']}' \
       -V timestamp='#{paper_year}/#{paper_month}/#{paper_day}' \
       -V paper_url=#{paper.pdf_url} \
       -V year=#{paper_year} \
@@ -209,6 +211,7 @@ module Whedon
       paper_issue ||= CURRENT_ISSUE
       paper_volume ||= CURRENT_VOLUME
 
+      # TODO - extract the ISSN here
       `cd #{paper.directory} && pandoc \
       -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
       -V doi_batch_id=#{generate_doi_batch_id} \
@@ -217,7 +220,10 @@ module Whedon
       -V review_issue_url=#{paper.review_issue_url} \
       -V paper_url=#{paper.pdf_url} \
       -V joss_resource_url=#{paper.joss_resource_url} \
+      -V journal_alias=#{ENV['JOURNAL_ALIAS']} \
+      -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS'].upcase} \
       -V journal_url=#{JOURNAL_URL} \
+      -V journal_name='#{ENV['JOURNAL_NAME']}' \
       -V citations='#{citations}' \
       -V authors='#{authors}' \
       -V month=#{paper_month} \

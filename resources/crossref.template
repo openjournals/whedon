@@ -12,11 +12,11 @@
   <body>
     <journal>
       <journal_metadata>
-        <full_title>The Journal of Open Source Software</full_title>
-        <abbrev_title>JOSS</abbrev_title>
+        <full_title>$journal_name$/full_title>
+        <abbrev_title>$journal_abbrev_title$</abbrev_title>
         <issn media_type="electronic">2475-9066</issn>
         <doi_data>
-          <doi>10.21105/joss</doi>
+          <doi>10.21105/$journal_alias$</doi>
           <resource>$journal_url$</resource>
         </doi_data>
       </journal_metadata>
