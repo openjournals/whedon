@@ -12,7 +12,7 @@
   <body>
     <journal>
       <journal_metadata>
-        <full_title>$journal_name$/full_title>
+        <full_title>$journal_name$</full_title>
         <abbrev_title>$journal_abbrev_title$</abbrev_title>
         <issn media_type="electronic">2475-9066</issn>
         <doi_data>
