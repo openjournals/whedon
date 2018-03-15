@@ -1,6 +1,7 @@
 require_relative 'github'
-require 'yaml'
+require 'restclient'
 require 'securerandom'
+require 'yaml'
 
 module Whedon
   class Processor
@@ -14,6 +15,8 @@ module Whedon
     attr_accessor :xml_path
     attr_accessor :doi_batch_id
     attr_accessor :paper
+    attr_accessor :current_volume
+    attr_accessor :current_issue
 
     def initialize(review_issue_id, review_body)
       @review_issue_id = review_issue_id
@@ -47,9 +50,11 @@ module Whedon
     end
 
     # Find possible papers to be compiled
-    def find_paper_paths
+    def find_paper_paths(search_path=nil)
+      search_path ||= "tmp/#{review_issue_id}"
       paper_paths = []
-      Find.find("tmp/#{review_issue_id}") do |path|
+
+      Find.find(search_path) do |path|
         paper_paths << path if path =~ /paper\.md$/
       end
 
@@ -57,9 +62,11 @@ module Whedon
     end
 
     # Find possible bibtex to be compiled
-    def find_bib_path
+    def find_bib_path(search_path=nil)
+      search_path ||= "tmp/#{review_issue_id}"
       bib_paths = []
-      Find.find("tmp/#{review_issue_id}") do |path|
+
+      Find.find(search_path) do |path|
         bib_paths << path if path =~ /.bib$/
       end
 
@@ -67,9 +74,11 @@ module Whedon
     end
 
     # Find XML paper
-    def find_xml_paths
+    def find_xml_paths(search_path=nil)
+      search_path ||= "tmp/#{review_issue_id}"
       xml_paths = []
-      Find.find("tmp/#{review_issue_id}") do |path|
+
+      Find.find(search_path) do |path|
         xml_paths << path if path =~ /paper\.xml$/
       end
 
@@ -129,15 +138,67 @@ module Whedon
       end
     end
 
-    # Eventually this will write data to the JOSS API and deposit XML with Crossref
-    def deposit
+    def citation_string
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= @current_issue
       paper_volume ||= @current_volume
 
-      citation_string = "#{paper.citation_author}, (#{paper_year}). #{paper.title}. Journal of Open Source Software, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
+      return "#{paper.citation_author}, (#{paper_year}). #{paper.title}. #{ENV['JOURNAL_NAME']}, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
+    end
 
-      puts "p=dat #{@review_issue_id};p.doi='#{paper.formatted_doi}';p.archive_doi=#{archive_doi};p.accepted_at=Time.now;p.citation_string='#{citation_string}';p.authors='#{paper.authors_string}';p.title='#{paper.title}';"
+    def deposit
+      crossref_deposit
+      joss_deposit
+
+      puts "p=dat #{@review_issue_id};p.doi='#{paper.formatted_doi}';"\
+           "p.archive_doi=#{archive_doi};p.accepted_at=Time.now;"\
+           "p.citation_string='#{citation_string}';"\
+           "p.authors='#{paper.authors_string}';p.title='#{paper.title}';"
+    end
+
+    def joss_deposit
+      puts "Depositing with JOSS..."
+      request = RestClient::Request.new(
+                :method => :post,
+                :url => "#{ENV['JOURNAL_URL']}/papers/api_deposit",
+                :payload => {
+                  :id => paper.review_issue_id,
+                  :doi => paper.formatted_doi,
+                  :archive_doi => archive_doi,
+                  :citation_string => citation_string,
+                  :secret => ENV['WHEDON_SECRET']
+                })
+
+      response = request.execute
+      if response.code == 201
+        puts "Deposit looks good."
+      else
+        puts "Something went wrong with this deposit."
+      end
+    end
+
+    def crossref_deposit
+      if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
+        puts "Depositing with Crossref..."
+        request = RestClient::Request.new(
+                  :method => :post,
+                  :url => "https://doi.crossref.org/servlet/deposit",
+                  :payload => {
+                    :multipart => true,
+                    :fname => File.new("#{paper.directory}/#{paper.filename_doi}.crossref.xml", 'rb'),
+                    :login_id => ENV['CROSSREF_USERNAME'],
+                    :login_passwd => ENV['CROSSREF_PASSWORD']
+                  })
+
+        response = request.execute
+        if response.code == 200
+          puts "Deposit looks good. Check your email!"
+        else
+          puts "Something went wrong with this deposit."
+        end
+      else
+        puts "Can't deposit Crossref metadata - deposit XML is missing"
+      end
     end
 
     def generate_xml
@@ -239,7 +300,7 @@ module Whedon
       --template #{cross_ref_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
-        puts "#{paper.directory}/#{paper.filename_doi}.crossref.xml"
+        "#{paper.directory}/#{paper.filename_doi}.crossref.xml"
       else
         abort("Looks like we failed to compile the Crossref XML")
       end
