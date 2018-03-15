@@ -102,6 +102,8 @@ module Whedon
     end
 
     # A 5-figure integer used to produce the JOSS DOI
+    # Note, this doesn't actually include the string 'joss' in the DOI any
+    # longer (it's now generalized) but the method name remains
     def joss_id
       id = "%05d" % review_issue_id
       "#{ENV['JOURNAL_ALIAS']}.#{id}"
@@ -125,8 +127,7 @@ module Whedon
     end
 
     # User when generating the citation snipped, returns either:
-    # 'Smith et al' for multiple authors or
-    # 'Smith' for a single author
+    # 'Smith et al' for multiple authors or 'Smith' for a single author
     def citation_author
       author = authors.first
       surname = author.name.split(' ').last.strip
