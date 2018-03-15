@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "latex-decode"
   spec.add_dependency "metamatter", "~> 0.2.0"
   spec.add_dependency "octokit", "~> 4.0"
+  spec.add_dependency "rest-client", "~> 1.8"
   spec.add_dependency "tilt"
   spec.add_dependency "thor", "~> 0.19"
 
@@ -31,5 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.3"
   spec.add_development_dependency "vcr", "~> 2.9"
   spec.add_development_dependency "webmock", "~> 1.21"
-  spec.add_development_dependency "nokogiri"
+  spec.add_development_dependency "nokogiri", "~> 1.8"
 end
