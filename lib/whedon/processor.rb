@@ -102,7 +102,8 @@ module Whedon
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= @current_issue
       paper_volume ||= @current_volume
-      # FIX ME - this needs extracting
+      # FIX ME - when the JOSS application has an actual API this could/should
+      # be cleaned up
       submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
       published = Time.now.strftime('%d %B %Y')
 

@@ -30,4 +30,6 @@ describe Whedon::Processor do
     generated = processor.generate_crossref
     expect(generated).to eql("fixtures/paper/10.21105.joss.00017.crossref.xml")
   end
+
+  
 end
