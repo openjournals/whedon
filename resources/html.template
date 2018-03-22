@@ -5,7 +5,7 @@ $google_authors$
 <meta name="citation_journal_title" content="The Journal of Open Source Software">
 <meta name="citation_pdf_url" content="$paper_url$">
 <meta name="citation_doi" content="$formatted_doi$">
-<meta name="citation_issn" content="2475-9066">
+<meta name="citation_issn" content="$journal_issn$">
 <div class="accepted-paper">
   <h1>$title$</h1>
   <div class="columns links">

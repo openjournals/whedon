@@ -240,6 +240,7 @@ module Whedon
       -V google_authors='#{google_authors}' \
       -V journal_url='#{ENV['JOURNAL_URL']}' \
       -V journal_name='#{ENV['JOURNAL_NAME']}' \
+      -V journal_issn=#{ENV['JOURNAL_ISSN']} \
       -V timestamp='#{paper_year}/#{paper_month}/#{paper_day}' \
       -V paper_url=#{paper.pdf_url} \
       -V year=#{paper_year} \
@@ -277,7 +278,6 @@ module Whedon
       paper_issue ||= @current_issue
       paper_volume ||= @current_volume
 
-      # TODO - extract the ISSN here
       `cd #{paper.directory} && pandoc \
       -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
       -V doi_batch_id=#{generate_doi_batch_id} \
@@ -290,6 +290,7 @@ module Whedon
       -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS'].upcase} \
       -V journal_url=#{ENV['JOURNAL_URL']} \
       -V journal_name='#{ENV['JOURNAL_NAME']}' \
+      -V journal_issn=#{ENV['JOURNAL_ISSN']} \
       -V citations='#{citations}' \
       -V authors='#{authors}' \
       -V month=#{paper_month} \
