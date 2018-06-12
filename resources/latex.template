@@ -334,7 +334,7 @@ $endif$
   {\bfseries Published:} $published$
 
   \vspace{2mm}
-  {\bfseries Licence}\\
+  {\bfseries License}\\
   Authors of papers retain copyright and release the work under a Creative Commons Attribution 4.0 International License (\href{http://creativecommons.org/licenses/by/4.0/}{\color{linky}{CC-BY}}).
 }
 
