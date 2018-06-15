@@ -1,4 +1,6 @@
 require 'octokit'
+require 'redcarpet'
+require 'redcarpet/render_strip'
 require 'time'
 
 require 'dotenv'
@@ -76,6 +78,11 @@ module Whedon
     def check_fields(parsed)
       fields = EXPECTED_FIELDS - parsed.keys
       raise "Paper YAML header is missing expected fields: #{fields.join(', ')}" if !fields.empty?
+    end
+
+    def plain_title
+      renderer = Redcarpet::Markdown.new(Redcarpet::Render::StripDown)
+      return renderer.render(self.title)
     end
 
     def parse_authors(yaml)

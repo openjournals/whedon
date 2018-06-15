@@ -124,6 +124,7 @@ module Whedon
       -V formatted_doi="#{paper.formatted_doi}" \
       -V citation_author="#{paper.citation_author}" \
       -V paper_title='#{paper.title}' \
+      -V footnote_paper_title='#{paper.plain_title}' \
       -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
       --pdf-engine=xelatex \
       --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
@@ -142,7 +143,7 @@ module Whedon
       paper_issue ||= @current_issue
       paper_volume ||= @current_volume
 
-      return "#{paper.citation_author}, (#{paper_year}). #{paper.title}. #{ENV['JOURNAL_NAME']}, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
+      return "#{paper.citation_author}, (#{paper_year}). #{paper.plain_title}. #{ENV['JOURNAL_NAME']}, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
     end
 
     def deposit
@@ -236,6 +237,7 @@ module Whedon
       -V issue=#{paper_issue} \
       -V volume=#{paper_volume} \
       -V page=#{paper.review_issue_id} \
+      -V title='#{paper.plain_title}' \
       -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.crossref.xml \
       --template #{cross_ref_template_path}`
 

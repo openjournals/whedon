@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "metamatter", "~> 0.2.0"
   spec.add_dependency "octokit", "~> 4.0"
   spec.add_dependency "rest-client", "~> 1.8"
+  spec.add_dependency "redcarpet", "~> 3.3"
   spec.add_dependency "tilt"
   spec.add_dependency "thor", "~> 0.19"
 
