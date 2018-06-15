@@ -2,6 +2,7 @@
 # metadata. It uses the bibtex RubyGem.
 
 require 'bibtex'
+require 'uri'
 
 # => bib = Whedon::Bibtex.new('paper.bib').generate_citations
 module Whedon
@@ -30,9 +31,6 @@ module Whedon
         end
       end
 
-      # Escape & in XML
-      @citation_string.gsub!('&', '&amp;')
-
       return "<citation_list>#{@citation_string}</citation_list>"
     end
 
@@ -48,7 +46,9 @@ module Whedon
 
     # Returns a simple <citation> XML snippet with the DOI
     def doi_citation(entry)
-      "<citation key=\"ref#{@ref_count}\"><doi>#{entry.doi.to_s}</doi></citation>"
+      # Sometimes there are weird characters in the DOI. This escap
+      escaped_doi = URI.escape(entry.doi.to_s)
+      "<citation key=\"ref#{@ref_count}\"><doi>#{escaped_doi}</doi></citation>"
     end
 
     # Returns a more complex <citation> XML snippet with keys for each of the
@@ -60,7 +60,7 @@ module Whedon
         # FIXME
         value.gsub!("{", "")
         value.gsub!("}", "")
-        values << value
+        values << URI.escape(value.to_s)
       end
       citation << values.join(', ')
       citation << "</unstructured_citation></citation>"
