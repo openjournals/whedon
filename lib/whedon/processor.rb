@@ -89,7 +89,6 @@ module Whedon
     def compile
       generate_pdf
       generate_xml
-      generate_html
       generate_crossref
     end
 
@@ -125,7 +124,7 @@ module Whedon
       -V published="#{published}" \
       -V formatted_doi="#{paper.formatted_doi}" \
       -V citation_author="#{paper.citation_author}" \
-      -V paper_title="#{paper.title}" \
+      -V paper_title='#{paper.title}' \
       -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
       --pdf-engine=xelatex \
       --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
@@ -220,47 +219,6 @@ module Whedon
         puts "#{paper.directory}/#{paper.filename_doi}.xml"
       else
         abort("Looks like we failed to compile the XML")
-      end
-    end
-
-    def generate_html(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
-      html_template_path = "#{Whedon.resources}/html.template"
-      google_authors = paper.google_scholar_authors
-
-      paper_year ||= Time.now.strftime('%Y')
-      paper_issue ||= @current_issue
-      paper_volume ||= @current_volume
-      submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
-      published = Time.now.strftime('%d %B %Y')
-
-      `cd #{paper.directory} && pandoc \
-      -V repository=#{repository_address} \
-      -V archive_doi=#{archive_doi} \
-      -V formatted_doi=#{paper.formatted_doi} \
-      -V google_authors='#{google_authors}' \
-      -V journal_url='#{ENV['JOURNAL_URL']}' \
-      -V journal_name='#{ENV['JOURNAL_NAME']}' \
-      -V journal_issn=#{ENV['JOURNAL_ISSN']} \
-      -V timestamp='#{paper_year}/#{paper_month}/#{paper_day}' \
-      -V paper_url=#{paper.pdf_url} \
-      -V year=#{paper_year} \
-      -V issue=#{paper_issue} \
-      -V volume=#{paper_volume} \
-      -V submitted="#{submitted}" \
-      -V published="#{published}" \
-      -V review_issue_url=#{paper.review_issue_url} \
-      -V citation_author="#{paper.citation_author}" \
-      -V paper_title="#{paper.title}" \
-      -V page=#{paper.review_issue_id} \
-      -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.html \
-      --filter pandoc-citeproc \
-      --ascii \
-      --template #{html_template_path}`
-
-      if File.exists?("#{paper.directory}/#{paper.filename_doi}.html")
-        puts "#{paper.directory}/#{paper.filename_doi}.html"
-      else
-        abort("Looks like we failed to compile the HTML")
       end
     end
 
