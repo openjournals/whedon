@@ -88,7 +88,6 @@ module Whedon
     # Try and compile the paper target
     def compile
       generate_pdf
-      generate_xml
       generate_crossref
     end
 
@@ -199,26 +198,6 @@ module Whedon
         end
       else
         puts "Can't deposit Crossref metadata - deposit XML is missing"
-      end
-    end
-
-    def generate_xml
-      xml_template_path = "#{Whedon.resources}/xml.template"
-
-      `cd #{paper.directory} && pandoc \
-      -V repository=#{repository_address} \
-      -V archive_doi=#{archive_doi} \
-      -V formatted_doi=#{paper.formatted_doi} \
-      -V paper_url=#{paper.pdf_url} \
-      -V review_issue_url=#{paper.review_issue_url} \
-      -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.xml \
-      --filter pandoc-citeproc \
-      --template #{xml_template_path}`
-
-      if File.exists?("#{paper.directory}/#{paper.filename_doi}.xml")
-        puts "#{paper.directory}/#{paper.filename_doi}.xml"
-      else
-        abort("Looks like we failed to compile the XML")
       end
     end
 
