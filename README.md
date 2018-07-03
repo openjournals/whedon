@@ -45,7 +45,7 @@ bundle install --path vendor/bundle
 ```
 
 Next, it's necessary to create a `.env` file based on the example
-[`.env.text`](https://github.com/openjournals/whedon/blob/master/.env.test).
+[`.env.test`](https://github.com/openjournals/whedon/blob/master/.env.test).
 
 The `GH_TOKEN` can be created following the instructions from GitHub's
 [help pages](https://help.github.com/articles/creating-a-personal-access-token-for-the-command-line/).
