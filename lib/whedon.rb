@@ -10,6 +10,7 @@ require_relative 'whedon/auditor'
 require_relative 'whedon/author'
 require_relative 'whedon/bibtex'
 require_relative 'whedon/github'
+require_relative 'whedon/orcid_validator'
 require_relative 'whedon/processor'
 require_relative 'whedon/review'
 require_relative 'whedon/reviews'
@@ -66,6 +67,8 @@ module Whedon
 
       parsed = YAML.load_file(paper_path)
       check_fields(parsed)
+      check_orcids(parsed)
+
       @paper_path = paper_path
       @authors = parse_authors(parsed)
       @title = parsed['title']
@@ -78,6 +81,15 @@ module Whedon
     def check_fields(parsed)
       fields = EXPECTED_FIELDS - parsed.keys
       raise "Paper YAML header is missing expected fields: #{fields.join(', ')}" if !fields.empty?
+    end
+
+    # Check that the user-defined ORCIDs look valid
+    def check_orcids(parsed)
+      authors = parsed['authors']
+      authors.each do |author|
+        next unless author.has_key?('orcid')
+        raise "Problem with ORCID (#{author['orcid']}) for #{author['name']}" unless OrcidValidator.new(author['orcid']).validate
+      end
     end
 
     def plain_title
