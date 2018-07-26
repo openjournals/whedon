@@ -16,6 +16,7 @@
 \usepackage{ifxetex,ifluatex}
 \usepackage{seqsplit}
 \usepackage{fixltx2e} % provides \textsubscript
+\usepackage{xeCJK} % support chinese japanese korean characters
 \usepackage[
   backend=biber,
 %  style=alphabetic,
