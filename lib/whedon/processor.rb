@@ -94,6 +94,7 @@ module Whedon
     # Generate the paper PDF
     def generate_pdf(paper_issue=nil, paper_volume=nil, paper_year=nil)
       latex_template_path = "#{Whedon.resources}/latex.template"
+      csl_file = "#{Whedon.resources}/apa.csl"
 
       # TODO: Sanitize all the things!
       paper_title = paper.title.gsub!('_', '\_')
@@ -129,6 +130,7 @@ module Whedon
       --pdf-engine=xelatex \
       --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
       --from markdown+autolink_bare_uris \
+      --csl=#{csl_file} \
       --template #{latex_template_path}`
 
       if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
