@@ -18,7 +18,7 @@ module Whedon
       # to parse each one and build the affiliation string.
       author_affiliations = []
 
-      return nil if index.nil? # Some authors don't have an affiliation
+      return '' if index.nil? # Some authors don't have an affiliation
 
       affiliations = if index.to_s.include?(',')
         index.split(',').map { |a| a.strip }

@@ -104,8 +104,12 @@ module Whedon
 
       # Loop through the authors block and build up the affiliation
       authors_yaml.each do |author|
-        affiliation_index = author['affiliation']
-        returned << Author.new(author['name'], author['orcid'], affiliation_index, affiliations)
+        if author.has_key? 'affiliation'
+          returned << Author.new(author['name'], author['orcid'], affiliation_index, affiliations)
+        else
+          affiliation_index = author['affiliation']
+          returned << Author.new(author['name'], author['orcid'], nil, affiliations)
+        end
       end
 
       returned
