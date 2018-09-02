@@ -94,7 +94,7 @@ module Whedon
 
     def plain_title
       renderer = Redcarpet::Markdown.new(Redcarpet::Render::StripDown)
-      return renderer.render(self.title)
+      return renderer.render(self.title).strip
     end
 
     def parse_authors(yaml)
