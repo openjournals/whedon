@@ -92,7 +92,8 @@ module Whedon
     end
 
     # Generate the paper PDF
-    def generate_pdf(paper_issue=nil, paper_volume=nil, paper_year=nil)
+    # Optionally pass in a custom branch name as first param
+    def generate_pdf(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
       latex_template_path = "#{Whedon.resources}/latex.template"
       csl_file = "#{Whedon.resources}/apa.csl"
 
@@ -105,6 +106,9 @@ module Whedon
       # be cleaned up
       submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
       published = Time.now.strftime('%d %B %Y')
+
+      # Optionally pass a custom branch name
+      `cd #{paper.directory} && git checkout #{custom_branch}` if custom_branch
 
       # TODO: may eventually want to swap out the latex template
       `cd #{paper.directory} && pandoc \

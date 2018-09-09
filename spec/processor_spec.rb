@@ -29,7 +29,5 @@ describe Whedon::Processor do
     allow(processor).to receive_message_chain(:find_bib_path, :first).and_return("fixtures/paper/paper.bib")
     generated = processor.generate_crossref
     expect(generated).to eql("fixtures/paper/10.21105.joss.00017.crossref.xml")
-  end
-
-  
+  end  
 end

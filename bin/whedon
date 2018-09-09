@@ -23,8 +23,8 @@ class WhedonCli < Thor
     Whedon::Paper.new(issue_id).download
   end
 
-  desc "prepare", "Just prepare the PDF"
-  def prepare(issue_id)
+  desc "prepare", "Just prepare the PDF (optional second argument of custom git branch)"
+  def prepare(issue_id, custom_branch=nil)
     review = Whedon::Review.new(issue_id)
     processor = Whedon::Processor.new(issue_id, review.issue_body)
     processor.archive_doi = 'PENDING'
@@ -35,7 +35,7 @@ class WhedonCli < Thor
       abort("Can't find any papers to compile :-(")
     elsif paper_paths.size == 1
       processor.set_paper(paper_paths.first)
-      processor.generate_pdf
+      processor.generate_pdf(custom_branch)
     else
       puts "Looks like we found more than one possible paper:"
       paper_paths.each_with_index { |path, index| puts "#{index+1}. #{path}"}
@@ -43,7 +43,7 @@ class WhedonCli < Thor
       paper_path = paper_paths[selected_paper.to_i - 1]
       puts "Setting paper_path to #{paper_paths}"
       processor.set_paper(paper_path)
-      processor.generate_pdf
+      processor.generate_pdf(custom_branch)
     end
   end
 
