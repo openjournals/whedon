@@ -108,7 +108,7 @@ module Whedon
       published = Time.now.strftime('%d %B %Y')
 
       # Optionally pass a custom branch name
-      `cd #{paper.directory} && git checkout #{custom_branch}` if custom_branch
+      `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
 
       # TODO: may eventually want to swap out the latex template
       `cd #{paper.directory} && pandoc \
