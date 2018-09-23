@@ -1,4 +1,7 @@
 language: ruby
+addons:
+  apt_packages:
+    - pandoc
 rvm:
   - 2.1
   - 2.2
