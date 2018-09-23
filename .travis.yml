@@ -5,4 +5,4 @@ addons:
 rvm:
   - 2.1
   - 2.2
-script: bundle exec rake spec
+script: RUBYOPT="-W0" bundle exec rake spec
