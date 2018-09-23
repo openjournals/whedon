@@ -11,6 +11,7 @@ PATH
       rest-client (~> 1.8)
       thor (~> 0.19)
       tilt
+      unicode (~> 0.4.4)
 
 GEM
   remote: https://rubygems.org/
@@ -20,16 +21,16 @@ GEM
       httparty (~> 0.13.1)
       json (~> 1.8)
       rake (~> 10.4)
-    bibtex-ruby (4.4.6)
+    bibtex-ruby (4.4.7)
       latex-decode (~> 0.0)
     coderay (1.1.1)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
     diff-lcs (1.2.5)
-    domain_name (0.5.20170404)
+    domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
-    dotenv (2.2.1)
-    faraday (0.15.1)
+    dotenv (2.5.0)
+    faraday (0.15.2)
       multipart-post (>= 1.2, < 3)
     hashdiff (0.3.0)
     http-cookie (1.0.3)
@@ -87,6 +88,7 @@ GEM
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.5)
+    unicode (0.4.4.4)
     vcr (2.9.3)
     webmock (1.24.6)
       addressable (>= 2.3.6)
