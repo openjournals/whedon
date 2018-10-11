@@ -2,6 +2,7 @@
 # metadata. It uses the bibtex RubyGem.
 
 require 'bibtex'
+require 'nokogiri'
 require 'uri'
 
 # => bib = Whedon::Bibtex.new('paper.bib').generate_citations
@@ -31,7 +32,9 @@ module Whedon
         end
       end
 
-      return "<citation_list>#{@citation_string}</citation_list>"
+      # This Nokogiri step is simply to pretty-print the XML of the citations
+      doc = Nokogiri::XML("<citation_list>#{@citation_string}</citation_list>")
+      return doc.to_xml
     end
 
     # Chooses what sort of citation to make based upon whether there is a DOI
@@ -47,7 +50,7 @@ module Whedon
     # Returns a simple <citation> XML snippet with the DOI
     def doi_citation(entry)
       # Sometimes there are weird characters in the DOI. This escap
-      escaped_doi = URI.escape(entry.doi.to_s)
+      escaped_doi = entry.doi.encode(:xml => :text)
       "<citation key=\"ref#{@ref_count}\"><doi>#{escaped_doi}</doi></citation>"
     end
 
@@ -57,10 +60,7 @@ module Whedon
       citation = "<citation key=\"ref#{@ref_count}\"><unstructured_citation>"
       values = []
       entry.each_pair do |name, value|
-        # FIXME
-        value.gsub!("{", "")
-        value.gsub!("}", "")
-        values << URI.escape(value.to_s)
+        values << value.encode(:xml => :text)
       end
       citation << values.join(', ')
       citation << "</unstructured_citation></citation>"
