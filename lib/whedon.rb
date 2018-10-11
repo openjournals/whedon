@@ -148,8 +148,7 @@ module Whedon
     # User when generating the citation snipped, returns either:
     # 'Smith et al' for multiple authors or 'Smith' for a single author
     def citation_author
-      author = authors.first
-      surname = author.name.split(' ').last.strip
+      surname = authors.first.last_name
 
       if authors.size > 1
         return "#{surname} et al."
@@ -173,8 +172,8 @@ module Whedon
       authors_string = "<contributors>"
 
       authors.each_with_index do |author, index|
-        given_name = author.name.split(' ').first.strip
-        surname = author.name.gsub(given_name, '').strip
+        given_name = author.given_name
+        surname = author.last_name
         orcid = author.orcid
 
         if index == 0
@@ -197,8 +196,8 @@ module Whedon
       authors_string = ""
 
       authors.each_with_index do |author, index|
-        given_name = author.name.split(' ').first.strip
-        surname = author.name.gsub(given_name, '').strip
+        given_name = author.given_name
+        surname = author.last_name
 
         authors_string << "<meta name=\"citation_author\" content=\"#{surname}, #{given_name}\">"
       end

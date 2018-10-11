@@ -1,14 +1,27 @@
 module Whedon
   class Author
+    require 'nameable'
+
     attr_accessor :name, :affiliation, :orcid
 
     # Initialized with authors & affiliations block in the YAML header from
     # a JOSS paper e.g. http://joss.theoj.org/about#paper_structure
     #
     def initialize(name, orcid, index, affiliations_yaml)
-      @name = name
+      @parsed_name = Nameable::Latin.new.parse(name)
+      @name = @parsed_name.to_nameable
       @orcid = orcid
       @affiliation = build_affiliation_string(index, affiliations_yaml)
+    end
+
+    # Use the Nameable gem to return last name
+    def last_name
+      @parsed_name.last
+    end
+
+    # Use the Nameable gem to return first name
+    def given_name
+      @parsed_name.first
     end
 
     # Takes the author affiliation index and a hash of all affiliations and
