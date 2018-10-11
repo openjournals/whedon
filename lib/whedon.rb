@@ -1,4 +1,3 @@
-require 'nameable'
 require 'octokit'
 require 'redcarpet'
 require 'redcarpet/render_strip'
@@ -149,8 +148,7 @@ module Whedon
     # User when generating the citation snipped, returns either:
     # 'Smith et al' for multiple authors or 'Smith' for a single author
     def citation_author
-      parsed = Nameable::Latin.new.parse(authors.first.name)
-      surname = parsed.last
+      surname = authors.first.last_name
 
       if authors.size > 1
         return "#{surname} et al."
@@ -174,9 +172,8 @@ module Whedon
       authors_string = "<contributors>"
 
       authors.each_with_index do |author, index|
-        parsed = Nameable::Latin.new.parse(author.name)
-        given_name = parsed.first
-        surname = parsed.last
+        given_name = author.given_name
+        surname = author.last_name
         orcid = author.orcid
 
         if index == 0
@@ -199,9 +196,8 @@ module Whedon
       authors_string = ""
 
       authors.each_with_index do |author, index|
-        parsed = Nameable::Latin.new.parse(author.name)
-        given_name = parsed.first
-        surname = parsed.last
+        given_name = author.given_name
+        surname = author.last_name
 
         authors_string << "<meta name=\"citation_author\" content=\"#{surname}, #{given_name}\">"
       end
