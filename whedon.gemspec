@@ -21,6 +21,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "dotenv"
   spec.add_dependency "latex-decode"
   spec.add_dependency "metamatter", "~> 0.2.0"
+  spec.add_dependency "nameable", "~> 1.1"
   spec.add_dependency "octokit", "~> 4.0"
   spec.add_dependency "rest-client", "~> 1.8"
   spec.add_dependency "redcarpet", "~> 3.3"
