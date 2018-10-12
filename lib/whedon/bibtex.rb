@@ -34,7 +34,7 @@ module Whedon
 
       # This Nokogiri step is simply to pretty-print the XML of the citations
       doc = Nokogiri::XML("<citation_list>#{@citation_string}</citation_list>")
-      return doc.to_xml
+      return doc.root.to_xml
     end
 
     # Chooses what sort of citation to make based upon whether there is a DOI
