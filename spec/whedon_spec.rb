@@ -36,6 +36,10 @@ describe Whedon do
     expect(paper.joss_resource_url).to eql("#{ENV['JOURNAL_URL']}/papers/10.21105/joss.00017")
   end
 
+  it "should know what its tags are" do
+    expect(paper.tags).to eql(["example", "tags", "for the paper"])
+  end
+
   it "should know how generate_authors" do
     authors_xml = Nokogiri::XML(paper.crossref_authors)
     expect(authors_xml.search('person_name').size).to eql(2)

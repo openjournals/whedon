@@ -7,13 +7,13 @@ describe Whedon::Bibtex do
 
   it "should know how to generate DOI citations" do
     citations_xml = Nokogiri::XML(subject.generate_citations)
-    expect(citations_xml.search('citation[key="ref1"]').children.first.name).to eql("doi")
-    expect(citations_xml.search('citation[key="ref1"]').text).to eql("10.1109/SERVICES.2007.63")
+    expect(citations_xml.search('citation[key="ref1"]').children[1].name).to eql("doi")
+    expect(citations_xml.search('citation[key="ref1"]').text.strip).to eql("10.1109/SERVICES.2007.63")
   end
 
   it "should know how to generate non-DOI citations" do
     citations_xml = Nokogiri::XML(subject.generate_citations)
-    expect(citations_xml.search('citation[key="ref6"]').children.first.name).to eql("unstructured_citation")
-    expect(citations_xml.search('citation[key="ref6"]').text).to match(/Integrating%20Abstractions%20to%20Enhance%20the%20Execution%20of%20Distributed%20Applications, Turilli,%20Matteo%20and%20Zhang,%20Zhao%20and%20Merzky,%20Andre%20and%20Wilde,%20Michael%20and%20Weissman,%20Jon%20and%20Katz,%20Daniel%20S%20and%20Jha,%20Shantenu%20and%20others, arXiv%20preprint%20arXiv:1504.04720, 2015/)
+    expect(citations_xml.search('citation[key="ref6"]').children[1].name).to eql("unstructured_citation")
+    expect(citations_xml.search('citation[key="ref6"]').text).to match(/Integrating Abstractions to Enhance the Execution of Distributed Applications, Turilli, Matteo and Zhang, Zhao and Merzky, Andre and Wilde, Michael and Weissman, Jon and Katz, Daniel S and Jha, Shantenu and others, arXiv preprint arXiv:1504.04720, 2015/)
   end
 end
