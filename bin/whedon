@@ -14,7 +14,13 @@ class WhedonCli < Thor
     processor = Whedon::Processor.new(issue_id, review.issue_body)
 
     paper_paths = processor.find_paper_paths
-    puts Whedon::Paper.new(issue_id, paper_paths.first).tags.join(',')
+    tags = Whedon::Paper.new(issue_id, paper_paths.first).tags
+
+    if tags
+      return tags.join(',')
+    else
+      return ""
+    end
   end
 
   desc "open", "Open browser for review"
