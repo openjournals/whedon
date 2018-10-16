@@ -17,9 +17,9 @@ class WhedonCli < Thor
     tags = Whedon::Paper.new(issue_id, paper_paths.first).tags
 
     if tags
-      return tags.join(',')
+      puts tags.join(',')
     else
-      return ""
+      puts ""
     end
   end
 
