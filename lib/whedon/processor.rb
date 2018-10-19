@@ -67,7 +67,7 @@ module Whedon
       bib_paths = []
 
       Find.find(search_path) do |path|
-        bib_paths << path if path =~ /.bib$/
+        bib_paths << path if path =~ /paper.bib$/
       end
 
       return bib_paths
