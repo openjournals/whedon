@@ -210,7 +210,7 @@ module Whedon
 
     def generate_crossref(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
       cross_ref_template_path = "#{Whedon.resources}/crossref.template"
-      bibtex = Bibtex.new(find_bib_path.first)
+      bibtex = Bibtex.new(paper.bibtex_path)
       citations = bibtex.generate_citations
       authors = paper.crossref_authors
       # TODO fix this when we update the DOI URLs

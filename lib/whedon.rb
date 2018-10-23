@@ -140,6 +140,10 @@ module Whedon
       File.dirname(paper_path)
     end
 
+    def bibtex_path
+      "#{directory}/#{bibliography_path}"
+    end
+
     # The full DOI e.g. 10.21105/00001
     def formatted_doi
       "#{ENV['DOI_PREFIX']}/#{joss_id}"
