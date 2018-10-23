@@ -172,7 +172,7 @@ module Whedon
                   :doi => paper.formatted_doi,
                   :archive_doi => archive_doi,
                   :citation_string => citation_string,
-                  :title => paper.title,
+                  :title => paper.plain_title,
                   :secret => ENV['WHEDON_SECRET']
                 })
 
