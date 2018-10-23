@@ -5,7 +5,7 @@ tags:
   - tags
   - for the paper
 authors:
- - name: Dr Arfon M. Smith Esquire
+ - name: "Dr Arfon M. Smith Esquire^[Corresponding author: arfon@example.com]"
    orcid: 0000-0002-3957-2474
    affiliation: "1,2"
  - name: James P. van Dishoeck

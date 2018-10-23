@@ -4,14 +4,23 @@ module Whedon
 
     attr_accessor :name, :affiliation, :orcid
 
+    AUTHOR_FOOTNOTE_REGEX = /^[^\^]*/
+
     # Initialized with authors & affiliations block in the YAML header from
     # a JOSS paper e.g. http://joss.theoj.org/about#paper_structure
     #
     def initialize(name, orcid, index, affiliations_yaml)
+      name = strip_footnotes(name)
       @parsed_name = Nameable::Latin.new.parse(name)
       @name = @parsed_name.to_nameable
       @orcid = orcid
       @affiliation = build_affiliation_string(index, affiliations_yaml)
+    end
+
+    # Input: Arfon Smith^[Corresponding author: arfon@example.com]
+    # Output: Arfon Smith
+    def strip_footnotes(name)
+      name[AUTHOR_FOOTNOTE_REGEX]
     end
 
     # Use the Nameable gem to return last name

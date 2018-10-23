@@ -64,4 +64,8 @@ describe Whedon do
     expect(paper_with_harder_names.citation_author).to eql("Smith et al.")
     expect(paper_with_harder_names.authors.last.last_name).to eq('Van Dishoeck')
   end
+
+  it "should know how to handle authors with a corresponding author set" do
+    
+  end
 end
