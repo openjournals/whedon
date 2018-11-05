@@ -61,7 +61,7 @@
 \fancyhead[R]{}
 \renewcommand{\footrulewidth}{0.25pt}
 
-\fancyfoot[L]{\footnotesize{\sffamily $citation_author$, ($year$). $footnote_paper_title$. \textit{$journal_name$}, $volume$($issue$), $page$. \href{https://doi.org/$formatted_doi$}{https://doi.org/$formatted_doi$}}}
+\fancyfoot[L]{\parbox[t]{0.98\headwidth}{\footnotesize{\sffamily $citation_author$, ($year$). $footnote_paper_title$. \textit{$journal_name$}, $volume$($issue$), $page$. \url{https://doi.org/$formatted_doi$}}}}
 
 
 \fancyfoot[R]{\sffamily \thepage}
