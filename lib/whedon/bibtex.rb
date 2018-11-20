@@ -40,7 +40,7 @@ module Whedon
     # Chooses what sort of citation to make based upon whether there is a DOI
     # present in the bibtex entry
     def make_citation(entry)
-      if entry.has_field?('doi')
+      if entry.has_field?('doi') && !entry.doi.empty?
         return doi_citation(entry)
       else
         return general_citation(entry)
