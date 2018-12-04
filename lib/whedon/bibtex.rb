@@ -27,6 +27,7 @@ module Whedon
         @citation_string = ""
       else
         entries.each do |entry|
+          next if entry.comment?
           @citation_string << make_citation(entry)
           @ref_count += 1
         end
