@@ -236,7 +236,7 @@ module Whedon
       -V journal_name='#{ENV['JOURNAL_NAME']}' \
       -V journal_issn=#{ENV['JOURNAL_ISSN']} \
       -V citations='#{citations}' \
-      -V authors='#{authors}' \
+      -V authors="#{authors}" \
       -V month=#{paper_month} \
       -V day=#{paper_day} \
       -V year=#{paper_year} \
