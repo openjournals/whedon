@@ -182,13 +182,13 @@ module Whedon
         orcid = author.orcid
 
         if index == 0
-          authors_string << '<person_name sequence="first" contributor_role="author">'
+          authors_string << '<person_name sequence=\"first\" contributor_role=\"author\">'
         else
-          authors_string << '<person_name sequence="additional" contributor_role="author">'
+          authors_string << '<person_name sequence=\"additional\" contributor_role=\"author\">'
         end
 
-        authors_string << "<given_name>#{given_name}</given_name>"
-        authors_string << "<surname>#{surname}</surname>"
+        authors_string << "<given_name>#{given_name.encode(:xml => :text)}</given_name>"
+        authors_string << "<surname>#{surname.encode(:xml => :text)}</surname>"
         authors_string << "<ORCID>http://orcid.org/#{author.orcid}</ORCID>" if !orcid.nil?
         authors_string << "</person_name>"
       end
