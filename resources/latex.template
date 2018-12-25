@@ -15,11 +15,7 @@
 \usepackage{amssymb,amsmath}
 \usepackage{ifxetex,ifluatex}
 \usepackage{seqsplit}
-\let\textttOrig=\texttt
-\def\texttt#1{\expandafter\textttOrig{\seqsplit{#1}}}
-\renewcommand{\seqinsert}{\ifmmode
-  \allowbreak
-  \else\penalty6000\hspace{0pt plus 0.02em}\fi}
+
 
 \usepackage{fixltx2e} % provides \textsubscript
 \usepackage[
@@ -28,6 +24,26 @@
 %  citestyle=numeric
 ]{biblatex}
 \bibliography{$bibliography$}
+
+% --- Splitting \texttt --------------------------------------------------
+
+\let\textttOrig=\texttt
+\def\texttt#1{\expandafter\textttOrig{\seqsplit{#1}}}
+\renewcommand{\seqinsert}{\ifmmode
+  \allowbreak
+  \else\penalty6000\hspace{0pt plus 0.02em}\fi}
+
+
+% --- Transform URLs in the form \href{https://doi.org/DOI}{DOI}
+% --- into splittable \href{https://doi.org/DOI}{\path{DOI}}
+
+\let\hrefOrig=\href
+\def\href#1#2{\def\tempa{#1}\def\tempb{https://doi.org/#2}%
+	\ifx\tempa\tempb\relax
+	   \hrefOrig{#1}{\path{#2}}%
+	\else
+	    \hrefOrig{#1}{#2}%
+	\fi}
 
 
 % --- Page layout -------------------------------------------------------------
