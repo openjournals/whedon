@@ -2,6 +2,7 @@ require_relative 'github'
 require 'restclient'
 require 'securerandom'
 require 'yaml'
+require 'uri'
 
 module Whedon
   class Processor
@@ -152,6 +153,14 @@ module Whedon
       return "#{paper.citation_author}, (#{paper_year}). #{paper.plain_title}. #{ENV['JOURNAL_NAME']}, #{paper_volume}(#{paper_issue}), #{paper.review_issue_id}, https://doi.org/#{paper.formatted_doi}"
     end
 
+    def authors_map
+      authors = {}
+      paper.authors.each do |a|
+        authors[a.orcid] = a.name
+      end
+      return authors
+    end
+
     def deposit
       crossref_deposit
       joss_deposit
@@ -173,6 +182,7 @@ module Whedon
                   :archive_doi => archive_doi,
                   :citation_string => citation_string,
                   :title => paper.plain_title,
+                  :authors => URI.encode_www_form(authors_map),
                   :secret => ENV['WHEDON_SECRET']
                 })
 
