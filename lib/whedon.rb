@@ -174,27 +174,27 @@ module Whedon
 
     # Returns an XML snippet to be included in the Crossref XML
     def crossref_authors
-      authors_string = "<contributors>"
-
-      authors.each_with_index do |author, index|
-        given_name = author.given_name
-        surname = author.last_name
-        orcid = author.orcid
-
-        if index == 0
-          authors_string << '<person_name sequence=\"first\" contributor_role=\"author\">'
-        else
-          authors_string << '<person_name sequence=\"additional\" contributor_role=\"author\">'
-        end
-
-        authors_string << "<given_name>#{given_name.encode(:xml => :text)}</given_name>"
-        authors_string << "<surname>#{surname.encode(:xml => :text)}</surname>"
-        authors_string << "<ORCID>http://orcid.org/#{author.orcid}</ORCID>" if !orcid.nil?
-        authors_string << "</person_name>"
+      builder = Nokogiri::XML::Builder.new do |xml|
+        xml.contributors {
+          authors.each_with_index do |author, index|
+            given_name = author.given_name
+            surname = author.last_name
+            orcid = author.orcid
+            if index == 0
+              sequence = "first"
+            else
+              sequence = "additional"
+            end
+            xml.person_name(:sequence => sequence, :contributor_role => "author") {
+              xml.given_name given_name.encode(:xml => :text)
+              xml.surname surname.encode(:xml => :text)
+              xml.ORCID "http://orcid.org/#{author.orcid}" if !orcid.nil?
+            }
+          end
+        }
       end
 
-      authors_string << "</contributors>"
-      return authors_string
+      return builder.doc.xpath('//contributors').to_xml
     end
 
     def google_scholar_authors

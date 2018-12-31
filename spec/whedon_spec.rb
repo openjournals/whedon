@@ -66,6 +66,6 @@ describe Whedon do
   end
 
   it "should know how to handle authors with a corresponding author set" do
-    
+
   end
 end
