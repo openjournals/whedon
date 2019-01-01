@@ -3,6 +3,7 @@ require 'restclient'
 require 'securerandom'
 require 'yaml'
 require 'uri'
+require 'json'
 
 module Whedon
   class Processor
@@ -182,7 +183,7 @@ module Whedon
                   :archive_doi => archive_doi,
                   :citation_string => citation_string,
                   :title => paper.plain_title,
-                  :authors => URI.encode_www_form(authors_map),
+                  :authors => URI.encode_www_form_component(authors_map.to_json),
                   :secret => ENV['WHEDON_SECRET']
                 })
 
