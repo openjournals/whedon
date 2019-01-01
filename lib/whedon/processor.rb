@@ -155,8 +155,8 @@ module Whedon
 
     def authors_map
       authors = {}
-      paper.authors.each do |a|
-        authors[a.orcid] = a.name
+      paper.authors.each_with_index do |a, index|
+        authors[index] = {'name' => a.name, 'orcid' => a.orcid}
       end
       return authors
     end
