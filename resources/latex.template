@@ -244,6 +244,16 @@ $endif$
 $if(tables)$
 \usepackage{longtable,booktabs}
 $endif$
+
+% --- Making captions robust by suppressing lot/lof entries
+\let\captionOrig=\caption
+\def\caption#1{\captionOrig[]{#1}}
+\makeatletter
+\let\LT@captionOrig=\LT@caption
+\def\LT@caption{\LT@captionOrig[]}
+\makeatother
+
+
 $if(graphics)$
 \usepackage{graphicx,grffile}
 \makeatletter
