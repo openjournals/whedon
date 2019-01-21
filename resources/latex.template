@@ -245,13 +245,17 @@ $if(tables)$
 \usepackage{longtable,booktabs}
 $endif$
 
-% --- Making captions robust by suppressing lot/lof entries
-\let\captionOrig=\caption
-\def\caption#1{\captionOrig[]{#1}}
-\makeatletter
-\let\LT@captionOrig=\LT@caption
-\def\LT@caption{\LT@captionOrig[]}
-\makeatother
+% --- We redefined \texttt, but in sections and captions we want the
+% --- old definition
+\let\addcontentslineOrig=\addcontentsline
+\def\addcontentsline#1#2#3{\bgroup
+  \let\texttt=\textttOrig\addcontentslineOrig{#1}{#2}{#3}\egroup}
+\let\markbothOrig\markboth
+\def\markboth#1#2{\bgroup
+  \let\texttt=\textttOrig\markbothOrig{#1}{#2}\egroup}
+\let\markrightOrig\markright
+\def\markright#1{\bgroup
+  \let\texttt=\textttOrig\markrightOrig{#1}\egroup}
 
 
 $if(graphics)$
