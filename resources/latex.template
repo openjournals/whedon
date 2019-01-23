@@ -152,6 +152,27 @@
 \renewcommand\AB@affilsepx{ \protect\Affilfont}
 %\renewcommand\AB@affilnote[1]{{\bfseries #1}\hspace{2pt}}
 \renewcommand\AB@affilnote[1]{{\bfseries #1}\hspace{3pt}}
+\renewcommand{\affil}[2][]%
+   {\newaffiltrue\let\AB@blk@and\AB@pand
+      \if\relax#1\relax\def\AB@note{\AB@thenote}\else\def\AB@note{#1}%
+        \setcounter{Maxaffil}{0}\fi
+        \begingroup
+        \let\href=\href@Orig
+        \let\texttt=\textttOrig
+        \let\protect\@unexpandable@protect
+        \def\thanks{\protect\thanks}\def\footnote{\protect\footnote}%
+        \@temptokena=\expandafter{\AB@authors}%
+        {\def\\{\protect\\\protect\Affilfont}\xdef\AB@temp{#2}}%
+         \xdef\AB@authors{\the\@temptokena\AB@las\AB@au@str
+         \protect\\[\affilsep]\protect\Affilfont\AB@temp}%
+         \gdef\AB@las{}\gdef\AB@au@str{}%
+        {\def\\{, \ignorespaces}\xdef\AB@temp{#2}}%
+        \@temptokena=\expandafter{\AB@affillist}%
+        \xdef\AB@affillist{\the\@temptokena \AB@affilsep
+          \AB@affilnote{\AB@note}\protect\Affilfont\AB@temp}%
+      \endgroup
+       \let\AB@affilsep\AB@affilsepx
+}
 \makeatother
 \renewcommand\Authfont{\sffamily\bfseries}
 \renewcommand\Affilfont{\sffamily\small\mdseries}
