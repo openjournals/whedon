@@ -99,8 +99,7 @@ module Whedon
 
       # TODO: Sanitize all the things!
       paper_title = paper.title.gsub!('_', '\_')
-      plain_title = paper.plain_title.gsub('_', '\_')
-      plain_title = paper.plain_title.gsub('#', '\#')
+      plain_title = paper.plain_title.gsub('_', '\_').gsub('#', '\#')
       paper_year ||= Time.now.strftime('%Y')
       paper_issue ||= @current_issue
       paper_volume ||= @current_volume
