@@ -121,8 +121,6 @@ module Whedon
       -V journal_name='#{ENV['JOURNAL_NAME']}' \
       -V journal_issn=#{ENV['JOURNAL_ISSN']} \
       -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS']}" \
-      -V formatted_doi="#{paper.formatted_doi}" \
-      -V review_issue_url="#{paper.review_issue_url}" \
       -V graphics="true" \
       -V issue="#{paper_issue}" \
       -V volume="#{paper_volume}" \
@@ -135,10 +133,7 @@ module Whedon
       -V published="#{published}" \
       -V jats_authors='#{paper.jats_authors}' \
       -V jats_affiliations='#{paper.jats_affiliations}' \
-      -V formatted_doi="#{paper.formatted_doi}" \
-      -V citation_author="#{paper.citation_author}" \
       -V paper_title='#{paper.title}' \
-      -V footnote_paper_title='#{plain_title}' \
       -t jats \
       -s \
       --filter pandoc-citeproc \
@@ -189,7 +184,6 @@ module Whedon
       -V year="#{paper_year}" \
       -V submitted="#{submitted}" \
       -V published="#{published}" \
-      -V formatted_doi="#{paper.formatted_doi}" \
       -V citation_author="#{paper.citation_author}" \
       -V paper_title='#{paper.title}' \
       -V footnote_paper_title='#{plain_title}' \
