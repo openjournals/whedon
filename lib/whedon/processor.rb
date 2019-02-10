@@ -89,6 +89,68 @@ module Whedon
     def compile
       generate_pdf
       generate_crossref
+      generate_jats
+    end
+
+    def generate_jats(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
+      latex_template_path = "#{Whedon.resources}/latex.template"
+      jats_template_path = "#{Whedon.resources}/jats.template"
+      csl_file = "#{Whedon.resources}/jats.csl"
+
+      # TODO: Sanitize all the things!
+      paper_title = paper.title.gsub!('_', '\_')
+      plain_title = paper.plain_title.gsub('_', '\_').gsub('#', '\#')
+      paper_day ||= Time.now.strftime('%d')
+      paper_month ||= Time.now.strftime('%m')
+      paper_year ||= Time.now.strftime('%Y')
+      paper_issue ||= @current_issue
+      paper_volume ||= @current_volume
+      # FIX ME - when the JOSS application has an actual API this could/should
+      # be cleaned up
+      submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
+      published = Time.now.strftime('%d %B %Y')
+
+      # Optionally pass a custom branch name
+      `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
+
+      # TODO: may eventually want to swap out the latex template
+      `cd #{paper.directory} && pandoc \
+      -V repository="#{repository_address}" \
+      -V archive_doi="#{archive_doi}" \
+      -V paper_url="#{paper.pdf_url}" \
+      -V journal_name='#{ENV['JOURNAL_NAME']}' \
+      -V journal_issn=#{ENV['JOURNAL_ISSN']} \
+      -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS']}" \
+      -V formatted_doi="#{paper.formatted_doi}" \
+      -V review_issue_url="#{paper.review_issue_url}" \
+      -V graphics="true" \
+      -V issue="#{paper_issue}" \
+      -V volume="#{paper_volume}" \
+      -V page="#{paper.review_issue_id}" \
+      -V logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}-logo.png" \
+      -V month=#{paper_month} \
+      -V day=#{paper_day} \
+      -V year="#{paper_year}" \
+      -V submitted="#{submitted}" \
+      -V published="#{published}" \
+      -V jats_authors='#{paper.jats_authors}' \
+      -V jats_affiliations='#{paper.jats_affiliations}' \
+      -V formatted_doi="#{paper.formatted_doi}" \
+      -V citation_author="#{paper.citation_author}" \
+      -V paper_title='#{paper.title}' \
+      -V footnote_paper_title='#{plain_title}' \
+      -t jats \
+      -s \
+      --filter pandoc-citeproc \
+      -o #{paper.filename_doi}.jats.xml  \
+      #{File.basename(paper.paper_path)} \
+      --template #{jats_template_path}`
+
+      if File.exists?("#{paper.directory}/#{paper.filename_doi}.jats.xml")
+        puts "#{paper.directory}/#{paper.filename_doi}.jats.xml"
+      else
+        abort("Looks like we failed to compile the JATS XML")
+      end
     end
 
     # Generate the paper PDF

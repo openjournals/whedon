@@ -172,6 +172,37 @@ module Whedon
       return authors_array.join(', ')
     end
 
+    def jats_authors
+      builder = Nokogiri::XML::Builder.new do |xml|
+        xml.send(:'contrib-group', "content-type" => "authors") {
+          authors.each_with_index do |author, index|
+            given_name = author.given_name
+            surname = author.last_name
+            orcid = author.orcid
+            xml.contrib("contrib-type" => "author", "id" => "author-#{index+1}") {
+              xml.send(:'contrib-id', orcid, "contrib-id-type" => "orcid")
+              xml.name {
+                xml.surname surname.encode(:xml => :text)
+                xml.send(:'given-names', given_name.encode(:xml => :text))
+              }
+              xml.xref("ref-type" => "aff", "rid" => "aff-#{index+1}")
+            }
+          end
+        }
+      end
+
+      return builder.doc.xpath('//contrib-group').to_xml
+    end
+
+    def jats_affiliations
+      affiliations = ""
+      authors.each_with_index do |author, index|
+        affiliations << "<aff id=\"aff-#{index+1}\">#{author.affiliation}</aff>\n"
+      end
+
+      return affiliations
+    end
+
     # Returns an XML snippet to be included in the Crossref XML
     def crossref_authors
       builder = Nokogiri::XML::Builder.new do |xml|
