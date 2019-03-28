@@ -73,6 +73,16 @@ module Whedon
       return bib_paths
     end
 
+    # Check that the bibtex file doesn't have extra entries
+    def check_for_extra_bibtex_entries
+      citations_in_paper = File.read(paper.paper_path).scan(/@\w+/)
+      bibtex_entries = Bibtex.new(paper.bibtex_path).bibtex_keys
+
+      extraneous_references = bibtex_entries - citations_in_paper
+
+      abort("Can't compile the PDF, the bibtex file has #{extraneous_references.size} extraneous references: #{extraneous_references.join(', ')}") if extraneous_references.any?
+    end
+
     # Find XML paper
     def find_xml_paths(search_path=nil)
       search_path ||= "tmp/#{review_issue_id}"
@@ -111,6 +121,7 @@ module Whedon
       # Optionally pass a custom branch name
       `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
 
+      check_for_extra_bibtex_entries
       # TODO: may eventually want to swap out the latex template
       `cd #{paper.directory} && pandoc \
       -V repository="#{repository_address}" \
