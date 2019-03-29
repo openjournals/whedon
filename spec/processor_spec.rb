@@ -32,4 +32,16 @@ describe Whedon::Processor do
     generated = processor.generate_crossref
     expect(generated).to eql("fixtures/paper/10.21105.joss.00017.crossref.xml")
   end
+
+  it "should know what to do with extra references" do
+    expect{processor.check_for_extra_bibtex_entries}.to raise_error SystemExit
+  end
+
+  it "should return an error message about the extraneous references" do
+    expect {
+      begin processor.check_for_extra_bibtex_entries
+      rescue SystemExit
+      end
+    }.to output("Can't compile the PDF, the bibtex file has 6 extraneous references: @SWIFT07, @SWIFT09, @SWIFT11, @PEGASUS05, @PEGASUS04, @AIMES15\n").to_stderr
+  end
 end
