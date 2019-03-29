@@ -75,7 +75,7 @@ module Whedon
 
     # Check that the bibtex file doesn't have extra entries
     def check_for_extra_bibtex_entries
-      citations_in_paper = File.read(paper.paper_path).scan(/@\w+/)
+      citations_in_paper = File.read(paper.paper_path).scan(/@[\w|-]+/)
       bibtex_entries = Bibtex.new(paper.bibtex_path).bibtex_keys
 
       extraneous_references = bibtex_entries - citations_in_paper
