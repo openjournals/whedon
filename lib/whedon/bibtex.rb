@@ -16,6 +16,18 @@ module Whedon
       @citation_string = ""
     end
 
+    def bibtex_keys
+      entries = BibTeX.open(@bib_file, :filter => :latex)
+      
+      keys = []
+      entries.each do |entry|
+        next if entry.comment?
+        keys << "@#{entry.key}"
+      end
+
+      return keys
+    end
+
     # Generates the <citations></citations> XML block for Crossref
     # Returns an XML fragment <citations></citations> with or
     # without citations within
