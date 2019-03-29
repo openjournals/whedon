@@ -80,7 +80,7 @@ module Whedon
 
       extraneous_references = bibtex_entries - citations_in_paper
 
-      abort("Can't compile the PDF, the bibtex file has #{extraneous_references.size} extraneous references: #{extraneous_references.join(', ')}") if extraneous_references.any?
+      abort("Can't compile the PDF, the bibtex file has #{extraneous_references.size} extraneous references: `#{extraneous_references.join(', ')}`") if extraneous_references.any?
     end
 
     # Find XML paper

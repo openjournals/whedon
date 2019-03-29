@@ -42,6 +42,6 @@ describe Whedon::Processor do
       begin processor.check_for_extra_bibtex_entries
       rescue SystemExit
       end
-    }.to output("Can't compile the PDF, the bibtex file has 6 extraneous references: @SWIFT07, @SWIFT09, @SWIFT11, @PEGASUS05, @PEGASUS04, @AIMES15\n").to_stderr
+    }.to output("Can't compile the PDF, the bibtex file has 6 extraneous references: `@SWIFT07, @SWIFT09, @SWIFT11, @PEGASUS05, @PEGASUS04, @AIMES15`\n").to_stderr
   end
 end
