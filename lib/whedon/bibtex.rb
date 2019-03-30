@@ -18,7 +18,7 @@ module Whedon
 
     def bibtex_keys
       entries = BibTeX.open(@bib_file, :filter => :latex)
-      
+
       keys = []
       entries.each do |entry|
         next if entry.comment?
@@ -32,14 +32,18 @@ module Whedon
     # Returns an XML fragment <citations></citations> with or
     # without citations within
     # TODO: should probably use Ruby builder templates here
-    def generate_citations
+    def generate_citations(citations=nil)
       entries = BibTeX.open(@bib_file, :filter => :latex)
-
+      
       if entries.empty?
         @citation_string = ""
       else
         entries.each do |entry|
           next if entry.comment?
+
+          if citations
+            next unless citations.include?("@#{entry.key}")
+          end
           @citation_string << make_citation(entry)
           @ref_count += 1
         end
