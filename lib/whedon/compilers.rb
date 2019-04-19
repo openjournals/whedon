@@ -37,9 +37,9 @@ module Compilers
     year = ENV["JLCON_YEAR"] === nil ? 2019 : ENV["JLCON_YEAR"]
     journal_name = ENV["JOURNAL_NAME"]
 
-    `cd #{paper.directory} && rm *.aux \
-    && rm *.blg && rm *.fls && rm *.log\
-    && rm *.fdb_latexmk`
+    `cd #{paper.directory} && rm -f *.aux \
+    && rm -f *.blg && rm -f *.fls && rm -f *.log\
+    && rm -f *.fdb_latexmk`
 
     open("#{paper.directory}/header.tex", 'w') do |f|
       f << "% **************GENERATED FILE, DO NOT EDIT**************\n\n"
