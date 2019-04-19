@@ -27,6 +27,11 @@ describe Whedon::Processor do
     expect(processor.find_paper_paths('fixtures/test_paper')).to include("fixtures/test_paper/paper.md")
   end
 
+  it "should know how to find latex papers to be compiled" do
+    expect(processor.find_paper_paths('fixtures/latex_paper').size).to eql(1)
+    expect(processor.find_paper_paths('fixtures/latex_paper')).to include("fixtures/latex_paper/paper.tex")
+  end
+
   it "should know how to compile Crossref XML" do
     expect(paper_with_funky_bib_path.bibtex_path).to eq("fixtures/paper/weird-bib-path.bib")
     generated = processor.generate_crossref

@@ -6,6 +6,7 @@ require 'yaml'
 module Whedon
   class Processor
     include GitHub
+    include Compilers
 
     attr_accessor :review_issue_id
     attr_accessor :review_body
@@ -55,7 +56,7 @@ module Whedon
       paper_paths = []
 
       Find.find(search_path) do |path|
-        paper_paths << path if path =~ /paper\.md$/
+        paper_paths << path if path =~ /paper\.tex$|paper\.md$/
       end
 
       return paper_paths
@@ -91,59 +92,59 @@ module Whedon
       generate_crossref
     end
 
-    # Generate the paper PDF
-    # Optionally pass in a custom branch name as first param
-    def generate_pdf(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
-      latex_template_path = "#{Whedon.resources}/latex.template"
-      csl_file = "#{Whedon.resources}/apa.csl"
-
-      # TODO: Sanitize all the things!
-      paper_title = paper.title.gsub!('_', '\_')
-      plain_title = paper.plain_title.gsub('_', '\_').gsub('#', '\#')
-      paper_year ||= Time.now.strftime('%Y')
-      paper_issue ||= @current_issue
-      paper_volume ||= @current_volume
-      # FIX ME - when the JOSS application has an actual API this could/should
-      # be cleaned up
-      submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
-      published = Time.now.strftime('%d %B %Y')
-
-      # Optionally pass a custom branch name
-      `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
-
-      # TODO: may eventually want to swap out the latex template
-      `cd #{paper.directory} && pandoc \
-      -V repository="#{repository_address}" \
-      -V archive_doi="#{archive_doi}" \
-      -V paper_url="#{paper.pdf_url}" \
-      -V journal_name='#{ENV['JOURNAL_NAME']}' \
-      -V formatted_doi="#{paper.formatted_doi}" \
-      -V review_issue_url="#{paper.review_issue_url}" \
-      -V graphics="true" \
-      -V issue="#{paper_issue}" \
-      -V volume="#{paper_volume}" \
-      -V page="#{paper.review_issue_id}" \
-      -V logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}-logo.png" \
-      -V year="#{paper_year}" \
-      -V submitted="#{submitted}" \
-      -V published="#{published}" \
-      -V formatted_doi="#{paper.formatted_doi}" \
-      -V citation_author="#{paper.citation_author}" \
-      -V paper_title='#{paper.title}' \
-      -V footnote_paper_title='#{plain_title}' \
-      -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
-      --pdf-engine=xelatex \
-      --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
-      --from markdown+autolink_bare_uris \
-      --csl=#{csl_file} \
-      --template #{latex_template_path}`
-
-      if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
-        puts "#{paper.directory}/#{paper.filename_doi}.pdf"
-      else
-        abort("Looks like we failed to compile the PDF")
-      end
-    end
+    # # Generate the paper PDF
+    # # Optionally pass in a custom branch name as first param
+    # def generate_pdf(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
+    #   latex_template_path = "#{Whedon.resources}/latex.template"
+    #   csl_file = "#{Whedon.resources}/apa.csl"
+    #
+    #   # TODO: Sanitize all the things!
+    #   paper_title = paper.title.gsub!('_', '\_')
+    #   plain_title = paper.plain_title.gsub('_', '\_').gsub('#', '\#')
+    #   paper_year ||= Time.now.strftime('%Y')
+    #   paper_issue ||= @current_issue
+    #   paper_volume ||= @current_volume
+    #   # FIX ME - when the JOSS application has an actual API this could/should
+    #   # be cleaned up
+    #   submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
+    #   published = Time.now.strftime('%d %B %Y')
+    #
+    #   # Optionally pass a custom branch name
+    #   `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
+    #
+    #   # TODO: may eventually want to swap out the latex template
+    #   `cd #{paper.directory} && pandoc \
+    #   -V repository="#{repository_address}" \
+    #   -V archive_doi="#{archive_doi}" \
+    #   -V paper_url="#{paper.pdf_url}" \
+    #   -V journal_name='#{ENV['JOURNAL_NAME']}' \
+    #   -V formatted_doi="#{paper.formatted_doi}" \
+    #   -V review_issue_url="#{paper.review_issue_url}" \
+    #   -V graphics="true" \
+    #   -V issue="#{paper_issue}" \
+    #   -V volume="#{paper_volume}" \
+    #   -V page="#{paper.review_issue_id}" \
+    #   -V logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}-logo.png" \
+    #   -V year="#{paper_year}" \
+    #   -V submitted="#{submitted}" \
+    #   -V published="#{published}" \
+    #   -V formatted_doi="#{paper.formatted_doi}" \
+    #   -V citation_author="#{paper.citation_author}" \
+    #   -V paper_title='#{paper.title}' \
+    #   -V footnote_paper_title='#{plain_title}' \
+    #   -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
+    #   --pdf-engine=xelatex \
+    #   --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
+    #   --from markdown+autolink_bare_uris \
+    #   --csl=#{csl_file} \
+    #   --template #{latex_template_path}`
+    #
+    #   if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
+    #     puts "#{paper.directory}/#{paper.filename_doi}.pdf"
+    #   else
+    #     abort("Looks like we failed to compile the PDF")
+    #   end
+    # end
 
     def citation_string
       paper_year ||= Time.now.strftime('%Y')
@@ -215,7 +216,7 @@ module Whedon
 
       # Pass the citations that are actually in the paper to the CrossRef
       # citations generator.
-      
+
       citations_in_paper = File.read(paper.paper_path).scan(/@[\w|-]+/)
       citations = bibtex.generate_citations(citations_in_paper)
       authors = paper.crossref_authors
