@@ -71,7 +71,6 @@ module Whedon
     # e.g. http://joss.theoj.org/about#paper_structure
     # Optionally return early if no paper_path is set
     def initialize(review_issue_id, paper_path=nil)
-      puts "Paper path is #{paper_path}"
       @review_issue_id = review_issue_id
       @review_repository = ENV['REVIEW_REPOSITORY']
       return if paper_path.nil?
