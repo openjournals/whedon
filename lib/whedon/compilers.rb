@@ -20,8 +20,6 @@ module Compilers
   end
 
   def pdf_from_latex(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
-    puts "Compiling from LaTeX source"
-
     # Optionally pass a custom branch name
     `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
 
@@ -83,7 +81,6 @@ module Compilers
   end
 
   def pdf_from_markdown(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
-    puts "Compiling from Markdown"
     latex_template_path = "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/latex.template"
     csl_file = "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/apa.csl"
 
