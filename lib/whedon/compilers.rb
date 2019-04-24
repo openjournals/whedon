@@ -1,6 +1,7 @@
 # This module has methods to compile PDFs and Crossref XML depending upon
 # the content type of the paper (Markdown or LaTeX)
 module Compilers
+
   # Generate the paper PDF
   # Optionally pass in a custom branch name as first param
   def generate_pdf(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
@@ -135,12 +136,68 @@ module Compilers
 
   def crossref_from_markdown(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
     cross_ref_template_path = "#{Whedon.resources}/crossref.template"
-    bibtex = Bibtex.new(paper.bibtex_path)
+    bibtex = Whedon::BibtexParser.new(paper.bibtex_path)
 
     # Pass the citations that are actually in the paper to the CrossRef
     # citations generator.
 
     citations_in_paper = File.read(paper.paper_path).scan(/@[\w|-]+/)
+    citations = bibtex.generate_citations(citations_in_paper)
+    authors = paper.crossref_authors
+    # TODO fix this when we update the DOI URLs
+    # crossref_doi = archive_doi.gsub("http://dx.doi.org/", '')
+
+    paper_day ||= Time.now.strftime('%d')
+    paper_month ||= Time.now.strftime('%m')
+    paper_year ||= Time.now.strftime('%Y')
+    paper_issue ||= @current_issue
+    paper_volume ||= @current_volume
+
+    `cd #{paper.directory} && pandoc \
+    -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
+    -V doi_batch_id=#{generate_doi_batch_id} \
+    -V formatted_doi=#{paper.formatted_doi} \
+    -V archive_doi=#{archive_doi} \
+    -V review_issue_url=#{paper.review_issue_url} \
+    -V paper_url=#{paper.pdf_url} \
+    -V joss_resource_url=#{paper.joss_resource_url} \
+    -V journal_alias=#{ENV['JOURNAL_ALIAS']} \
+    -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS'].upcase} \
+    -V journal_url=#{ENV['JOURNAL_URL']} \
+    -V journal_name='#{ENV['JOURNAL_NAME']}' \
+    -V journal_issn=#{ENV['JOURNAL_ISSN']} \
+    -V citations='#{citations}' \
+    -V authors='#{authors}' \
+    -V month=#{paper_month} \
+    -V day=#{paper_day} \
+    -V year=#{paper_year} \
+    -V issue=#{paper_issue} \
+    -V volume=#{paper_volume} \
+    -V page=#{paper.review_issue_id} \
+    -V title='#{paper.plain_title}' \
+    -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.crossref.xml \
+    --template #{cross_ref_template_path}`
+
+    if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
+      "#{paper.directory}/#{paper.filename_doi}.crossref.xml"
+    else
+      abort("Looks like we failed to compile the Crossref XML")
+    end
+  end
+
+  def crossref_from_latex(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
+    cross_ref_template_path = "#{Whedon.resources}/crossref.template"
+    bibtex = Whedon::BibtexParser.new(paper.bibtex_path)
+
+    # Pass the citations that are actually in the paper to the CrossRef
+    # citations generator.
+
+    citations_in_paper = File.read(paper.paper_path).scan(/(?<=\\cite\{)\w+/)
+    # FIXME
+    # Because of the way citations are handled in Pandoc, we need to prepend and @
+    # to the front of each of the citation strings.
+    citations_in_paper = citations_in_paper.map {|c| c.prepend("@")}
+
     citations = bibtex.generate_citations(citations_in_paper)
     authors = paper.crossref_authors
     # TODO fix this when we update the DOI URLs

@@ -8,7 +8,7 @@ Dotenv.load
 
 require_relative 'whedon/auditor'
 require_relative 'whedon/author'
-require_relative 'whedon/bibtex'
+require_relative 'whedon/bibtex_parser'
 require_relative 'whedon/compilers'
 require_relative 'whedon/github'
 require_relative 'whedon/orcid_validator'
