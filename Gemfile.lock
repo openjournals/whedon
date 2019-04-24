@@ -9,7 +9,7 @@ PATH
       nameable (~> 1.1)
       octokit (~> 4.0)
       redcarpet (~> 3.3)
-      rest-client (~> 1.8)
+      rest-client (>= 1.8)
       thor (~> 0.19)
       tilt
       unicode (~> 0.4.4)
@@ -30,8 +30,8 @@ GEM
     diff-lcs (1.2.5)
     domain_name (0.5.20180417)
       unf (>= 0.0.5, < 1.0.0)
-    dotenv (2.5.0)
-    faraday (0.15.3)
+    dotenv (2.7.2)
+    faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     hashdiff (0.3.0)
     http-cookie (1.0.3)
@@ -47,7 +47,9 @@ GEM
       octokit (~> 4.0)
       thor (~> 0.19)
     method_source (0.8.2)
-    mime-types (2.99.3)
+    mime-types (3.2.2)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2019.0331)
     mini_portile2 (2.3.0)
     multi_xml (0.6.0)
     multipart-post (2.0.0)
@@ -55,7 +57,7 @@ GEM
     netrc (0.11.0)
     nokogiri (1.8.5)
       mini_portile2 (~> 2.3.0)
-    octokit (4.12.0)
+    octokit (4.14.0)
       sawyer (~> 0.8.0, >= 0.5.3)
     pry (0.10.3)
       coderay (~> 1.1.0)
@@ -63,10 +65,10 @@ GEM
       slop (~> 3.4)
     rake (10.5.0)
     redcarpet (3.4.0)
-    rest-client (1.8.0)
+    rest-client (2.0.2)
       http-cookie (>= 1.0.2, < 2.0)
-      mime-types (>= 1.16, < 3.0)
-      netrc (~> 0.7)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     rspec (3.4.0)
       rspec-core (~> 3.4.0)
       rspec-expectations (~> 3.4.0)
@@ -85,11 +87,11 @@ GEM
       addressable (>= 2.3.5, < 2.6)
       faraday (~> 0.8, < 1.0)
     slop (3.6.0)
-    thor (0.20.0)
-    tilt (2.0.8)
+    thor (0.20.3)
+    tilt (2.0.9)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.7.5)
+    unf_ext (0.0.7.6)
     unicode (0.4.4.4)
     vcr (2.9.3)
     webmock (1.24.6)
@@ -101,7 +103,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  bundler (~> 1.6)
+  bundler
   nokogiri (= 1.8.5)
   pry (~> 0.10)
   rake (~> 10.0)
@@ -111,4 +113,4 @@ DEPENDENCIES
   whedon!
 
 BUNDLED WITH
-   1.14.6
+   2.0.1
