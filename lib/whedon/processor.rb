@@ -217,7 +217,7 @@ module Whedon
       # Pass the citations that are actually in the paper to the CrossRef
       # citations generator.
 
-      citations_in_paper = File.read(paper.paper_path).scan(/@[\w|-]+/)
+      citations_in_paper = File.read(paper.paper_path).scan(/@[\w|\-|:|_|\/|\+|\.]+/)
       citations = bibtex.generate_citations(citations_in_paper)
       authors = paper.crossref_authors
       # TODO fix this when we update the DOI URLs
