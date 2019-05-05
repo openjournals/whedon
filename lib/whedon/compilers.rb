@@ -31,9 +31,9 @@ module Compilers
     end
 
     # ENV variables or default for issue/volume/year
-    issue = ENV["JLCON_ISSUE"] === nil ? 1 : ENV["JLCON_ISSUE"]
-    volume = ENV["JLCON_VOLUME"] === nil ? 1 : ENV["JLCON_VOLUME"]
-    year = ENV["JLCON_YEAR"] === nil ? 2019 : ENV["JLCON_YEAR"]
+    issue ||= @current_issue
+    volume ||= @current_volume
+    year = Time.new.year
     journal_name = ENV["JOURNAL_NAME"]
 
     `cd #{paper.directory} && rm -f *.aux \

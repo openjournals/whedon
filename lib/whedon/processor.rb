@@ -26,8 +26,8 @@ module Whedon
       @repository_address = review_body[REPO_REGEX]
       @archive_doi = review_body[ARCHIVE_REGEX]
       # Probably a much nicer way to do this...
-      @current_volume = Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1)
-      @current_issue = 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month))
+      @current_volume = ENV["CURRENT_VOLUME"].nil? ? Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1) : ENV["CURRENT_VOLUME"]
+      @current_issue = ENV["CURRENT_ISSUE"].nil? ? 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month)) : ENV["CURRENT_ISSUE"]
     end
 
     def set_paper(path)
