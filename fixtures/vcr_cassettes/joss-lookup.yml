@@ -1,0 +1,58 @@
+---
+http_interactions:
+- request:
+    method: get
+    uri: http://joss.theoj.org/papers/lookup/17
+    body:
+      encoding: US-ASCII
+      string: ''
+    headers:
+      Accept:
+      - "*/*"
+      Accept-Encoding:
+      - gzip, deflate
+      User-Agent:
+      - rest-client/2.0.2 (darwin18.2.0 x86_64) ruby/2.4.1p111
+      Host:
+      - joss.theoj.org
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - Cowboy
+      Connection:
+      - close
+      Date:
+      - Fri, 10 May 2019 19:24:48 GMT
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      X-Download-Options:
+      - noopen
+      X-Permitted-Cross-Domain-Policies:
+      - none
+      Referrer-Policy:
+      - strict-origin-when-cross-origin
+      Content-Type:
+      - application/json; charset=utf-8
+      Etag:
+      - W/"05d1856d3f337cd56308f89f66165b9e"
+      Cache-Control:
+      - max-age=0, private, must-revalidate
+      X-Request-Id:
+      - 1ae0f4bc-d03f-4e02-af78-7cf89d6ab7c8
+      X-Runtime:
+      - '0.012129'
+      Via:
+      - 1.1 vegur
+    body:
+      encoding: UTF-8
+      string: '{"submitted":"11 May 2016","accepted":"11 May 2016"}'
+    http_version: 
+  recorded_at: Fri, 10 May 2019 19:24:48 GMT
+recorded_with: VCR 4.0.0

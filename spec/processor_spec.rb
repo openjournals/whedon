@@ -34,9 +34,12 @@ describe Whedon::Processor do
     end
 
     it "should know how to compile Crossref XML" do
-      expect(paper_with_funky_bib_path.bibtex_path).to eq("fixtures/paper/weird-bib-path.bib")
-      generated = processor.generate_crossref
-      expect(generated).to eql("fixtures/paper/10.21105.joss.00017.crossref.xml")
+      VCR.use_cassette('joss-lookup') do
+        ENV['JOURNAL_URL'] = 'http://joss.theoj.org'
+        expect(paper_with_funky_bib_path.bibtex_path).to eq("fixtures/paper/weird-bib-path.bib")
+        generated = processor.generate_crossref
+        expect(generated).to eql("fixtures/paper/10.21105.joss.00017.crossref.xml")
+      end
     end
   end
 
