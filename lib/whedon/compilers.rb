@@ -87,6 +87,16 @@ module Compilers
     return parsed.year
   end
 
+  def generate_month(date)
+    parsed = Date.parse(date)
+    return parsed.month
+  end
+
+  def generate_day(date)
+    parsed = Date.parse(date)
+    return parsed.day
+  end
+
   def pdf_from_markdown(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
     latex_template_path = "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/latex.template"
     csl_file = "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/apa.csl"
@@ -221,7 +231,8 @@ module Compilers
 
     # If we have already published the paper then overwrite the year, volume, issue
     if published
-      paper_day = Date.parse(published).strftime('%d')
+      paper_day = generate_day(published)
+      paper_month = generate_month(published)
       paper_year = generate_year(published)
       paper_issue = generate_issue(published)
       paper_volume = generate_volume(published)
