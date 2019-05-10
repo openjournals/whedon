@@ -44,6 +44,9 @@ class WhedonCli < Thor
     processor = Whedon::Processor.new(issue_id, review.issue_body)
     processor.archive_doi = 'PENDING'
 
+    # Need to checkout the new branch before looking for the paper.
+    `cd tmp/#{issue_id} && git checkout #{custom_branch} --quiet` if custom_branch
+
     paper_paths = processor.find_paper_paths
 
     if paper_paths.empty?

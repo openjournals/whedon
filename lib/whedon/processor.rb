@@ -268,7 +268,12 @@ module Whedon
     def generate_crossref(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
       cross_ref_template_path = "#{Whedon.resources}/crossref.template"
       bibtex = Bibtex.new(paper.bibtex_path)
-      citations = bibtex.generate_citations
+
+      # Pass the citations that are actually in the paper to the CrossRef
+      # citations generator.
+      
+      citations_in_paper = File.read(paper.paper_path).scan(/@[\w|-]+/)
+      citations = bibtex.generate_citations(citations_in_paper)
       authors = paper.crossref_authors
       # TODO fix this when we update the DOI URLs
       # crossref_doi = archive_doi.gsub("http://dx.doi.org/", '')
