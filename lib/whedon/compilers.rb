@@ -19,6 +19,14 @@ module Compilers
     end
   end
 
+  def generate_jats(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
+    if paper.latex_source?
+      jats_from_latex(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
+    elsif paper.markdown_source?
+      jats_from_markdown(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
+    end
+  end
+
   def pdf_from_latex(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
     puts "Compiling from LaTeX source"
 
@@ -113,6 +121,62 @@ module Compilers
     end
   end
 
+  def crossref_from_latex(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
+    cross_ref_template_path = "#{Whedon.resources}/crossref.template"
+    bibtex = Whedon::BibtexParser.new(paper.bibtex_path)
+
+    # Pass the citations that are actually in the paper to the CrossRef
+    # citations generator.
+
+    citations_in_paper = File.read(paper.paper_path).scan(/(?<=\\cite\{)\w+/)
+    # FIXME
+    # Because of the way citations are handled in Pandoc, we need to prepend and @
+    # to the front of each of the citation strings.
+    citations_in_paper = citations_in_paper.map {|c| c.prepend("@")}
+
+    citations = bibtex.generate_citations(citations_in_paper)
+    authors = paper.crossref_authors
+    # TODO fix this when we update the DOI URLs
+    # crossref_doi = archive_doi.gsub("http://dx.doi.org/", '')
+
+    paper_day ||= Time.now.strftime('%d')
+    paper_month ||= Time.now.strftime('%m')
+    paper_year ||= Time.now.strftime('%Y')
+    paper_issue ||= @current_issue
+    paper_volume ||= @current_volume
+
+    `cd #{paper.directory} && pandoc \
+    -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
+    -V doi_batch_id=#{generate_doi_batch_id} \
+    -V formatted_doi=#{paper.formatted_doi} \
+    -V archive_doi=#{archive_doi} \
+    -V review_issue_url=#{paper.review_issue_url} \
+    -V paper_url=#{paper.pdf_url} \
+    -V joss_resource_url=#{paper.joss_resource_url} \
+    -V journal_alias=#{ENV['JOURNAL_ALIAS']} \
+    -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS'].upcase} \
+    -V journal_url=#{ENV['JOURNAL_URL']} \
+    -V journal_name='#{ENV['JOURNAL_NAME']}' \
+    -V journal_issn=#{ENV['JOURNAL_ISSN']} \
+    -V citations='#{citations}' \
+    -V authors='#{authors}' \
+    -V month=#{paper_month} \
+    -V day=#{paper_day} \
+    -V year=#{paper_year} \
+    -V issue=#{paper_issue} \
+    -V volume=#{paper_volume} \
+    -V page=#{paper.review_issue_id} \
+    -V title='#{paper.plain_title}' \
+    -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.crossref.xml \
+    --template #{cross_ref_template_path}`
+
+    if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
+      "#{paper.directory}/#{paper.filename_doi}.crossref.xml"
+    else
+      abort("Looks like we failed to compile the Crossref XML")
+    end
+  end
+
   def crossref_from_markdown(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
     cross_ref_template_path = "#{Whedon.resources}/crossref.template"
     bibtex = Bibtex.new(paper.bibtex_path)
@@ -160,6 +224,66 @@ module Compilers
       "#{paper.directory}/#{paper.filename_doi}.crossref.xml"
     else
       abort("Looks like we failed to compile the Crossref XML")
+    end
+  end
+
+  def jats_from_latex(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
+    puts "JATS from LaTeX"
+  end
+
+  def jats_from_markdown(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
+    latex_template_path = "#{Whedon.resources}/latex.template"
+    jats_template_path = "#{Whedon.resources}/jats.template"
+    csl_file = "#{Whedon.resources}/jats.csl"
+
+    # TODO: Sanitize all the things!
+    paper_title = paper.title.gsub!('_', '\_')
+    plain_title = paper.plain_title.gsub('_', '\_').gsub('#', '\#')
+    paper_day ||= Time.now.strftime('%d')
+    paper_month ||= Time.now.strftime('%m')
+    paper_year ||= Time.now.strftime('%Y')
+    paper_issue ||= @current_issue
+    paper_volume ||= @current_volume
+    # FIX ME - when the JOSS application has an actual API this could/should
+    # be cleaned up
+    submitted = `curl #{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}`
+    published = Time.now.strftime('%d %B %Y')
+
+    # Optionally pass a custom branch name
+    `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
+
+    # TODO: may eventually want to swap out the latex template
+    `cd #{paper.directory} && pandoc \
+    -V repository="#{repository_address}" \
+    -V archive_doi="#{archive_doi}" \
+    -V paper_url="#{paper.pdf_url}" \
+    -V journal_name='#{ENV['JOURNAL_NAME']}' \
+    -V journal_issn=#{ENV['JOURNAL_ISSN']} \
+    -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS']}" \
+    -V graphics="true" \
+    -V issue="#{paper_issue}" \
+    -V volume="#{paper_volume}" \
+    -V page="#{paper.review_issue_id}" \
+    -V logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}-logo.png" \
+    -V month=#{paper_month} \
+    -V day=#{paper_day} \
+    -V year="#{paper_year}" \
+    -V submitted="#{submitted}" \
+    -V published="#{published}" \
+    -V jats_authors='#{paper.jats_authors}' \
+    -V jats_affiliations='#{paper.jats_affiliations}' \
+    -V paper_title='#{paper.title}' \
+    -t jats \
+    -s \
+    --filter pandoc-citeproc \
+    -o #{paper.filename_doi}.jats.xml  \
+    #{File.basename(paper.paper_path)} \
+    --template #{jats_template_path}`
+
+    if File.exists?("#{paper.directory}/#{paper.filename_doi}.jats.xml")
+      puts "#{paper.directory}/#{paper.filename_doi}.jats.xml"
+    else
+      abort("Looks like we failed to compile the JATS XML")
     end
   end
 end

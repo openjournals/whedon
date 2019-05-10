@@ -8,7 +8,8 @@ Dotenv.load
 
 require_relative 'whedon/auditor'
 require_relative 'whedon/author'
-require_relative 'whedon/bibtex'
+require_relative 'whedon/bibtex_parser'
+require_relative 'whedon/compilers'
 require_relative 'whedon/github'
 require_relative 'whedon/orcid_validator'
 require_relative 'whedon/processor'
@@ -39,9 +40,18 @@ module Whedon
     attr_accessor :review_issue_body
     attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path
 
-    EXPECTED_FIELDS = %w{
+    EXPECTED_MARKDOWN_FIELDS = %w{
       title
       tags
+      authors
+      affiliations
+      date
+      bibliography
+    }
+
+    EXPECTED_LATEX_FIELDS = %w{
+      title
+      keywords
       authors
       affiliations
       date
@@ -65,8 +75,9 @@ module Whedon
       @review_repository = ENV['REVIEW_REPOSITORY']
       return if paper_path.nil?
 
-      parsed = YAML.load_file(paper_path)
-      check_fields(parsed)
+      parsed = load_yaml(paper_path)
+
+      check_fields(parsed, paper_path)
       check_orcids(parsed)
 
       @paper_path = paper_path
@@ -77,9 +88,30 @@ module Whedon
       @bibliography_path = parsed['bibliography']
     end
 
+    def load_yaml(paper_path)
+      if paper_path.include?('.tex')
+        return YAML.load_file(paper_path.gsub('.tex', '.yml'))
+      else
+        return YAML.load_file(paper_path)
+      end
+    end
+
+    def latex_source?
+      paper_path.end_with?('.tex')
+    end
+
+    def markdown_source?
+      paper_path.end_with?('.md')
+    end
+
     # Check that the paper has the expected YAML header. Raise if missing fields
-    def check_fields(parsed)
-      fields = EXPECTED_FIELDS - parsed.keys
+    def check_fields(parsed, paper_path)
+      if paper_path.include?('.tex')
+        expected_fields = EXPECTED_LATEX_FIELDS
+      else
+        expected_fields = EXPECTED_MARKDOWN_FIELDS
+      end
+      fields = expected_fields - parsed.keys
       raise "Paper YAML header is missing expected fields: #{fields.join(', ')}" if !fields.empty?
     end
 

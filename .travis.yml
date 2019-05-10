@@ -3,6 +3,8 @@ addons:
   apt_packages:
     - pandoc
 rvm:
-  - 2.1
-  - 2.2
+  - 2.4.1
+before_install:
+  - gem update --system
+  - gem install bundler:2.0.1
 script: RUBYOPT="-W0" bundle exec rake spec

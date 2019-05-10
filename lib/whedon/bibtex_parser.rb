@@ -5,9 +5,9 @@ require 'bibtex'
 require 'nokogiri'
 require 'uri'
 
-# => bib = Whedon::Bibtex.new('paper.bib').generate_citations
+# => bib = Whedon::BibtexParser.new('paper.bib').generate_citations
 module Whedon
-  class Bibtex
+  class BibtexParser
     # Initialize the Bibtex generator
     # Takes a path to bibtex file
     def initialize(bib_file)

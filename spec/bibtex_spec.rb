@@ -1,9 +1,9 @@
 require_relative 'spec_helper'
 require 'nokogiri'
 
-describe Whedon::Bibtex do
+describe Whedon::BibtexParser do
 
-  subject { Whedon::Bibtex.new('fixtures/paper/paper.bib') }
+  subject { Whedon::BibtexParser.new('fixtures/paper/paper.bib') }
 
   it "should know how to generate DOI citations" do
     citations_xml = Nokogiri::XML(subject.generate_citations)
