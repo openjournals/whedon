@@ -1,6 +1,8 @@
 # This module has methods to compile PDFs and Crossref XML depending upon
 # the content type of the paper (Markdown or LaTeX)
 module Compilers
+  require 'date'
+
   # Generate the paper PDF
   # Optionally pass in a custom branch name as first param
   def generate_pdf(custom_branch=nil, paper_issue=nil, paper_volume=nil, paper_year=nil)
@@ -70,21 +72,42 @@ module Compilers
     end
   end
 
+  def generate_issue(date)
+    parsed = Date.parse(date)
+    return 1 + ((parsed.year * 12 + parsed.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month))
+  end
+
+  def generate_volume(date)
+    parsed = Date.parse(date)
+    return parsed.year - (Date.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1)
+  end
+
+  def generate_year(date)
+    parsed = Date.parse(date)
+    return parsed.year
+  end
+
   def pdf_from_markdown(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
     latex_template_path = "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/latex.template"
     csl_file = "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/apa.csl"
-
-    paper_year ||= Time.now.strftime('%Y')
-    paper_issue ||= @current_issue
-    paper_volume ||= @current_volume
-    # FIX ME - when the JOSS application has an actual API this could/should
-    # be cleaned up
 
     url = "#{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}"
     response = RestClient.get(url)
     parsed = JSON.parse(response)
     submitted = parsed['submitted']
     published = parsed['accepted']
+
+    # If we have already published the paper then overwrite the year, volume, issue
+    if published
+      paper_year = generate_year(published)
+      paper_issue = generate_issue(published)
+      paper_volume = generate_volume(published)
+    else
+      published = Time.now.strftime('%d %B %Y')
+      paper_year ||= @current_year
+      paper_issue ||= @current_issue
+      paper_volume ||= @current_volume
+    end
 
     # Optionally pass a custom branch name
     `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
@@ -141,7 +164,7 @@ module Compilers
 
     paper_day ||= Time.now.strftime('%d')
     paper_month ||= Time.now.strftime('%m')
-    paper_year ||= Time.now.strftime('%Y')
+    paper_year ||= @current_year
     paper_issue ||= @current_issue
     paper_volume ||= @current_volume
 
@@ -190,11 +213,25 @@ module Compilers
     # TODO fix this when we update the DOI URLs
     # crossref_doi = archive_doi.gsub("http://dx.doi.org/", '')
 
-    paper_day ||= Time.now.strftime('%d')
-    paper_month ||= Time.now.strftime('%m')
-    paper_year ||= Time.now.strftime('%Y')
-    paper_issue ||= @current_issue
-    paper_volume ||= @current_volume
+    url = "#{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}"
+    response = RestClient.get(url)
+    parsed = JSON.parse(response)
+    submitted = parsed['submitted']
+    published = parsed['accepted']
+
+    # If we have already published the paper then overwrite the year, volume, issue
+    if published
+      paper_day = Date.parse(published).strftime('%d')
+      paper_year = generate_year(published)
+      paper_issue = generate_issue(published)
+      paper_volume = generate_volume(published)
+    else
+      paper_issue ||= @current_issue
+      paper_volume ||= @current_volume
+      paper_day ||= Time.now.strftime('%d')
+      paper_month ||= Time.now.strftime('%m')
+      paper_year ||= Time.now.strftime('%Y')
+    end
 
     `cd #{paper.directory} && pandoc \
     -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
@@ -237,11 +274,24 @@ module Compilers
     jats_template_path = "#{Whedon.resources}/jats.template"
     csl_file = "#{Whedon.resources}/jats.csl"
 
-    paper_day ||= Time.now.strftime('%d')
-    paper_month ||= Time.now.strftime('%m')
-    paper_year ||= Time.now.strftime('%Y')
-    paper_issue ||= @current_issue
-    paper_volume ||= @current_volume
+
+    url = "#{ENV['JOURNAL_URL']}/papers/lookup/#{@review_issue_id}"
+    response = RestClient.get(url)
+    parsed = JSON.parse(response)
+    submitted = parsed['submitted']
+    published = parsed['accepted']
+
+    # If we have already published the paper then overwrite the year, volume, issue
+    if published
+      paper_day = Date.parse(published).strftime('%d')
+      paper_year = generate_year(published)
+      paper_issue = generate_issue(published)
+      paper_volume = generate_volume(published)
+    else
+      paper_day ||= Time.now.strftime('%d')
+      paper_month ||= Time.now.strftime('%m')
+      paper_year ||= Time.now.strftime('%Y')
+    end
 
     # TODO: may eventually want to swap out the latex template
     `cd #{paper.directory} && pandoc \

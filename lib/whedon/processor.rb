@@ -19,6 +19,7 @@ module Whedon
     attr_accessor :paper
     attr_accessor :current_volume
     attr_accessor :current_issue
+    attr_accessor :current_year
 
     def initialize(review_issue_id, review_body)
       @review_issue_id = review_issue_id
@@ -26,6 +27,7 @@ module Whedon
       @repository_address = review_body[REPO_REGEX]
       @archive_doi = review_body[ARCHIVE_REGEX]
       # Probably a much nicer way to do this...
+      @current_year = ENV["CURRENT_YEAR"].nil? ? Time.new.year : ENV["CURRENT_YEAR"]
       @current_volume = ENV["CURRENT_VOLUME"].nil? ? Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1) : ENV["CURRENT_VOLUME"]
       @current_issue = ENV["CURRENT_ISSUE"].nil? ? 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month)) : ENV["CURRENT_ISSUE"]
     end
