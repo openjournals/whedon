@@ -135,6 +135,7 @@ module Compilers
     -V volume="#{paper_volume}" \
     -V page="#{paper.review_issue_id}" \
     -V logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/logo.png" \
+    -V aas_logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/aas-logo.png" \
     -V year="#{paper_year}" \
     -V submitted="#{submitted}" \
     -V published="#{published}" \

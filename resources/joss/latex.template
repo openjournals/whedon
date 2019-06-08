@@ -66,7 +66,7 @@
             headheight=2.2cm, reversemp, includemp, marginparwidth=4.5cm]{geometry}
 
 % --- Default font ------------------------------------------------------------
-% \renewcommand\familydefault{\sfdefault}
+\renewcommand\familydefault{\sfdefault}
 
 % --- Style -------------------------------------------------------------------
 \renewcommand{\bibfont}{\small \sffamily}
@@ -186,6 +186,8 @@
 \else % if luatex or xelatex
   \ifxetex
     \usepackage{mathspec}
+    \usepackage{fontspec}
+
   \else
     \usepackage{fontspec}
   \fi
@@ -372,7 +374,7 @@ $if(affiliations)$
     \affil[$affiliations.index$]{$affiliations.name$}
   $endfor$
 $endif$
-\date{\vspace{-5ex}}
+\date{\vspace{-7ex}}
 
 \begin{document}
 $if(title)$
@@ -385,6 +387,7 @@ $abstract$
 $endif$
 
 \marginpar{
+  \begin{flushleft}
   %\hrule
   \sffamily\small
 
@@ -408,6 +411,18 @@ $endif$
   \vspace{2mm}
   {\bfseries License}\\
   Authors of papers retain copyright and release the work under a Creative Commons Attribution 4.0 International License (\href{http://creativecommons.org/licenses/by/4.0/}{\color{linky}{CC-BY}}).
+
+  $if(aas-doi)$
+  \vspace{4mm}
+  {\bfseries In partnership with}\\
+  \vspace{2mm}
+  \includegraphics[width=4cm]{$aas_logo_path$}
+  \vspace{2mm}
+  \newline
+  This article and software are linked with the research article DOI \href{https://doi.org/$aas-doi$}{\color{linky}{$aas-doi$}}, published in the $aas-journal$.
+  $endif$
+
+  \end{flushleft}
 }
 
 $for(include-before)$
