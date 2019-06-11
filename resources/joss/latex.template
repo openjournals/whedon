@@ -419,7 +419,7 @@ $endif$
   \includegraphics[width=4cm]{$aas_logo_path$}
   \vspace{2mm}
   \newline
-  This article and software are linked with the research article DOI \href{https://doi.org/$aas-doi$}{\color{linky}{$aas-doi$}}, published in the $aas-journal$.
+  This article and software are linked with research article DOI \href{https://doi.org/$aas-doi$}{\color{linky}{$aas-doi$}}, published in the $aas-journal$.
   $endif$
 
   \end{flushleft}
