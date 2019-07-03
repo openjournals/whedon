@@ -322,7 +322,7 @@ module Compilers
     -V day=#{paper_day} \
     -V year="#{paper_year}" \
     -V jats_authors='#{paper.jats_authors}' \
-    -V jats_affiliations="#{paper.jats_affiliations}" \
+    -V jats_affiliations='#{paper.jats_affiliations}' \
     -t jats \
     -s \
     --filter pandoc-citeproc \
