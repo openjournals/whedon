@@ -278,7 +278,7 @@ module Compilers
   end
 
   def jats_from_latex(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
-    puts "JATS from LaTeX"
+    "JATS from LaTeX"
   end
 
   def jats_from_markdown(paper_issue=nil, paper_volume=nil, paper_year=nil, paper_month=nil, paper_day=nil)
