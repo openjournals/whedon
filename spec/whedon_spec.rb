@@ -62,6 +62,6 @@ describe Whedon do
   it "should know how to format citation strings for multi-author papers" do
     expect(paper_with_harder_names.authors.size).to eql(2)
     expect(paper_with_harder_names.citation_author).to eql("Smith et al.")
-    expect(paper_with_harder_names.authors.last.last_name).to eq('Van Dishoeck')
+    expect(paper_with_harder_names.authors.last.last_name).to eq('van Dishoeck')
   end
 end
