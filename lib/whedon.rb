@@ -1,3 +1,5 @@
+require 'base64'
+require 'linguist'
 require 'octokit'
 require 'redcarpet'
 require 'redcarpet/render_strip'
@@ -38,7 +40,7 @@ module Whedon
     attr_accessor :review_issue_id
     attr_accessor :review_repository
     attr_accessor :review_issue_body
-    attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path
+    attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path, :languages, :reviewers, :editor
 
     EXPECTED_MARKDOWN_FIELDS = %w{
       title
@@ -83,9 +85,18 @@ module Whedon
       @paper_path = paper_path
       @authors = parse_authors(parsed)
       @title = parsed['title']
+      @languages = detect_languages
       @tags = parsed['tags']
       @date = parsed['date']
       @bibliography_path = parsed['bibliography']
+    end
+
+    def reviewers
+      @reviewers = review_issue_body.match(/Reviewers?:\*\*\s*(.+?)\r?\n/)[1].split(", ") - ["Pending"]
+    end
+
+    def editor
+      @editor = review_issue_body.match(/\*\*Editor:\*\*\s*.@(\S*)/)[1]
     end
 
     def load_yaml(paper_path)
@@ -122,6 +133,32 @@ module Whedon
         next unless author.has_key?('orcid')
         raise "Problem with ORCID (#{author['orcid']}) for #{author['name']}" unless OrcidValidator.new(author['orcid']).validate
       end
+    end
+
+    def detect_languages
+      repo = Rugged::Repository.new("tmp/#{review_issue_id}")
+      project = Linguist::Repository.new(repo, repo.head.target_id)
+
+      # Take top three languages from Linguist
+      project.languages.keys.take(3)
+    end
+
+    # Create the payload that we're going to use to post back to JOSS/JOSE
+    def deposit_payload
+      review_issue if review_issue_body.nil?
+      payload = {
+        'paper' => {}
+      }
+
+      %w(title tags languages).each { |var| payload['paper'][var] = self.send(var) }
+      payload['paper']['authors'] = authors.collect { |a| a.to_h }
+      payload['paper']['doi'] = formatted_doi
+      payload['paper']['archive_doi'] = review_issue_body[ARCHIVE_REGEX].gsub('"', '')
+      payload['paper']['repository_address'] = review_issue_body[REPO_REGEX].gsub('"', '')
+      payload['paper']['editor'] = "@#{editor}"
+      payload['paper']['reviewers'] = reviewers.collect(&:strip)
+
+      return payload
     end
 
     def plain_title

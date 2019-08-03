@@ -64,4 +64,19 @@ describe Whedon do
     expect(paper_with_harder_names.citation_author).to eql("Smith et al.")
     expect(paper_with_harder_names.authors.last.last_name).to eq('van Dishoeck')
   end
+
+  it "should know how to generate the deposit_payload" do
+    VCR.use_cassette('review') do
+      %w{title tags languages authors doi archive_doi repository_address editor reviewers}.each do |attribute|
+        expect(paper_with_harder_names.deposit_payload['paper'][attribute].nil?).to be_falsey
+      end
+    end
+  end
+
+  it "should have the same value for the Base64-encoded payload" do
+    encoded = "eyJwYXBlciI6eyJ0aXRsZSI6IkZpZGdpdDogQW4gdW5nb2RseSB1bmlvbiBv\nZiBHaXRIdWIgYW5kIGZpZ3NoYXJlIiwidGFncyI6WyJleGFtcGxlIiwidGFn\ncyIsImZvciB0aGUgcGFwZXIiXSwibGFuZ3VhZ2VzIjpbIlB5dGhvbiIsIlJ1\nc3QiLCJQZXJsIl0sImF1dGhvcnMiOlt7ImdpdmVuX25hbWUiOiJBcmZvbiIs\nIm1pZGRsZV9uYW1lIjoiTS4iLCJsYXN0X25hbWUiOiJTbWl0aCIsIm9yY2lk\nIjoiMDAwMC0wMDAyLTM5NTctMjQ3NCIsImFmZmlsaWF0aW9uIjoiR2l0SHVi\nIEluYy4sIERpc25leSBJbmMuIn0seyJnaXZlbl9uYW1lIjoiSmFtZXMiLCJt\naWRkbGVfbmFtZSI6IlAuIiwibGFzdF9uYW1lIjoidmFuIERpc2hvZWNrIiwi\nb3JjaWQiOiIwMDAwLTAwMDItMzk1Ny0yNDc0IiwiYWZmaWxpYXRpb24iOiJE\naXNuZXkgSW5jLiJ9XSwiZG9pIjoiMTAuMjExMDUvam9zcy4wMDAxNyIsImFy\nY2hpdmVfZG9pIjoiaHR0cDovL2R4LmRvaS5vcmcvMTAuNTI4MS96ZW5vZG8u\nMTM3NTAiLCJyZXBvc2l0b3J5X2FkZHJlc3MiOiJodHRwczovL2dpdGh1Yi5j\nb20vYXBwbGljYXRpb25za2VsZXRvbi9Ta2VsZXRvbiIsImVkaXRvciI6ImFy\nZm9uIiwicmV2aWV3ZXJzIjpbIkBqaW0iLCJAYm9iIl19fQ==\n"
+    VCR.use_cassette('review') do
+      expect(Base64.encode64(paper_with_harder_names.deposit_payload.to_json)).to eql(encoded)
+    end
+  end
 end

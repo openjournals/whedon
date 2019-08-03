@@ -4,6 +4,7 @@ PATH
     whedon (0.1.0)
       bibtex-ruby
       dotenv
+      github-linguist (~> 5.3)
       latex-decode
       metamatter (~> 0.2.0)
       octokit (~> 4.0)
@@ -25,6 +26,7 @@ GEM
       rake (~> 10.4)
     bibtex-ruby (5.0.0)
       latex-decode (~> 0.0)
+    charlock_holmes (0.7.6)
     coderay (1.1.2)
     crack (0.4.3)
       safe_yaml (~> 1.0.0)
@@ -32,8 +34,14 @@ GEM
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.5)
+    escape_utils (1.1.1)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
+    github-linguist (5.3.3)
+      charlock_holmes (~> 0.7.5)
+      escape_utils (~> 1.1.0)
+      mime-types (>= 1.19)
+      rugged (>= 0.25.1)
     hashdiff (1.0.0)
     http-cookie (1.0.3)
       domain_name (~> 0.5)
@@ -83,6 +91,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.8.0)
     rspec-support (3.8.2)
+    rugged (0.28.2)
     safe_yaml (1.0.5)
     sawyer (0.8.2)
       addressable (>= 2.3.5)
