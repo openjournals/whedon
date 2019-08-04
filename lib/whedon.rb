@@ -139,8 +139,8 @@ module Whedon
       repo = Rugged::Repository.new("tmp/#{review_issue_id}")
       project = Linguist::Repository.new(repo, repo.head.target_id)
 
-      # Take top three languages from Linguist
-      project.languages.keys.take(3)
+      # Take top five languages from Linguist
+      project.languages.keys.take(5)
     end
 
     # Create the payload that we're going to use to post back to JOSS/JOSE
