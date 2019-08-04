@@ -121,6 +121,7 @@ module Whedon
                 :url => "#{ENV['JOURNAL_URL']}/papers/api_deposit",
                 :payload => {
                   :id => paper.review_issue_id,
+                  :metadata => Base64.encode64(paper.deposit_payload.to_json),
                   :doi => paper.formatted_doi,
                   :archive_doi => archive_doi,
                   :citation_string => citation_string,

@@ -17,6 +17,16 @@ module Whedon
       @affiliation = build_affiliation_string(index, affiliations_yaml)
     end
 
+    def to_h
+      {
+        :given_name => given_name,
+        :middle_name => @parsed_name.middle,
+        :last_name => last_name,
+        :orcid => orcid,
+        :affiliation => affiliation.strip
+      }
+    end
+
     # Input: Arfon Smith^[Corresponding author: arfon@example.com]
     # Output: Arfon Smith
     def strip_footnotes(name)
