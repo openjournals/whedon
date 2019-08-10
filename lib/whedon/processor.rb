@@ -59,7 +59,7 @@ module Whedon
       paper_paths = []
 
       Find.find(search_path) do |path|
-        paper_paths << path if path =~ /paper\.tex$|paper\.md$/
+        paper_paths << path if path =~ /\bpaper\.tex$|\bpaper\.md$/
       end
 
       return paper_paths
