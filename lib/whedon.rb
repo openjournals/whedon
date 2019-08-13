@@ -42,6 +42,11 @@ module Whedon
     attr_accessor :review_issue_body
     attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path, :languages, :reviewers, :editor
 
+    # TODO: work out how to resolve this code duplication with lib/processor.rb
+    attr_accessor :current_volume
+    attr_accessor :current_issue
+    attr_accessor :current_year
+
     EXPECTED_MARKDOWN_FIELDS = %w{
       title
       tags
@@ -89,6 +94,10 @@ module Whedon
       @tags = parsed['tags']
       @date = parsed['date']
       @bibliography_path = parsed['bibliography']
+      # Probably a much nicer way to do this...
+      @current_year = ENV["CURRENT_YEAR"].nil? ? Time.new.year : ENV["CURRENT_YEAR"]
+      @current_volume = ENV["CURRENT_VOLUME"].nil? ? Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1) : ENV["CURRENT_VOLUME"]
+      @current_issue = ENV["CURRENT_ISSUE"].nil? ? 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month)) : ENV["CURRENT_ISSUE"]
     end
 
     def reviewers
@@ -157,6 +166,10 @@ module Whedon
       payload['paper']['repository_address'] = review_issue_body[REPO_REGEX].gsub('"', '')
       payload['paper']['editor'] = "@#{editor}"
       payload['paper']['reviewers'] = reviewers.collect(&:strip)
+      payload['paper']['volume'] = current_volume
+      payload['paper']['issue'] = current_issue
+      payload['paper']['year'] = current_year
+      payload['paper']['page'] = review_issue_id
 
       return payload
     end
