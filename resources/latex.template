@@ -17,6 +17,15 @@
 \usepackage{seqsplit}
 \usepackage{xstring}
 
+\usepackage{float}
+\let\origfigure\figure
+\let\endorigfigure\endfigure
+\renewenvironment{figure}[1][2] {
+    \expandafter\origfigure\expandafter[H]
+} {
+    \endorigfigure
+}
+
 \usepackage{fixltx2e} % provides \textsubscript
 \usepackage[
   backend=biber,
@@ -385,7 +394,6 @@ $abstract$
 $endif$
 
 \marginpar{
-  %\hrule
   \sffamily\small
 
   {\bfseries DOI:} \href{https://doi.org/$formatted_doi$}{\color{linky}{$formatted_doi$}}
