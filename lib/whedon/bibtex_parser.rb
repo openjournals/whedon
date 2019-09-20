@@ -66,8 +66,8 @@ module Whedon
 
     # Returns a simple <citation> XML snippet with the DOI
     def doi_citation(entry)
-      # Crossref DOIs need to be strings like 10.21105/joss.01461 rather than
-      # https://doi.org/10.21105/joss.01461
+      # Crossref DOIs need to be strings like 10.21105/joss.01461 rather
+      # than https://doi.org/10.21105/joss.01461
       bare_doi = entry.doi.to_s[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
 
       # Sometimes there are weird characters in the DOI. This escapes
