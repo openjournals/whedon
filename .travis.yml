@@ -2,7 +2,12 @@ language: ruby
 addons:
   apt_packages:
     - pandoc
+    - cabal-install
 rvm:
   - 2.1
   - 2.2
+before_install:
+  - cabal update
+  - cabal install pandoc-crossref
+
 script: RUBYOPT="-W0" bundle exec rake spec
