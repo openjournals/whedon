@@ -133,6 +133,7 @@ module Whedon
       -V footnote_paper_title='#{plain_title}' \
       -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
       --pdf-engine=xelatex \
+      --filter pandoc-crossref \
       --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
       --from markdown+autolink_bare_uris \
       --csl=#{csl_file} \
