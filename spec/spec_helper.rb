@@ -14,6 +14,7 @@ require_relative "../lib/whedon"
 # Rugged needs there to be a Git repo present in the fixtures folder when
 # running tests (spec/whedon_spec.rb#L11). Also, we're hard-coding the path
 # to tmp/#{review_issue_id} so we need a fixture there.
+Dir.mkdir('tmp') unless Dir.exist?('tmp')
 FileUtils.rm_r('tmp/17')
 FileUtils.copy_entry('fixtures/paper', 'tmp/17')
 
