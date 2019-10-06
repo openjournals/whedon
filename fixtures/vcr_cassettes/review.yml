@@ -80,7 +80,7 @@ http_interactions:
         author:** @zhaozhang (<a href=\"http://orcid.org/0000-0001-5921-0035\">Zhao
         Zhang</a>)\r\n**Repository:** <a href=\"https://github.com/applicationskeleton/Skeleton\"
         target =\"_blank\">https://github.com/applicationskeleton/Skeleton</a>\r\n**Version:**
-        v1.2\r\n**Archive:** <a href=\"http://dx.doi.org/10.5281/zenodo.13750\" target
+        v1.2\r\n**Editor:** @arfon\r\n**Reviewers:** @jim, @bob\r\n**Archive:** <a href=\"http://dx.doi.org/10.5281/zenodo.13750\" target
         =\"_blank\">http://dx.doi.org/10.5281/zenodo.13750</a>\r\n\r\n## Status\r\n\r\n[![status](http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6/status.svg)](http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6)\r\n\r\nStatus
         badge code:\r\n\r\n```\r\nHTML: <a href=\"http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6\"><img
         src=\"http://joss.theoj.org/papers/6b34fdbf8215c1ecd4941afc8be7a7e6/status.svg\"></a>\r\nMarkdown:
@@ -115,7 +115,7 @@ http_interactions:
         what problems the software is designed to solve and who the target audience
         is?\r\n- [x] **References:** Do all archival references that should have a
         DOI list one (e.g. papers, datasets, software)?\r\n","closed_by":{"login":"arfon","id":4483,"avatar_url":"https://avatars.githubusercontent.com/u/4483?v=3","gravatar_id":"","url":"https://api.github.com/users/arfon","html_url":"https://github.com/arfon","followers_url":"https://api.github.com/users/arfon/followers","following_url":"https://api.github.com/users/arfon/following{/other_user}","gists_url":"https://api.github.com/users/arfon/gists{/gist_id}","starred_url":"https://api.github.com/users/arfon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/arfon/subscriptions","organizations_url":"https://api.github.com/users/arfon/orgs","repos_url":"https://api.github.com/users/arfon/repos","events_url":"https://api.github.com/users/arfon/events{/privacy}","received_events_url":"https://api.github.com/users/arfon/received_events","type":"User","site_admin":true}}'
-    http_version: 
+    http_version:
   recorded_at: Fri, 13 May 2016 23:54:24 GMT
 - request:
     method: get
@@ -232,6 +232,6 @@ http_interactions:
         what problems the software is designed to solve and who the target audience
         is?\r\n- [x] **References:** Do all archival references that should have a
         DOI list one (e.g. papers, datasets, software)?\r\n","closed_by":{"login":"arfon","id":4483,"avatar_url":"https://avatars.githubusercontent.com/u/4483?v=3","gravatar_id":"","url":"https://api.github.com/users/arfon","html_url":"https://github.com/arfon","followers_url":"https://api.github.com/users/arfon/followers","following_url":"https://api.github.com/users/arfon/following{/other_user}","gists_url":"https://api.github.com/users/arfon/gists{/gist_id}","starred_url":"https://api.github.com/users/arfon/starred{/owner}{/repo}","subscriptions_url":"https://api.github.com/users/arfon/subscriptions","organizations_url":"https://api.github.com/users/arfon/orgs","repos_url":"https://api.github.com/users/arfon/repos","events_url":"https://api.github.com/users/arfon/events{/privacy}","received_events_url":"https://api.github.com/users/arfon/received_events","type":"User","site_admin":true}}'
-    http_version: 
+    http_version:
   recorded_at: Fri, 13 May 2016 23:54:24 GMT
 recorded_with: VCR 2.9.3

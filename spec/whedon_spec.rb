@@ -62,6 +62,21 @@ describe Whedon do
   it "should know how to format citation strings for multi-author papers" do
     expect(paper_with_harder_names.authors.size).to eql(2)
     expect(paper_with_harder_names.citation_author).to eql("Smith et al.")
-    expect(paper_with_harder_names.authors.last.last_name).to eq('Van Dishoeck')
+    expect(paper_with_harder_names.authors.last.last_name).to eq('van Dishoeck')
+  end
+
+  it "should know how to generate the deposit_payload" do
+    VCR.use_cassette('review') do
+      %w{title tags languages authors doi archive_doi repository_address editor reviewers}.each do |attribute|
+        expect(paper_with_harder_names.deposit_payload['paper'][attribute].nil?).to be_falsey
+      end
+    end
+  end
+
+  it "should have the same value for the Base64-encoded payload" do
+    encoded = "eyJwYXBlciI6eyJ0aXRsZSI6IkZpZGdpdDogQW4gdW5nb2RseSB1bmlvbiBv\nZiBHaXRIdWIgYW5kIGZpZ3NoYXJlIiwidGFncyI6WyJleGFtcGxlIiwidGFn\ncyIsImZvciB0aGUgcGFwZXIiXSwibGFuZ3VhZ2VzIjpbIlJ1YnkiLCJUZVgi\nLCJIVE1MIl0sImF1dGhvcnMiOlt7ImdpdmVuX25hbWUiOiJBcmZvbiIsIm1p\nZGRsZV9uYW1lIjoiTS4iLCJsYXN0X25hbWUiOiJTbWl0aCIsIm9yY2lkIjoi\nMDAwMC0wMDAyLTM5NTctMjQ3NCIsImFmZmlsaWF0aW9uIjoiR2l0SHViIElu\nYy4sIERpc25leSBJbmMuIn0seyJnaXZlbl9uYW1lIjoiSmFtZXMiLCJtaWRk\nbGVfbmFtZSI6IlAuIiwibGFzdF9uYW1lIjoidmFuIERpc2hvZWNrIiwib3Jj\naWQiOiIwMDAwLTAwMDItMzk1Ny0yNDc0IiwiYWZmaWxpYXRpb24iOiJEaXNu\nZXkgSW5jLiJ9XSwiZG9pIjoiMTAuMjExMDUvam9zcy4wMDAxNyIsImFyY2hp\ndmVfZG9pIjoiaHR0cDovL2R4LmRvaS5vcmcvMTAuNTI4MS96ZW5vZG8uMTM3\nNTAiLCJyZXBvc2l0b3J5X2FkZHJlc3MiOiJodHRwczovL2dpdGh1Yi5jb20v\nYXBwbGljYXRpb25za2VsZXRvbi9Ta2VsZXRvbiIsImVkaXRvciI6IkBhcmZv\nbiIsInJldmlld2VycyI6WyJAamltIiwiQGJvYiJdLCJ2b2x1bWUiOjEsImlz\nc3VlIjoxLCJ5ZWFyIjoyMDE5LCJwYWdlIjoxN319\n"
+    VCR.use_cassette('review') do
+      expect(Base64.encode64(paper_with_harder_names.deposit_payload.to_json)).to eql(encoded)
+    end
   end
 end

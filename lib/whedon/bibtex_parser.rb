@@ -5,9 +5,9 @@ require 'bibtex'
 require 'nokogiri'
 require 'uri'
 
-# => bib = Whedon::Bibtex.new('paper.bib').generate_citations
+# => bib = Whedon::BibtexParser.new('paper.bib').generate_citations
 module Whedon
-  class Bibtex
+  class BibtexParser
     # Initialize the Bibtex generator
     # Takes a path to bibtex file
     def initialize(bib_file)
@@ -34,7 +34,7 @@ module Whedon
     # TODO: should probably use Ruby builder templates here
     def generate_citations(citations=nil)
       entries = BibTeX.open(@bib_file, :filter => :latex)
-      
+
       if entries.empty?
         @citation_string = ""
       else
@@ -66,8 +66,12 @@ module Whedon
 
     # Returns a simple <citation> XML snippet with the DOI
     def doi_citation(entry)
-      # Sometimes there are weird characters in the DOI. This escap
-      escaped_doi = entry.doi.encode(:xml => :text)
+      # Crossref DOIs need to be strings like 10.21105/joss.01461 rather
+      # than https://doi.org/10.21105/joss.01461
+      bare_doi = entry.doi.to_s[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
+
+      # Sometimes there are weird characters in the DOI. This escapes
+      escaped_doi = bare_doi.encode(:xml => :text)
       "<citation key=\"ref#{@ref_count}\"><doi>#{escaped_doi}</doi></citation>"
     end
 

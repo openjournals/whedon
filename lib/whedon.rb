@@ -1,3 +1,5 @@
+require 'base64'
+require 'linguist'
 require 'octokit'
 require 'redcarpet'
 require 'redcarpet/render_strip'
@@ -8,7 +10,8 @@ Dotenv.load
 
 require_relative 'whedon/auditor'
 require_relative 'whedon/author'
-require_relative 'whedon/bibtex'
+require_relative 'whedon/bibtex_parser'
+require_relative 'whedon/compilers'
 require_relative 'whedon/github'
 require_relative 'whedon/orcid_validator'
 require_relative 'whedon/processor'
@@ -37,11 +40,25 @@ module Whedon
     attr_accessor :review_issue_id
     attr_accessor :review_repository
     attr_accessor :review_issue_body
-    attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path
+    attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path, :languages, :reviewers, :editor
 
-    EXPECTED_FIELDS = %w{
+    # TODO: work out how to resolve this code duplication with lib/processor.rb
+    attr_accessor :current_volume
+    attr_accessor :current_issue
+    attr_accessor :current_year
+
+    EXPECTED_MARKDOWN_FIELDS = %w{
       title
       tags
+      authors
+      affiliations
+      date
+      bibliography
+    }
+
+    EXPECTED_LATEX_FIELDS = %w{
+      title
+      keywords
       authors
       affiliations
       date
@@ -65,21 +82,56 @@ module Whedon
       @review_repository = ENV['REVIEW_REPOSITORY']
       return if paper_path.nil?
 
-      parsed = YAML.load_file(paper_path)
-      check_fields(parsed)
+      parsed = load_yaml(paper_path)
+
+      check_fields(parsed, paper_path)
       check_orcids(parsed)
 
       @paper_path = paper_path
       @authors = parse_authors(parsed)
       @title = parsed['title']
+      @languages = detect_languages
       @tags = parsed['tags']
       @date = parsed['date']
       @bibliography_path = parsed['bibliography']
+      # Probably a much nicer way to do this...
+      @current_year = ENV["CURRENT_YEAR"].nil? ? Time.new.year : ENV["CURRENT_YEAR"]
+      @current_volume = ENV["CURRENT_VOLUME"].nil? ? Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1) : ENV["CURRENT_VOLUME"]
+      @current_issue = ENV["CURRENT_ISSUE"].nil? ? 1 + ((Time.new.year * 12 + Time.new.month) - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year * 12 + Time.parse(ENV['JOURNAL_LAUNCH_DATE']).month)) : ENV["CURRENT_ISSUE"]
+    end
+
+    def reviewers
+      @reviewers = review_issue_body.match(/Reviewers?:\*\*\s*(.+?)\r?\n/)[1].split(", ") - ["Pending"]
+    end
+
+    def editor
+      @editor = review_issue_body.match(/\*\*Editor:\*\*\s*.@(\S*)/)[1]
+    end
+
+    def load_yaml(paper_path)
+      if paper_path.include?('.tex')
+        return YAML.load_file(paper_path.gsub('.tex', '.yml'))
+      else
+        return YAML.load_file(paper_path)
+      end
+    end
+
+    def latex_source?
+      paper_path.end_with?('.tex')
+    end
+
+    def markdown_source?
+      paper_path.end_with?('.md')
     end
 
     # Check that the paper has the expected YAML header. Raise if missing fields
-    def check_fields(parsed)
-      fields = EXPECTED_FIELDS - parsed.keys
+    def check_fields(parsed, paper_path)
+      if paper_path.include?('.tex')
+        expected_fields = EXPECTED_LATEX_FIELDS
+      else
+        expected_fields = EXPECTED_MARKDOWN_FIELDS
+      end
+      fields = expected_fields - parsed.keys
       raise "Paper YAML header is missing expected fields: #{fields.join(', ')}" if !fields.empty?
     end
 
@@ -90,6 +142,36 @@ module Whedon
         next unless author.has_key?('orcid')
         raise "Problem with ORCID (#{author['orcid']}) for #{author['name']}" unless OrcidValidator.new(author['orcid']).validate
       end
+    end
+
+    def detect_languages
+      repo = Rugged::Repository.new("tmp/#{review_issue_id}")
+      project = Linguist::Repository.new(repo, repo.head.target_id)
+
+      # Take top five languages from Linguist
+      project.languages.keys.take(5)
+    end
+
+    # Create the payload that we're going to use to post back to JOSS/JOSE
+    def deposit_payload
+      review_issue if review_issue_body.nil?
+      payload = {
+        'paper' => {}
+      }
+
+      %w(title tags languages).each { |var| payload['paper'][var] = self.send(var) }
+      payload['paper']['authors'] = authors.collect { |a| a.to_h }
+      payload['paper']['doi'] = formatted_doi
+      payload['paper']['archive_doi'] = review_issue_body[ARCHIVE_REGEX].gsub('"', '')
+      payload['paper']['repository_address'] = review_issue_body[REPO_REGEX].gsub('"', '')
+      payload['paper']['editor'] = "@#{editor}"
+      payload['paper']['reviewers'] = reviewers.collect(&:strip)
+      payload['paper']['volume'] = current_volume
+      payload['paper']['issue'] = current_issue
+      payload['paper']['year'] = current_year
+      payload['paper']['page'] = review_issue_id
+
+      return payload
     end
 
     def plain_title
@@ -170,6 +252,37 @@ module Whedon
       end
 
       return authors_array.join(', ')
+    end
+
+    def jats_authors
+      builder = Nokogiri::XML::Builder.new do |xml|
+        xml.send(:'contrib-group', "content-type" => "authors") {
+          authors.each_with_index do |author, index|
+            given_name = author.given_name
+            surname = author.last_name
+            orcid = author.orcid
+            xml.contrib("contrib-type" => "author", "id" => "author-#{index+1}") {
+              xml.send(:'contrib-id', orcid, "contrib-id-type" => "orcid")
+              xml.name {
+                xml.surname surname.encode(:xml => :text)
+                xml.send(:'given-names', given_name.encode(:xml => :text))
+              }
+              xml.xref("ref-type" => "aff", "rid" => "aff-#{index+1}")
+            }
+          end
+        }
+      end
+
+      return builder.doc.xpath('//contrib-group').to_xml
+    end
+
+    def jats_affiliations
+      affiliations = ""
+      authors.each_with_index do |author, index|
+        affiliations << "<aff id=\"aff-#{index+1}\">#{author.affiliation}</aff>\n"
+      end
+
+      return affiliations
     end
 
     # Returns an XML snippet to be included in the Crossref XML
