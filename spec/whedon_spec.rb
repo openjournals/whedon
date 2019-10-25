@@ -5,8 +5,6 @@ describe Whedon do
   subject(:paper) { Whedon::Paper.new(17, 'fixtures/paper/paper.md') }
   subject(:paper_with_one_author) { Whedon::Paper.new(17, 'fixtures/paper/paper-single-author.md') }
   subject(:paper_with_harder_names) { Whedon::Paper.new(17, 'fixtures/paper/paper-with-harder-names.md') }
-  # TODO - should raise an error when initializing a paper with no title
-  # subject(:paper_without_title) { Whedon::Paper.new(17, 'fixtures/paper/paper_with_missing_title.md') }
 
   it "should initialize properly" do
     expect(paper.review_issue_id).to eql(17)
@@ -63,6 +61,14 @@ describe Whedon do
     expect(paper_with_harder_names.authors.size).to eql(2)
     expect(paper_with_harder_names.citation_author).to eql("Smith et al.")
     expect(paper_with_harder_names.authors.last.last_name).to eq('van Dishoeck')
+  end
+
+  it "should fail to initialize when authors don't have affiliations" do
+    expect { Whedon::Paper.new(17, 'fixtures/paper/paper-with-missing-affiliations.md') }.to raise_error("Author (Arfon M Smith) is missing affiliation")
+  end
+
+  it "should fail to initialize when title is missing" do
+    expect { Whedon::Paper.new(17, 'fixtures/paper/paper_with_missing_title.md') }.to raise_error(/Paper YAML header is missing expected fields: title/)
   end
 
   it "should know how to generate the deposit_payload" do
