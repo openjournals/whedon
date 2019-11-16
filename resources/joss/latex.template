@@ -421,6 +421,7 @@ $endif$
 
   {\bfseries Editor:} \href{$editor_url$}{$editor_name$} \ExternalLink \\
   \vspace{1mm}
+  $if(reviewers)$
   {\bfseries Reviewers:}
   \begin{itemize}
   \setlength\itemsep{0em}
@@ -428,7 +429,7 @@ $endif$
   \item \href{https://github.com/$reviewers$}{@$reviewers$}
   $endfor$
   \end{itemize}
-
+  $endif$
   \vspace{2mm}
 
   {\bfseries Submitted:} $submitted$\\
