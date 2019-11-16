@@ -108,6 +108,18 @@ module Compilers
     submitted = parsed['submitted']
     published = parsed['accepted']
 
+    # TODO - remove this once JOSE has their editors hooked up in the system
+    if ENV['JOURNAL_ALIAS'] == "joss"
+      editor_lookup_url = "#{ENV['JOURNAL_URL']}/editors/lookup/#{paper.editor}"
+      response = RestClient.get(editor_lookup_url)
+      parsed = JSON.parse(response)
+      editor_name = parsed['name']
+      editor_url = parsed['url']
+    else
+      editor_name = "foo"
+      editor_url = "bar"
+    end
+
     # If we have already published the paper then overwrite the year, volume, issue
     if published
       paper_year = generate_year(published)
@@ -122,6 +134,7 @@ module Compilers
 
     # Optionally pass a custom branch name
     `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
+
     metadata = {
       "repository" => repository_address,
       "archive_doi" => archive_doi,
@@ -137,20 +150,26 @@ module Compilers
       "submitted" => submitted,
       "published" => published,
       "formatted_doi" => paper.formatted_doi,
-      "citation_author" => paper.citation_author
+      "citation_author" => paper.citation_author,
+      "editor_name" => editor_name,
+      "reviewers" => paper.reviewers_without_handles
     }
 
-    # File.open("#{paper.directory}/metadata.yaml", 'w') { |file| file.write(metadata.to_yaml) }
+    File.open("#{paper.directory}/markdown-metadata.yaml", 'w') { |file| file.write(metadata.to_yaml) }
 
-    # TODO: may eventually want to swap out the latex template
     `cd #{paper.directory} && pandoc \
+    -V repository="#{repository_address}" \
+    -V archive_doi="#{archive_doi}" \
+    -V review_issue_url="#{paper.review_issue_url}" \
+    -V editor_url="#{editor_url}" \
+    -V graphics="true" \
     -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
     --pdf-engine=xelatex \
     --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
     --from markdown+autolink_bare_uris \
     --csl=#{csl_file} \
     --template #{latex_template_path} \
-    --metadata-file=metadata.yaml`
+    --metadata-file=markdown-metadata.yaml`
 
     if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
       puts "#{paper.directory}/#{paper.filename_doi}.pdf"
@@ -249,30 +268,36 @@ module Compilers
       paper_year ||= Time.now.strftime('%Y')
     end
 
+    metadata = {
+      "timestamp" => Time.now.strftime('%Y%m%d%H%M%S'),
+      "doi_batch_id" => generate_doi_batch_id,
+      "formatted_doi" => paper.formatted_doi,
+      "archive_doi" => archive_doi,
+      "review_issue_url" => paper.review_issue_url,
+      "paper_url" => paper.pdf_url,
+      "joss_resource_url" => paper.joss_resource_url,
+      "journal_alias" => ENV['JOURNAL_ALIAS'],
+      "journal_abbrev_title" => ENV['JOURNAL_ALIAS'].upcase,
+      "journal_url" => ENV['JOURNAL_URL'],
+      "journal_name" => ENV['JOURNAL_NAME'],
+      "journal_issn"=> ENV['JOURNAL_ISSN'],
+      "month" => paper_month,
+      "day" => paper_day,
+      "year" => paper_year,
+      "issue" => paper_issue,
+      "volume" => paper_volume,
+      "page" => paper.review_issue_id,
+      "title" => paper.plain_title,
+      "crossref_authors" => authors,
+      "citations" => citations
+    }
+
+    File.open("#{paper.directory}/crossref-metadata.yaml", 'w') { |file| file.write(metadata.to_yaml) }
+
     `cd #{paper.directory} && pandoc \
-    -V timestamp=#{Time.now.strftime('%Y%m%d%H%M%S')} \
-    -V doi_batch_id=#{generate_doi_batch_id} \
-    -V formatted_doi=#{paper.formatted_doi} \
-    -V archive_doi=#{archive_doi} \
-    -V review_issue_url=#{paper.review_issue_url} \
-    -V paper_url=#{paper.pdf_url} \
-    -V joss_resource_url=#{paper.joss_resource_url} \
-    -V journal_alias=#{ENV['JOURNAL_ALIAS']} \
-    -V journal_abbrev_title=#{ENV['JOURNAL_ALIAS'].upcase} \
-    -V journal_url=#{ENV['JOURNAL_URL']} \
-    -V journal_name='#{ENV['JOURNAL_NAME']}' \
-    -V journal_issn=#{ENV['JOURNAL_ISSN']} \
-    -V citations='#{citations}' \
-    -V authors='#{authors}' \
-    -V month=#{paper_month} \
-    -V day=#{paper_day} \
-    -V year=#{paper_year} \
-    -V issue=#{paper_issue} \
-    -V volume=#{paper_volume} \
-    -V page=#{paper.review_issue_id} \
-    -V title="#{paper.plain_title}" \
     -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.crossref.xml \
-    --template #{cross_ref_template_path}`
+    --template #{cross_ref_template_path} \
+    --metadata-file=crossref-metadata.yaml`
 
     if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
       "#{paper.directory}/#{paper.filename_doi}.crossref.xml"

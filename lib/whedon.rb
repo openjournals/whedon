@@ -101,10 +101,16 @@ module Whedon
     end
 
     def reviewers
+      review_issue if review_issue_body.nil?
       @reviewers = review_issue_body.match(/Reviewers?:\*\*\s*(.+?)\r?\n/)[1].split(", ") - ["Pending"]
     end
 
+    def reviewers_without_handles
+      reviewers.map { |reviewer_name| reviewer_name.sub(/^@/, "") }
+    end
+
     def editor
+      review_issue if review_issue_body.nil?
       @editor = review_issue_body.match(/\*\*Editor:\*\*\s*.@(\S*)/)[1]
     end
 

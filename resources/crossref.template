@@ -34,7 +34,7 @@
         <titles>
           <title>$title$</title>
         </titles>
-        $authors$
+        $crossref_authors$
         <publication_date>
           <month>$month$</month>
           <day>$day$</day>

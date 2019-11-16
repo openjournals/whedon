@@ -415,6 +415,22 @@ $endif$
 
   \vspace{2mm}
 
+  \par\noindent\hrulefill\par
+
+  \vspace{2mm}
+
+  {\bfseries Editor:} \href{$editor_url$}{$editor_name$} \ExternalLink \\
+  \vspace{1mm}
+  {\bfseries Reviewers:}
+  \begin{itemize}
+  \setlength\itemsep{0em}
+  $for(reviewers)$
+  \item \href{https://github.com/$reviewers$}{@$reviewers$}
+  $endfor$
+  \end{itemize}
+
+  \vspace{2mm}
+
   {\bfseries Submitted:} $submitted$\\
   {\bfseries Published:} $published$
 
