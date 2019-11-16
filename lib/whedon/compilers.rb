@@ -2,6 +2,7 @@
 # the content type of the paper (Markdown or LaTeX)
 module Compilers
   require 'date'
+  require 'yaml'
 
   # Generate the paper PDF
   # Optionally pass in a custom branch name as first param
@@ -121,32 +122,35 @@ module Compilers
 
     # Optionally pass a custom branch name
     `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
+    metadata = {
+      "repository" => repository_address,
+      "archive_doi" => archive_doi,
+      "paper_url" => paper.pdf_url,
+      "journal_name" => ENV['JOURNAL_NAME'],
+      "review_issue_url" => paper.review_issue_url,
+      "issue" => paper_issue,
+      "volume" => paper_volume,
+      "page" => paper.review_issue_id,
+      "logo_path" => "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/logo.png",
+      "aas_logo_path" => "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/aas-logo.png",
+      "year" => paper_year,
+      "submitted" => submitted,
+      "published" => published,
+      "formatted_doi" => paper.formatted_doi,
+      "citation_author" => paper.citation_author
+    }
+
+    # File.open("#{paper.directory}/metadata.yaml", 'w') { |file| file.write(metadata.to_yaml) }
 
     # TODO: may eventually want to swap out the latex template
     `cd #{paper.directory} && pandoc \
-    -V repository="#{repository_address}" \
-    -V archive_doi="#{archive_doi}" \
-    -V paper_url="#{paper.pdf_url}" \
-    -V journal_name='#{ENV['JOURNAL_NAME']}' \
-    -V formatted_doi="#{paper.formatted_doi}" \
-    -V review_issue_url="#{paper.review_issue_url}" \
-    -V graphics="true" \
-    -V issue="#{paper_issue}" \
-    -V volume="#{paper_volume}" \
-    -V page="#{paper.review_issue_id}" \
-    -V logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/logo.png" \
-    -V aas_logo_path="#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/aas-logo.png" \
-    -V year="#{paper_year}" \
-    -V submitted="#{submitted}" \
-    -V published="#{published}" \
-    -V formatted_doi="#{paper.formatted_doi}" \
-    -V citation_author="#{paper.citation_author}" \
     -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
     --pdf-engine=xelatex \
     --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
     --from markdown+autolink_bare_uris \
     --csl=#{csl_file} \
-    --template #{latex_template_path}`
+    --template #{latex_template_path} \
+    --metadata-file=metadata.yaml`
 
     if File.exists?("#{paper.directory}/#{paper.filename_doi}.pdf")
       puts "#{paper.directory}/#{paper.filename_doi}.pdf"
