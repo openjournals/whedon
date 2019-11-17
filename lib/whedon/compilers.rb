@@ -295,6 +295,7 @@ module Compilers
     File.open("#{paper.directory}/crossref-metadata.yaml", 'w') { |file| file.write(metadata.to_yaml) }
 
     `cd #{paper.directory} && pandoc \
+    -V title="#{paper.plain_title}" \
     -f markdown #{File.basename(paper.paper_path)} -o #{paper.filename_doi}.crossref.xml \
     --template #{cross_ref_template_path} \
     --metadata-file=crossref-metadata.yaml`
