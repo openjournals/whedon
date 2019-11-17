@@ -111,7 +111,11 @@ module Whedon
 
     def editor
       review_issue if review_issue_body.nil?
-      @editor = review_issue_body.match(/\*\*Editor:\*\*\s*.@(\S*)/)[1]
+      if match = review_issue_body.match(/\*\*Editor:\*\*\s*.@(\S*)/)
+        @editor = match[1]
+      else
+        @editor = nil
+      end
     end
 
     def load_yaml(paper_path)

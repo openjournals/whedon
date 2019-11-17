@@ -109,15 +109,15 @@ module Compilers
     published = parsed['accepted']
 
     # TODO - remove this once JOSE has their editors hooked up in the system
-    if ENV['JOURNAL_ALIAS'] == "joss"
+    if ENV['JOURNAL_ALIAS'] == "joss" && !paper.editor.nil?
       editor_lookup_url = "#{ENV['JOURNAL_URL']}/editors/lookup/#{paper.editor}"
       response = RestClient.get(editor_lookup_url)
       parsed = JSON.parse(response)
       editor_name = parsed['name']
       editor_url = parsed['url']
     else
-      editor_name = "foo"
-      editor_url = "bar"
+      editor_name = "Pending Editor"
+      editor_url = "http://example.com"
     end
 
     # If we have already published the paper then overwrite the year, volume, issue
