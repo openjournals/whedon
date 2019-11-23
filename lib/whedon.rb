@@ -222,7 +222,15 @@ module Whedon
     end
 
     def pdf_url
-      "http://www.theoj.org/#{ENV['PAPER_REPOSITORY']}/#{joss_id}/#{ENV['DOI_PREFIX']}.#{joss_id}.pdf"
+      "http://www.theoj.org/#{paper_repo}/#{joss_id}/#{ENV['DOI_PREFIX']}.#{joss_id}.pdf"
+    end
+
+    def paper_org
+      ENV['PAPER_REPOSITORY'].split('/').first
+    end
+
+    def paper_repo
+      ENV['PAPER_REPOSITORY'].split('/').last
     end
 
     def review_issue_url
