@@ -301,6 +301,8 @@ module Compilers
     --metadata-file=crossref-metadata.yaml`
 
     if File.exists?("#{paper.directory}/#{paper.filename_doi}.crossref.xml")
+      doc = Nokogiri::XML(File.open("#{paper.directory}/#{paper.filename_doi}.crossref.xml", "r"), &:noblanks)
+      File.open("#{paper.directory}/#{paper.filename_doi}.crossref.xml", 'w') {|f| f.write(doc.to_xml(:indent => 2))}
       "#{paper.directory}/#{paper.filename_doi}.crossref.xml"
     else
       abort("Looks like we failed to compile the Crossref XML")
