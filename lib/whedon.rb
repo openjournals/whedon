@@ -318,7 +318,11 @@ module Whedon
             end
             xml.person_name(:sequence => sequence, :contributor_role => "author") {
             xml.given_name given_name.encode(:xml => :text)
-            xml.surname surname.encode(:xml => :text) if !surname.nil?
+            if surname.nil?
+              xml.surname "No Last Name".encode(:xml => :text)
+            else
+              xml.surname surname.encode(:xml => :text)
+            end
             xml.ORCID "http://orcid.org/#{author.orcid}" if !orcid.nil?
             }
           end
