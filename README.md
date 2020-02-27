@@ -110,7 +110,7 @@ $ whedon open {id}
 
 **whedon download**
 
-Download locally the repository linked to in the review issue (note this tries to do a simple `git clone` of the repository address which will fail for non-git repositories.
+Download locally the repository linked to in the review issue (note this tries to do a simple `git clone` of the repository address which will fail for non-git repositories).
 
 ```ruby
 $ whedon download {id}
@@ -163,7 +163,7 @@ Under the hood, the `compile` method does the following:
 - Looks for the paper.md
   - If more than one paper.md is found, asks the user to pick the correct one
 - Compiles the markdown to [four different outputs](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L82-L87):
-  - [The JOSS PDF](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L101-L122))
+  - [The JOSS PDF](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L101-L122)
   - A (currently un-used) [custom XML output](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L149-L167)
   - An [HTML representation](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L169-L206) of the paper (deprecated)
   - The [Crossref deposit metadata](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L208-L247)
