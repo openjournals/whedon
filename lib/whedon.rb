@@ -101,11 +101,21 @@ module Whedon
     end
 
     def reviewers
+      review_issue if review_issue_body.nil?
       @reviewers = review_issue_body.match(/Reviewers?:\*\*\s*(.+?)\r?\n/)[1].split(", ") - ["Pending"]
     end
 
+    def reviewers_without_handles
+      reviewers.map { |reviewer_name| reviewer_name.sub(/^@/, "") }
+    end
+
     def editor
-      @editor = review_issue_body.match(/\*\*Editor:\*\*\s*.@(\S*)/)[1]
+      review_issue if review_issue_body.nil?
+      if match = review_issue_body.match(/\*\*Editor:\*\*\s*.@(\S*)/)
+        @editor = match[1]
+      else
+        @editor = nil
+      end
     end
 
     def load_yaml(paper_path)
@@ -212,7 +222,15 @@ module Whedon
     end
 
     def pdf_url
-      "http://www.theoj.org/#{ENV['PAPER_REPOSITORY']}/#{joss_id}/#{ENV['DOI_PREFIX']}.#{joss_id}.pdf"
+      "http://www.theoj.org/#{paper_repo}/#{joss_id}/#{ENV['DOI_PREFIX']}.#{joss_id}.pdf"
+    end
+
+    def paper_org
+      ENV['PAPER_REPOSITORY'].split('/').first
+    end
+
+    def paper_repo
+      ENV['PAPER_REPOSITORY'].split('/').last
     end
 
     def review_issue_url
@@ -299,9 +317,13 @@ module Whedon
               sequence = "additional"
             end
             xml.person_name(:sequence => sequence, :contributor_role => "author") {
-              xml.given_name given_name.encode(:xml => :text)
+            xml.given_name given_name.encode(:xml => :text)
+            if surname.nil?
+              xml.surname "No Last Name".encode(:xml => :text)
+            else
               xml.surname surname.encode(:xml => :text)
-              xml.ORCID "http://orcid.org/#{author.orcid}" if !orcid.nil?
+            end
+            xml.ORCID "http://orcid.org/#{author.orcid}" if !orcid.nil?
             }
           end
         }

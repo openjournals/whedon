@@ -69,6 +69,17 @@
   {\href@Urllike{#1}{#2}}{\href@Notdoi{#1}{#2}}}
 \makeatother
 
+%Defines cslreferences environment
+%Required by pandoc 2.8
+%Copied from https://github.com/rstudio/rmarkdown/issues/1649
+$if(csl-refs)$
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newenvironment{cslreferences}%
+  {$if(csl-hanging-indent)$\setlength{\parindent}{0pt}%
+  \everypar{\setlength{\hangindent}{\cslhangindent}}\ignorespaces$endif$}%
+  {\par}
+$endif$
 
 % --- Page layout -------------------------------------------------------------
 \usepackage[top=3.5cm, bottom=3cm, right=1.5cm, left=1.0cm,
@@ -413,6 +424,23 @@ $endif$
     \item \href{$archive_doi$}{\color{linky}{Archive}} \ExternalLink
   \end{itemize}
 
+  \vspace{2mm}
+
+  \par\noindent\hrulefill\par
+
+  \vspace{2mm}
+
+  {\bfseries Editor:} \href{$editor_url$}{$editor_name$} \ExternalLink \\
+  \vspace{1mm}
+  $if(reviewers)$
+  {\bfseries Reviewers:}
+  \begin{itemize}
+  \setlength\itemsep{0em}
+  $for(reviewers)$
+  \item \href{https://github.com/$reviewers$}{@$reviewers$}
+  $endfor$
+  \end{itemize}
+  $endif$
   \vspace{2mm}
 
   {\bfseries Submitted:} $submitted$\\

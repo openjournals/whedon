@@ -93,7 +93,7 @@ module Whedon
     def compile
       generate_pdf
       generate_crossref
-      generate_jats
+      # generate_jats
     end
 
     def citation_string
