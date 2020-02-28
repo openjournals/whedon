@@ -1,8 +1,5 @@
 language: ruby
 pandoc_version: 2.9.1.1
-addons:
-  apt_packages:
-    - pandoc
 rvm:
   - 2.4.1
 before_install:
