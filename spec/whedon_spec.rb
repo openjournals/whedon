@@ -35,7 +35,7 @@ describe Whedon do
   end
 
   it "should know how to generate the paper#pdf_url" do
-    expect(paper.pdf_url).to eql("http://www.theoj.org/joss-papers/joss.00017/10.21105.joss.00017.pdf")
+    expect(paper.pdf_url).to eql("http://www.theoj.org/joss-papers-testing/joss.00017/10.21105.joss.00017.pdf")
   end
 
   it "should know what the paper#paper_org is" do
@@ -43,7 +43,7 @@ describe Whedon do
   end
 
   it "should know what the paper#paper_repo is" do
-    expect(paper.paper_repo).to eql("joss-papers")
+    expect(paper.paper_repo).to eql("joss-papers-testing")
   end
 
   it "should know what its tags are" do
