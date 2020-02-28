@@ -43,6 +43,10 @@ module Whedon
       @parsed_name.first
     end
 
+    def initials
+      [@parsed_name.first, @parsed_name.middle].compact.map {|v| v[0]}.zip(['.', '.', '.']).map(&:join) * ' '
+    end
+
     # Takes the author affiliation index and a hash of all affiliations and
     # associates them. Then builds (and assigns) the author affiliation string.
     def build_affiliation_string(index, affiliations_yaml)
