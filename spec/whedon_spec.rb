@@ -66,7 +66,7 @@ describe Whedon do
 
   it "should know how to format citation strings for single-author papers" do
     expect(paper_with_one_author.authors.size).to eql(1)
-    expect(paper_with_one_author.citation_author).to eql("Smith")
+    expect(paper_with_one_author.citation_author).to eql("Smith, A. M.")
   end
 
   it "should know how to format citation strings for multi-author papers" do

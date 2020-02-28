@@ -254,11 +254,12 @@ module Whedon
     # 'Smith et al' for multiple authors or 'Smith' for a single author
     def citation_author
       surname = authors.first.last_name
+      initials = authors.first.initials
 
       if authors.size > 1
         return "#{surname} et al."
       else
-        return "#{surname}"
+        return "#{surname}, #{initials}"
       end
     end
 
