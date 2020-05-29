@@ -130,6 +130,9 @@
           <if variable="DOI">
             <text variable="DOI" prefix="doi:"/>
           </if>
+          <else-if variable="ISBN">
+            <text variable="ISBN" prefix="ISBN:&#160;"/>
+          </else-if>
           <else>
             <choose>
               <if type="webpage">
