@@ -76,7 +76,7 @@ Commands:
   whedon verify          # Check the key values in the review issue
 ```
 
-**whedon compile**
+**whedon reviews**
 
 List all open reviews in the GitHub review repository:
 
