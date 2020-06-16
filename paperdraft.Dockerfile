@@ -12,13 +12,20 @@ RUN tlmgr install \
   trimspaces \
   xstring
 
+# Create entrypoint script: invoke pandoc with special defaults files.
+ARG openjournals_dir=/usr/local/share/openjournals
+RUN printf "#!/bin/sh\n/usr/bin/pandoc --defaults=%s --defaults=%s \"\$@\"\n" \
+           "$openjournals_dir/docker-defaults" \
+           "$openjournals_dir/\${JOURNAL}/defaults.yaml" \
+           > /usr/local/bin/paperdraft \
+  && chmod +x /usr/local/bin/paperdraft
+
 # Copy templates, images, and other resources
-COPY ./resources /usr/local/share/openjournals
+COPY ./resources $openjournals_dir
 
 ENV JOURNAL=joss
 
-# Invoce pandoc with special defaults file. Input is read from `paper.md`,
-# while output is written to `paper.pdf`
-ENTRYPOINT pandoc \
-  --defaults=/usr/local/share/openjournals/docker-defaults.yaml \
-  --defaults=/usr/local/share/openjournals/${JOURNAL}/defaults.yaml
+# Input is read from `paper.md` by default, but can be overridden. Output is
+# written to `paper.pdf`
+ENTRYPOINT ["/usr/local/bin/paperdraft"]
+CMD ["paper.md"]

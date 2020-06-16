@@ -1,7 +1,5 @@
 from: markdown
 to: latex
-input-files:
-  - paper.md
 output-file: paper.pdf
 standalone: true
 
