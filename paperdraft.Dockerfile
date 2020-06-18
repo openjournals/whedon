@@ -2,14 +2,29 @@ FROM pandoc/latex:2.10
 
 # Install additional LaTeX packages
 RUN tlmgr install \
+  algorithmicx \
+  algorithms \
+  booktabs \
+  caption \
+  collection-xetex \
   environ \
+  etoolbox \
+  fancyvrb \
+  float \
+  fontspec \
+  latexmk \
+  listings \
+  logreq \
   marginnote \
+  mathspec \
   pgf \
   preprint \
   seqsplit \
   tcolorbox \
   titlesec \
   trimspaces \
+  xcolor \
+  xkeyval \
   xstring
 
 # Create entrypoint script: invoke pandoc with special defaults files.
