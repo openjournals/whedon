@@ -27,18 +27,13 @@ RUN tlmgr install \
   xkeyval \
   xstring
 
-# Create entrypoint script: invoke pandoc with special defaults files.
-ARG openjournals_dir=/usr/local/share/openjournals
-RUN printf "#!/bin/sh\n/usr/bin/pandoc --defaults=%s --defaults=%s \"\$@\"\n" \
-           "$openjournals_dir/docker-defaults" \
-           "$openjournals_dir/\${JOURNAL}/defaults.yaml" \
-           > /usr/local/bin/paperdraft \
-  && chmod +x /usr/local/bin/paperdraft
-
 # Copy templates, images, and other resources
-COPY ./resources $openjournals_dir
+ARG openjournals_path=/usr/local/share/openjournals
+COPY ./resources $openjournals_path
+COPY ./resources/docker-entrypoint.sh /usr/local/bin/paperdraft
 
 ENV JOURNAL=joss
+ENV OPENJOURNALS_PATH=$openjournals_path
 
 # Input is read from `paper.md` by default, but can be overridden. Output is
 # written to `paper.pdf`
