@@ -66,9 +66,12 @@ class WhedonCli < Thor
   end
 
   desc "compile", "Compile the paper and XML metadata"
-  def compile(issue_id)
+  def compile(issue_id, custom_branch=nil)
     review = Whedon::Review.new(issue_id)
     processor = Whedon::Processor.new(issue_id, review.issue_body)
+
+    # Need to checkout the new branch before looking for the paper.
+    `cd tmp/#{issue_id} && git checkout #{custom_branch} --quiet` if custom_branch
 
     paper_paths = processor.find_paper_paths
 
