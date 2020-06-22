@@ -1,0 +1,63 @@
+name: Build Images
+
+on:
+  # Build and publish when pushed to master
+  push:
+    branches:
+      - master
+  # Build, but don't push on pull requests
+  pull_request:
+
+env:
+  IMAGE_NAME: openjournals/paperdraft
+
+jobs:
+  # Build images and store them as tar archive
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Build image
+        run: |
+            docker build \
+              --tag $IMAGE_NAME \
+              -f paperdraft.Dockerfile \
+              .
+
+      - name: Save images to archive
+        run: docker save $IMAGE_NAME > image.tar
+
+      - name: Upload archive
+        uses: actions/upload-artifact@v1
+        with:
+          name: paperdraft
+          path: image.tar
+
+  # Push image to GitHub Packages.
+  push:
+    name: Push
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    needs:
+      - build
+
+    steps:
+      - name: Download stored images
+        uses: actions/download-artifact@v1
+        with:
+          name: paperdraft
+
+      - name: Load images
+        run: |
+          docker load --input paperdraft/image.tar
+
+      - name: Log into registry
+        run: |
+          echo "${{ secrets.DOCKER_HUB_TOKEN }}" |
+            docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
+
+      - name: Push core image
+        run: docker push $IMAGE_NAME
