@@ -81,6 +81,9 @@ module Whedon
       citation = "<citation key=\"ref#{@ref_count}\"><unstructured_citation>"
       values = []
       entry.each_pair do |name, value|
+        # Ultimately we should call entry.to_citeproce here to parse this properly.
+        # https://github.com/inukshuk/bibtex-ruby/pull/139/files
+        value = value.gsub('\urlhttp', 'http')
         values << value.encode(:xml => :text)
       end
       citation << values.join(', ')
