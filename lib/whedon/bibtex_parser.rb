@@ -22,6 +22,8 @@ module Whedon
       keys = []
       entries.each do |entry|
         next if entry.comment?
+        next if entry.preamble?
+        
         keys << "@#{entry.key}"
       end
 
@@ -40,6 +42,7 @@ module Whedon
       else
         entries.each do |entry|
           next if entry.comment?
+          next if entry.preamble?
 
           if citations
             next unless citations.include?("@#{entry.key}")
