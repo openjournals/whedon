@@ -152,7 +152,8 @@ module Compilers
       "formatted_doi" => paper.formatted_doi,
       "citation_author" => paper.citation_author,
       "editor_name" => editor_name,
-      "reviewers" => paper.reviewers_without_handles
+      "reviewers" => paper.reviewers_without_handles,
+      "link-citations" => true
     }
 
     File.open("#{paper.directory}/markdown-metadata.yaml", 'w') { |file| file.write(metadata.to_yaml) }
