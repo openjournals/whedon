@@ -141,7 +141,7 @@ Under the hood, the `prepare` method does the following:
 
 - Looks for the paper.md
   - If more than one paper.md is found, asks the user to pick the correct one
-- Compiles the markdown to a custom PDF: `pandoc -S -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md --template latex.template`. See the actual [command here](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L101-L122).
+- Compiles the markdown to a custom PDF: `pandoc -o paper.pdf -V geometry:margin=1in --filter pandoc-citeproc paper.md --template latex.template`. See the actual [command here](https://github.com/openjournals/whedon/blob/25f9a1307a83b6b89080d6d934a3621f6a244035/lib/whedon/processor.rb#L101-L122).
 - Returns the filesystem location of the compiled PDF for inspection
 
 
