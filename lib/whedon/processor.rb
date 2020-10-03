@@ -1,5 +1,6 @@
 require_relative 'github'
 
+require 'open3'
 require 'restclient'
 require 'securerandom'
 require 'yaml'
@@ -49,8 +50,9 @@ module Whedon
       # First make the folder
       FileUtils::mkdir_p("tmp/#{review_issue_id}")
 
-      # Then clone the repository
-      `git clone #{repository_address} tmp/#{review_issue_id}`
+      result, stderr, status = Open3.capture3("git clone #{repository_address} tmp/#{review_issue_id}")
+
+      return result, stderr, status
     end
 
     # Find possible papers to be compiled
