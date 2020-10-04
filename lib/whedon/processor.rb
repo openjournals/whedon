@@ -20,12 +20,14 @@ module Whedon
     attr_accessor :current_volume
     attr_accessor :current_issue
     attr_accessor :current_year
+    attr_accessor :custom_path
 
-    def initialize(review_issue_id, review_body)
+    def initialize(review_issue_id, review_body, custom_path=nil)
       @review_issue_id = review_issue_id
       @review_body = review_body
       @repository_address = review_body[REPO_REGEX]
       @archive_doi = review_body[ARCHIVE_REGEX]
+      @custom_path = custom_path
       # Probably a much nicer way to do this...
       @current_year = ENV["CURRENT_YEAR"].nil? ? Time.new.year : ENV["CURRENT_YEAR"]
       @current_volume = ENV["CURRENT_VOLUME"].nil? ? Time.new.year - (Time.parse(ENV['JOURNAL_LAUNCH_DATE']).year - 1) : ENV["CURRENT_VOLUME"]
@@ -33,24 +35,27 @@ module Whedon
     end
 
     def set_paper(path)
-      @paper = Whedon::Paper.new(review_issue_id, path)
+      @paper = Whedon::Paper.new(review_issue_id, custom_path, path)
     end
 
     # Clone the repository... (assumes it's git)
     def clone
       repository_address = review_body[REPO_REGEX]
 
+      # Optionally set the path to work in
+      path = custom_path ? custom_path : "tmp/#{review_issue_id}"
+
       # Skip if the repo has already been cloned
-      if File.exists?("tmp/#{review_issue_id}/.git")
-        puts "Looks like Git repo already exists at tmp/#{review_issue_id}"
+      if File.exists?("#{path}/.git")
+        puts "Looks like Git repo already exists at #{path}"
         return
       end
 
       # First make the folder
-      FileUtils::mkdir_p("tmp/#{review_issue_id}")
+      FileUtils::mkdir_p("#{path}")
 
       # Then clone the repository
-      `git clone #{repository_address} tmp/#{review_issue_id}`
+      `git clone #{repository_address} #{path}`
     end
 
     # Find possible papers to be compiled

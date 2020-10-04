@@ -34,20 +34,23 @@ class WhedonCli < Thor
   end
 
   desc "download", "Download the repo"
-  def download(issue_id)
-    Whedon::Paper.new(issue_id).download
+  def download(issue_id, custom_path=nil, paper_path=nil)
+    Whedon::Paper.new(issue_id, custom_path, paper_path).download
   end
 
-  desc "prepare", "Just prepare the PDF (optional second argument of custom git branch)"
-  def prepare(issue_id, custom_branch=nil)
+  desc "prepare", "Just prepare the PDF (optional second argument of custom git branch, optional third argument for custom path)"
+  def prepare(issue_id, custom_path=nil, custom_branch=nil)
     review = Whedon::Review.new(issue_id)
-    processor = Whedon::Processor.new(issue_id, review.issue_body)
+    processor = Whedon::Processor.new(issue_id, review.issue_body, custom_path)
     processor.archive_doi = 'PENDING'
 
+    # Optionally set the path to work in
+    path = custom_path ? custom_path : "tmp/#{issue_id}"
+    
     # Need to checkout the new branch before looking for the paper.
-    `cd tmp/#{issue_id} && git checkout #{custom_branch} --quiet` if custom_branch
+    `cd #{path} && git checkout #{custom_branch} --quiet` if custom_branch
 
-    paper_paths = processor.find_paper_paths
+    paper_paths = processor.find_paper_paths(path)
 
     if paper_paths.empty?
       abort("Can't find any papers to compile :-(")
@@ -66,14 +69,17 @@ class WhedonCli < Thor
   end
 
   desc "compile", "Compile the paper and XML metadata"
-  def compile(issue_id, custom_branch=nil)
+  def compile(issue_id, custom_path=nil, custom_branch=nil)
     review = Whedon::Review.new(issue_id)
-    processor = Whedon::Processor.new(issue_id, review.issue_body)
+    processor = Whedon::Processor.new(issue_id, review.issue_body, custom_path)
 
+    # Optionally set the path to work in
+    path = custom_path ? custom_path : "tmp/#{issue_id}"
+    
     # Need to checkout the new branch before looking for the paper.
-    `cd tmp/#{issue_id} && git checkout #{custom_branch} --quiet` if custom_branch
+    `cd #{path} && git checkout #{custom_branch} --quiet` if custom_branch
 
-    paper_paths = processor.find_paper_paths
+    paper_paths = processor.find_paper_paths(path)
 
     if paper_paths.empty?
       abort("Can't find any papers to compile :-(")
@@ -92,11 +98,17 @@ class WhedonCli < Thor
   end
 
   desc "deposit", "Deposit the metadata with the JOSS application and Crossref"
-  def deposit(issue_id)
+  def deposit(issue_id, custom_path=nil, custom_branch=nil)
     review = Whedon::Review.new(issue_id)
     processor = Whedon::Processor.new(issue_id, review.issue_body)
+    
+    # Optionally set the path to work in
+    path = custom_path ? custom_path : "tmp/#{issue_id}"
 
-    paper_paths = processor.find_paper_paths
+    # Need to checkout the new branch before looking for the paper.
+    `cd #{path} && git checkout #{custom_branch} --quiet` if custom_branch
+
+    paper_paths = processor.find_paper_paths(path)
 
     if paper_paths.empty?
       abort("Can't find any papers to process :-(")

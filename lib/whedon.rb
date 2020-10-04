@@ -40,7 +40,7 @@ module Whedon
     attr_accessor :review_issue_id
     attr_accessor :review_repository
     attr_accessor :review_issue_body
-    attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path, :languages, :reviewers, :editor
+    attr_accessor :title, :tags, :authors, :date, :paper_path, :bibliography_path, :custom_path, :languages, :reviewers, :editor
 
     # TODO: work out how to resolve this code duplication with lib/processor.rb
     attr_accessor :current_volume
@@ -77,9 +77,11 @@ module Whedon
     # Initialized with JOSS paper including YAML header
     # e.g. http://joss.theoj.org/about#paper_structure
     # Optionally return early if no paper_path is set
-    def initialize(review_issue_id, paper_path=nil)
+    def initialize(review_issue_id, custom_path=nil, paper_path=nil)
       @review_issue_id = review_issue_id
       @review_repository = ENV['REVIEW_REPOSITORY']
+      @custom_path = custom_path
+
       return if paper_path.nil?
 
       parsed = load_yaml(paper_path)
@@ -155,7 +157,9 @@ module Whedon
     end
 
     def detect_languages
-      repo = Rugged::Repository.new("tmp/#{review_issue_id}")
+      path = custom_path ? custom_path : "tmp/#{review_issue_id}"
+
+      repo = Rugged::Repository.new("#{path}")
       project = Linguist::Repository.new(repo, repo.head.target_id)
 
       # Take top five languages from Linguist
@@ -372,7 +376,7 @@ module Whedon
 
     def download
       review_issue if review_issue_body.nil?
-      Whedon::Processor.new(review_issue_id, review_issue_body).clone
+      Whedon::Processor.new(review_issue_id, review_issue_body, custom_path).clone
     end
 
     def compile
