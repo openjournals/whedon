@@ -100,14 +100,14 @@ class WhedonCli < Thor
   desc "deposit", "Deposit the metadata with the JOSS application and Crossref"
   def deposit(issue_id, custom_path=nil, custom_branch=nil)
     review = Whedon::Review.new(issue_id)
-    processor = Whedon::Processor.new(issue_id, review.issue_body)
+    processor = Whedon::Processor.new(issue_id, review.issue_body, custom_path)
     
     # Optionally set the path to work in
     path = custom_path ? custom_path : "tmp/#{issue_id}"
 
     # Need to checkout the new branch before looking for the paper.
     `cd #{path} && git checkout #{custom_branch} --quiet` if custom_branch
-
+    
     paper_paths = processor.find_paper_paths(path)
 
     if paper_paths.empty?
