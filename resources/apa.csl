@@ -1551,6 +1551,9 @@
       <if variable="DOI" match="any">
         <text variable="DOI" prefix="https://doi.org/"/>
       </if>
+      <else-if variable="ISBN">
+        <text variable="ISBN" prefix="ISBN:&#160;"/>
+      </else-if>
       <else-if variable="URL">
         <group delimiter=" ">
           <choose>
