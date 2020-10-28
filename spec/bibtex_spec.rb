@@ -11,6 +11,12 @@ describe Whedon::BibtexParser do
     expect(citations_xml.search('citation[key="ref1"]').text.strip).to eql("10.1109/SERVICES.2007.63")
   end
 
+  it "should know how to generate shortDOI citations" do
+    citations_xml = Nokogiri::XML(subject.generate_citations)
+    expect(citations_xml.search('citation[key="ref2"]').children[1].name).to eql("doi")
+    expect(citations_xml.search('citation[key="ref2"]').text.strip).to eql("10/fm2vqj")
+  end
+
   it "should know how to generate non-DOI citations" do
     citations_xml = Nokogiri::XML(subject.generate_citations)
     expect(citations_xml.search('citation[key="ref6"]').children[1].name).to eql("unstructured_citation")
