@@ -27,8 +27,7 @@ metadata:
 resource-path: [".", '/usr/local/share/openjournals']
 
 filters:
-  - type: json
-    path: pandoc-citeproc
+  - citeproc
   - type: lua
     path: /usr/local/share/openjournals/time.lua
 

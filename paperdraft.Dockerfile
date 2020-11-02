@@ -1,4 +1,4 @@
-FROM pandoc/latex:2.10
+FROM pandoc/latex:2.11.2
 
 # Install additional LaTeX packages
 RUN tlmgr install \
