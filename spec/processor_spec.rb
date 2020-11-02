@@ -2,8 +2,8 @@ require_relative 'spec_helper'
 require 'nokogiri'
 
 describe Whedon::Processor do
-  subject(:paper) { Whedon::Paper.new(17, 'fixtures/paper/paper.md') }
-  subject(:paper_with_funky_bib_path) { Whedon::Paper.new(17, 'fixtures/paper/paper-bib.md') }
+  subject(:paper) { Whedon::Paper.new(17, nil, 'fixtures/paper/paper.md') }
+  subject(:paper_with_funky_bib_path) { Whedon::Paper.new(17, nil, 'fixtures/paper/paper-bib.md') }
 
   subject(:processor) { Whedon::Processor.new(17, File.read('fixtures/review_body.txt')) }
 

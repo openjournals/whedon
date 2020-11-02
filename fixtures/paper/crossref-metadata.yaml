@@ -1,6 +1,6 @@
 ---
-timestamp: '20200228090040'
-doi_batch_id: 4004ce6db4577d4cd5153c8f16ba1c37
+timestamp: '20201102125108'
+doi_batch_id: 284d9bf1426ea0f102dbc700e62c180e
 formatted_doi: 10.21105/joss.00017
 archive_doi: '"http://dx.doi.org/10.5281/zenodo.13750"'
 review_issue_url: https://github.com/openjournals/joss-reviews/issues/17
@@ -14,7 +14,7 @@ journal_issn: 2475-9066
 month: 5
 day: 11
 year: 2016
-issue: -44
+issue: -53
 volume: -3
 page: 17
 title: 'Fidgit: An ungodly union of GitHub and figshare'

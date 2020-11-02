@@ -2,9 +2,9 @@ require_relative 'spec_helper'
 
 describe Whedon do
 
-  subject(:paper) { Whedon::Paper.new(17, 'fixtures/paper/paper.md') }
-  subject(:paper_with_one_author) { Whedon::Paper.new(17, 'fixtures/paper/paper-single-author.md') }
-  subject(:paper_with_harder_names) { Whedon::Paper.new(17, 'fixtures/paper/paper-with-harder-names.md') }
+  subject(:paper) { Whedon::Paper.new(17, nil, 'fixtures/paper/paper.md') }
+  subject(:paper_with_one_author) { Whedon::Paper.new(17, nil, 'fixtures/paper/paper-single-author.md') }
+  subject(:paper_with_harder_names) { Whedon::Paper.new(17, nil, 'fixtures/paper/paper-with-harder-names.md') }
 
   it "should initialize properly" do
     expect(paper.review_issue_id).to eql(17)
@@ -76,11 +76,11 @@ describe Whedon do
   end
 
   it "should fail to initialize when authors don't have affiliations" do
-    expect { Whedon::Paper.new(17, 'fixtures/paper/paper-with-missing-affiliations.md') }.to raise_error("Author (Arfon M Smith) is missing affiliation")
+    expect { Whedon::Paper.new(17, nil, 'fixtures/paper/paper-with-missing-affiliations.md') }.to raise_error("Author (Arfon M Smith) is missing affiliation")
   end
 
   it "should fail to initialize when title is missing" do
-    expect { Whedon::Paper.new(17, 'fixtures/paper/paper_with_missing_title.md') }.to raise_error(/Paper YAML header is missing expected fields: title/)
+    expect { Whedon::Paper.new(17, nil, 'fixtures/paper/paper_with_missing_title.md') }.to raise_error(/Paper YAML header is missing expected fields: title/)
   end
 
   it "should know how to generate the deposit_payload" do
