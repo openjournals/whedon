@@ -23,7 +23,7 @@ module Whedon
       entries.each do |entry|
         next if entry.comment?
         next if entry.preamble?
-        
+
         keys << "@#{entry.key}"
       end
 
@@ -72,6 +72,11 @@ module Whedon
       # Crossref DOIs need to be strings like 10.21105/joss.01461 rather
       # than https://doi.org/10.21105/joss.01461
       bare_doi = entry.doi.to_s[/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&\'<>])\S)+)\b/]
+
+      # Check for shortDOI formatted DOIs http://shortdoi.org
+      if bare_doi.nil?
+        bare_doi = entry.doi.to_s[/\b(10\/[a-bA-z0-9]+)\b/]
+      end
 
       # Sometimes there are weird characters in the DOI. This escapes
       escaped_doi = bare_doi.encode(:xml => :text)
