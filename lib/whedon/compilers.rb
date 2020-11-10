@@ -166,7 +166,7 @@ module Compilers
     -V graphics="true" \
     -o #{paper.filename_doi}.pdf -V geometry:margin=1in \
     --pdf-engine=xelatex \
-    --filter pandoc-citeproc #{File.basename(paper.paper_path)} \
+    --citeproc #{File.basename(paper.paper_path)} \
     --from markdown+autolink_bare_uris \
     --csl=#{csl_file} \
     --template #{latex_template_path} \
@@ -358,7 +358,7 @@ module Compilers
     -V jats_affiliations='#{paper.jats_affiliations}' \
     -t jats \
     -s \
-    --filter pandoc-citeproc \
+    --citeproc \
     -o #{paper.filename_doi}.jats.xml  \
     #{File.basename(paper.paper_path)} \
     --template #{jats_template_path}`
