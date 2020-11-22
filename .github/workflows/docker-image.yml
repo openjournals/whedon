@@ -55,7 +55,7 @@ jobs:
           docker load --input paperdraft/image.tar
 
       - name: Log into registry
-        run: |
+        run: >-
           echo "${{ secrets.DOCKER_HUB_TOKEN }}" |
             docker login -u ${{ secrets.DOCKER_HUB_USERNAME }} --password-stdin
 
