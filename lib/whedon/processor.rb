@@ -96,7 +96,7 @@ module Whedon
 
     # Try and compile the paper target
     def compile
-      generate_pdf
+      generate_pdf(nil, false)
       generate_crossref
       # generate_jats
     end

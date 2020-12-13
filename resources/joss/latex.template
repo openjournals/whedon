@@ -26,6 +26,10 @@
     \endorigfigure
 }
 
+$if(draft)$
+\usepackage{draftwatermark}
+$endif$
+
 \usepackage{fixltx2e} % provides \textsubscript
 \usepackage[
   backend=biber,

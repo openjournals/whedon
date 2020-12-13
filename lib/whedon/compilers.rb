@@ -6,11 +6,11 @@ module Compilers
 
   # Generate the paper PDF
   # Optionally pass in a custom branch name as first param
-  def generate_pdf(custom_branch=nil, paper_issue=nil, paper_volume=nil, paper_year=nil)
+  def generate_pdf(custom_branch=nil, draft=true, paper_issue=nil, paper_volume=nil, paper_year=nil)
     if paper.latex_source?
       pdf_from_latex(custom_branch, paper_issue, paper_volume, paper_year)
     elsif paper.markdown_source?
-      pdf_from_markdown(custom_branch, paper_issue, paper_volume, paper_year)
+      pdf_from_markdown(custom_branch, draft, paper_issue, paper_volume, paper_year)
     end
   end
 
@@ -98,7 +98,7 @@ module Compilers
     return parsed.day
   end
 
-  def pdf_from_markdown(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
+  def pdf_from_markdown(custom_branch=nil, draft=true, paper_issue=nil, paper_volume=nil, paper_year=nil)
     latex_template_path = "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/latex.template"
     csl_file = "#{Whedon.resources}/#{ENV['JOURNAL_ALIAS']}/apa.csl"
 
@@ -155,6 +155,8 @@ module Compilers
       "reviewers" => paper.reviewers_without_handles,
       "link-citations" => true
     }
+
+    metadata.merge!({"draft" => true}) if draft
 
     File.open("#{paper.directory}/markdown-metadata.yaml", 'w') { |file| file.write(metadata.to_yaml) }
 
