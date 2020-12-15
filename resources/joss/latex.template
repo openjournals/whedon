@@ -28,7 +28,7 @@
 
 $if(draft)$
 \usepackage{lineno}
-\usepackage{draftwatermark}
+\usepackage[firstpageonly, color={[gray]{0.9}}]{draftwatermark}
 \linenumbers
 $endif$
 
