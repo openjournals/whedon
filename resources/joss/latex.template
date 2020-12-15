@@ -27,7 +27,9 @@
 }
 
 $if(draft)$
+\usepackage{lineno}
 \usepackage{draftwatermark}
+\linenumbers
 $endif$
 
 \usepackage{fixltx2e} % provides \textsubscript
