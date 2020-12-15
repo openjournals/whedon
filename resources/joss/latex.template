@@ -28,8 +28,8 @@
 
 $if(draft)$
 \usepackage{lineno}
-\usepackage[firstpageonly, color={[gray]{0.9}}]{draftwatermark}
 \linenumbers
+\usepackage[color={[gray]{0.9}}]{draftwatermark}
 $endif$
 
 \usepackage{fixltx2e} % provides \textsubscript
