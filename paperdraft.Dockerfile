@@ -7,6 +7,7 @@ RUN tlmgr update --self
 RUN tlmgr install \
   algorithmicx \
   algorithms \
+  biblatex \
   booktabs \
   caption \
   collection-xetex \
