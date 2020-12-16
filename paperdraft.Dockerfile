@@ -1,5 +1,8 @@
 FROM pandoc/latex:2.11.2
 
+# Update tlmgr
+RUN tlmgr update --self
+
 # Install additional LaTeX packages
 RUN tlmgr install \
   algorithmicx \
