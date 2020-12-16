@@ -1,5 +1,8 @@
 FROM pandoc/latex:2.11.2
 
+# Update tlmgr
+RUN tlmgr update --self
+
 # Install additional LaTeX packages
 RUN tlmgr install \
   algorithmicx \
@@ -7,12 +10,15 @@ RUN tlmgr install \
   booktabs \
   caption \
   collection-xetex \
+  draftwatermark \
   environ \
   etoolbox \
+  everypage \
   fancyvrb \
   float \
   fontspec \
   latexmk \
+  lineno \
   listings \
   logreq \
   marginnote \
