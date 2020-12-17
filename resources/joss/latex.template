@@ -29,7 +29,7 @@
 $if(draft)$
 \usepackage{lineno}
 \linenumbers
-\usepackage[color={[gray]{0.9}}]{draftwatermark}
+\usepackage{draftwatermark}
 $endif$
 
 \usepackage{fixltx2e} % provides \textsubscript
