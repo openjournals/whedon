@@ -17,13 +17,12 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ["lib"]
 
-  spec.add_dependency "bibtex-ruby"
+  spec.add_dependency "bibtex-ruby", "~> 6.0.0"
   spec.add_dependency "dotenv"
   spec.add_dependency "latex-decode"
   spec.add_dependency "github-linguist", "~> 5.3"
-  spec.add_dependency "metamatter", "~> 0.2.0"
   spec.add_dependency "openjournals-nameable"
-  spec.add_dependency "octokit", "~> 4.0"
+  spec.add_dependency "octokit", "~> 4.20"
   spec.add_dependency "rest-client", ">= 1.8"
   spec.add_dependency "redcarpet", "~> 3.3"
   spec.add_dependency "tilt"
@@ -34,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "pry", "~> 0.10"
   spec.add_development_dependency "rspec", "~> 3.3"
-  spec.add_development_dependency "vcr", "~> 4.0"
-  spec.add_development_dependency "webmock", "~> 3.5.1"
+  spec.add_development_dependency "vcr", "~> 6.0"
+  spec.add_development_dependency "webmock", "~> 3.11.2"
   spec.add_development_dependency "nokogiri", "= 1.10.8"
 end
