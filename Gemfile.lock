@@ -60,12 +60,13 @@ GEM
     mime-types (3.3.1)
       mime-types-data (~> 3.2015)
     mime-types-data (3.2020.0512)
-    mini_portile2 (2.4.0)
+    mini_portile2 (2.5.1)
     multi_xml (0.6.0)
     multipart-post (2.1.1)
     netrc (0.11.0)
-    nokogiri (1.10.8)
-      mini_portile2 (~> 2.4.0)
+    nokogiri (1.11.4)
+      mini_portile2 (~> 2.5.0)
+      racc (~> 1.4)
     octokit (4.18.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
@@ -74,6 +75,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (4.0.5)
+    racc (1.5.2)
     rake (10.5.0)
     redcarpet (3.5.0)
     rest-client (2.1.0)
@@ -116,7 +118,7 @@ PLATFORMS
 
 DEPENDENCIES
   bundler
-  nokogiri (= 1.10.8)
+  nokogiri (= 1.11.4)
   pry (~> 0.10)
   rake (~> 10.0)
   rspec (~> 3.3)
