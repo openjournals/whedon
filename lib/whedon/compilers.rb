@@ -8,7 +8,7 @@ module Compilers
   # Optionally pass in a custom branch name as first param
   def generate_pdf(custom_branch=nil, draft=true, paper_issue=nil, paper_volume=nil, paper_year=nil)
     if paper.latex_source?
-      pdf_from_latex(custom_branch, paper_issue, paper_volume, paper_year)
+      pdf_from_latex(custom_branch, draft, paper_issue, paper_volume, paper_year)
     elsif paper.markdown_source?
       pdf_from_markdown(custom_branch, draft, paper_issue, paper_volume, paper_year)
     end
@@ -30,7 +30,7 @@ module Compilers
     end
   end
 
-  def pdf_from_latex(custom_branch=nil,paper_issue=nil, paper_volume=nil, paper_year=nil)
+  def pdf_from_latex(custom_branch=nil, draft=true, paper_issue=nil, paper_volume=nil, paper_year=nil)
     # Optionally pass a custom branch name
     `cd #{paper.directory} && git checkout #{custom_branch} --quiet` if custom_branch
 
@@ -61,6 +61,11 @@ module Compilers
       end
       f << metadata["keywords"].last
       f << "}\n"
+      
+      # draft mode by default.
+      if draft
+        f << "\\usepackage{draftwatermark}\n\n"
+      end
     end
 
     `cd #{paper.directory} && latexmk -f -bibtex -pdf paper.tex`
