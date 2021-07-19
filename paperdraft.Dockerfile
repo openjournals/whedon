@@ -1,5 +1,7 @@
 FROM pandoc/latex:2.11.2
 
+RUN apk add --no-cache ttf-hack
+
 # Update tlmgr
 RUN tlmgr update --self
 
