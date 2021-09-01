@@ -42,9 +42,9 @@ module Compilers
 
     # Remove everything that shouldn't be there before processing
 
-    `cd #{paper.directory} && rm *.aux \
-    && rm *.blg && rm *.fls && rm *.log\
-    && rm *.fdb_latexmk`
+    `cd #{paper.directory} && rm -f *.aux \
+    && rm -f *.blg && rm -f *.fls && rm -f *.log\
+    && rm -f *.fdb_latexmk`
 
     open("#{paper.directory}/header.tex", 'w') do |f|
       f << "% **************GENERATED FILE, DO NOT EDIT**************\n\n"
