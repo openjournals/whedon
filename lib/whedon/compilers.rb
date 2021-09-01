@@ -74,6 +74,7 @@ module Compilers
       `mv #{paper.directory}/paper.pdf #{paper.directory}/#{paper.filename_doi}.pdf`
       puts "#{paper.directory}/#{paper.filename_doi}.pdf"
     else
+      `cd #{paper.directory} && cat paper.log`
       abort("Looks like we failed to compile the PDF")
     end
   end
