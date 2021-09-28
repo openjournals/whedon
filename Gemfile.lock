@@ -62,7 +62,7 @@ GEM
       coderay (~> 1.1)
       method_source (~> 1.0)
     public_suffix (4.0.6)
-    rake (10.5.0)
+    rake (13.0.6)
     redcarpet (3.5.1)
     rest-client (2.1.0)
       http-accept (>= 1.7.0, < 2.0)
@@ -107,7 +107,7 @@ DEPENDENCIES
   bundler
   nokogiri (= 1.10.8)
   pry (~> 0.10)
-  rake (~> 10.0)
+  rake (~> 13.0)
   rspec (~> 3.3)
   vcr (~> 6.0)
   webmock (~> 3.11.2)
