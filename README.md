@@ -12,7 +12,7 @@ Whedon requires a local installation of Pandoc 2 and Pandoc-Citeproc as well as 
 
 Hopefully...
 
-[![Build Status](https://travis-ci.org/openjournals/whedon.svg?branch=master)](https://travis-ci.org/openjournals/whedon)
+[![Build Status](https://github.com/openjournals/whedon/actions/workflows/tests.yml/badge.svg)](https://github.com/openjournals/whedon/actions/workflows/tests.yml)
 
 ## Installation
 
