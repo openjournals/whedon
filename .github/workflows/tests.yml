@@ -1,0 +1,28 @@
+name: tests
+
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    continue-on-error: ${{ matrix.failure-allowed }}
+    strategy:
+      matrix:
+        ruby-version: ['2.4.1', '2.7.4', '3.0.2']
+        failure-allowed: [false]
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Pandoc
+      run: |
+        curl -L https://github.com/jgm/pandoc/releases/download/2.9.1.1/pandoc-2.9.1.1-1-amd64.deb > pandoc.deb
+        dpkg -x pandoc.deb .
+        echo "pandoc downloaded and unpacked"
+        echo "$PWD/usr/bin" >> $GITHUB_PATH
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+    - name: Run specs
+      run: |
+        bundle exec ruby -v
+        bundle exec rake spec
