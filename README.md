@@ -1,3 +1,5 @@
+⚠️ JOSS does not uses Whedon anymore. Whedon has been deprecated in favor of [Buffy](https://github.com/openjournals/buffy) ⚠️
+
 # What is Whedon?
 
 Whedon is a collection of command-line utilities to manage JOSS submissions. Whedon is used by the [Whedon-API bot](https://github.com/openjournals/whedon-api) to interact with authors and reviewers during the review process on https://github.com/openjournals/joss-reviews
